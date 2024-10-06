@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ModelTrain.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ModelTrain"
+    xmlns:screens="clr-namespace:ModelTrain.Screens"
+    Shell.FlyoutBehavior="Disabled"
+    Title="ModelTrain">
+
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate screens:Login}"
+        Route="login" />
+
+</Shell>
