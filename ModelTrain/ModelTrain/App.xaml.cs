@@ -9,7 +9,7 @@
             MainPage = new AppShell();
 
             // Navigate to the login page when the app starts
-            Shell.Current.GoToAsync("//login");
+            Shell.Current.GoToAsync("//screen");
         }
     }
 }

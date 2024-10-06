@@ -17,7 +17,7 @@
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center"
                HorizontalOptions="Center"
-               TextColor="SaddleBrown"
+               TextColor="Black"
                />
             
             <Image
@@ -26,7 +26,7 @@
                 Margin="0,0,0,50"
                 SemanticProperties.Description="Track builder logo" />
 
-            <!-- Username Entry -->
+            <!-- Email Entry -->
             <Frame
                 BorderColor="Gray"
                 CornerRadius="5"
@@ -34,15 +34,15 @@
                 Margin="10">
                 <StackLayout Orientation="Horizontal" VerticalOptions="Center">
                     <Label Text="{x:Static icon:IconFont.Person}" Style="{x:StaticResource GoogleFont}"></Label>
-                    <Entry x:Name="UsernameEntry" 
-                    Placeholder="Username" 
+                    <Entry x:Name="EmailEntry" 
+                    Placeholder="Email" 
                     Keyboard="Text"
                     Margin="5,0,0,0"/>
                 </StackLayout>
                 
             </Frame>
 
-            <!-- Username Entry -->
+            <!-- Password Entry -->
             <Frame
                 BorderColor="Gray"
                 CornerRadius="5"
@@ -62,8 +62,8 @@
             <Button
                 x:Name="LoginBtn"
                 Text="Login"
-                HorizontalOptions="Fill"
-                BackgroundColor="SaddleBrown"
+                WidthRequest="320"
+                HeightRequest="50"
 				/>
         </VerticalStackLayout>
     </ScrollView>
