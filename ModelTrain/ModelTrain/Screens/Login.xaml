@@ -11,20 +11,15 @@
             VerticalOptions="Center">
 
             <!-- Centered Title -->
-            <Label Text="Track Builder"
-               FontSize="42"
-               FontAttributes="Bold"
+            <Label Text="Model Train Track Designer"
+               FontSize="44"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center"
                HorizontalOptions="Center"
                TextColor="Black"
                />
             
-            <Image
-                Source="logo.png"
-                WidthRequest="400"
-                Margin="0,0,0,50"
-                SemanticProperties.Description="Track builder logo" />
+
 
             <!-- Email Entry -->
             <Frame
@@ -65,6 +60,19 @@
                 WidthRequest="320"
                 HeightRequest="50"
 				/>
+
+            <!-- Create Account Link -->
+            <Label Text="Create an account"
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                TextColor="Blue"/>
+
+            <Image
+                Source="logo.png"
+                WidthRequest="400"
+                Margin="0,50,0,0"
+                SemanticProperties.Description="Track builder logo" />
         </VerticalStackLayout>
     </ScrollView>
 
