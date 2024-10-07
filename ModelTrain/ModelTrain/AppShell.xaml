@@ -8,9 +8,10 @@
     Shell.FlyoutBehavior="Disabled"
     Title="ModelTrain">
 
+    <!-- To switch screen change screens:YOURSCREENHERE-->
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate screens:Login}"
-        Route="login" />
+        ContentTemplate="{DataTemplate screens:PersonalProjects}"  
+        Route="screen" />
 
 </Shell>
