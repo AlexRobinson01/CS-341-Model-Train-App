@@ -4,12 +4,13 @@
              x:Class="ModelTrain.Screens.NewTrack"
              Title="NewTrack">
 	<ContentPage.Content>
+        <!-- Title for screen -->
 		<StackLayout Padding="20" Spacing="30" VerticalOptions="Center">
 			<Label Text="Make a New Track?"
                    FontSize="Large"
                    HorizontalOptions="Center" />
-
-			<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
+            <!-- Two buttons to either make a personal or shared track -->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
 				<Button Text="Shared"
                         WidthRequest="100"
                         HeightRequest="50"

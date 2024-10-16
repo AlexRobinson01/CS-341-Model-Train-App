@@ -4,6 +4,7 @@
              x:Class="ModelTrain.Screens.Account"
              Title="Account">
     <ContentPage.Content>
+        <!-- Buttons for actions concerning user account -->
         <StackLayout Padding="20" Spacing="10">
             <Button Text="Change Email"
                     HorizontalOptions="FillAndExpand"
