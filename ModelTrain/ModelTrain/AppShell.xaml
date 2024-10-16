@@ -11,7 +11,7 @@
     <!-- To switch screen change screens:YOURSCREENHERE-->
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate screens:PersonalProjects}"  
+        ContentTemplate="{DataTemplate screens:Login}"  
         Route="screen" />
 
 </Shell>
