@@ -3,10 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModelTrain.Screens.NewTrack"
              Title="NewTrack">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+	<ContentPage.Content>
+		<StackLayout Padding="20" Spacing="30" VerticalOptions="Center">
+			<Label Text="Make a New Track?"
+                   FontSize="Large"
+                   HorizontalOptions="Center" />
+
+			<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
+				<Button Text="Shared"
+                        WidthRequest="100"
+                        HeightRequest="50"
+                        BackgroundColor="LightGray"
+                        CornerRadius="10" />
+				<Button Text="Private"
+                        WidthRequest="100"
+                        HeightRequest="50"
+                        BackgroundColor="LightGray"
+                        CornerRadius="10" />
+			</StackLayout>
+		</StackLayout>
+	</ContentPage.Content>
 </ContentPage>

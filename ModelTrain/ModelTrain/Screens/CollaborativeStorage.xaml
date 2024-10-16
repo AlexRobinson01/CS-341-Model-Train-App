@@ -3,10 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModelTrain.Screens.CollaborativeStorage"
              Title="CollaborativeStorage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+
+    <ContentPage.Content>
+        <CollectionView>
+            <CollectionView.ItemsSource>
+                <!-- Hardcoded placeholder items for the prototype -->
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Track 1 Details</x:String>
+                    <x:String>Track 2 Details</x:String>
+                    <x:String>Track 3 Details</x:String>
+                </x:Array>
+            </CollectionView.ItemsSource>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" Padding="10">
+                        <!-- Static Image Placeholder -->
+                        <Frame WidthRequest= "100"
+                               HeightRequest="80"
+                               BackgroundColor="LightGray"
+                               BorderColor="Black"
+                               CornerRadius="5"
+                               VerticalOptions="Center">
+                            <Label Text="img preview"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   FontSize="Small" />
+                        </Frame>
+
+                        <!-- Hardcoded Track Details Text -->
+                        <Label Text="{Binding .}"
+                               VerticalOptions="Center"
+                               FontSize="Medium"
+                               Margin="10,0,0,0" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
 </ContentPage>
