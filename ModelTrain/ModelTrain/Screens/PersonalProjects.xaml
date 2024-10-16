@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModelTrain.Screens.PersonalProjects"
              xmlns:icon="clr-namespace:ModelTrain"
-             Title="PersonalProjects">
+             Title="Personal Projects">
 
     <Grid>
         <!-- Define rows for the Grid -->
@@ -85,16 +85,53 @@
                      Orientation="Horizontal"
                      HorizontalOptions="Center"
                      VerticalOptions="End"
-                     Margin="0,0,0,20"
+                     Margin="0,0,0,30"
                      Spacing="20">
-            <Button Text="Edit" 
-                    WidthRequest="100" 
-                    Clicked="OnEditButtonClicked"/>
             <!-- Handle the click event -->
-            <Button Text="Configure" 
-                    WidthRequest="100" 
-                    Clicked="OnConfigureButtonClicked"/>
+            <Frame CornerRadius="10" BorderColor="Gray" Padding="10" BackgroundColor="{DynamicResource Primary}" HorizontalOptions="Center" WidthRequest="130"
+                   HeightRequest="60">
+                <StackLayout WidthRequest="100" Orientation="Horizontal" HorizontalOptions="Center">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnEditButtonClicked" />
+                    </StackLayout.GestureRecognizers>
+
+                    <Label Text="Edit" 
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           VerticalOptions="Center"
+                           FontSize="16"
+                           Margin="25,0,5,0"/>
+
+                    <Label Text="{x:Static icon:IconFont.Edit_document}" 
+                            Style="{x:StaticResource GoogleFont}"
+                            FontSize="24"  
+                            TextColor="White"
+                            VerticalOptions="Center"/>
+                </StackLayout>
+            </Frame>
             <!-- Handle the click event -->
+            <Frame CornerRadius="10" BorderColor="Gray" Padding="10" BackgroundColor="{DynamicResource Primary}" HorizontalOptions="Center" WidthRequest="130"
+                   HeightRequest="60">
+                <StackLayout WidthRequest="100" Orientation="Horizontal" HorizontalOptions="Center">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnConfigureButtonClicked" />
+                    </StackLayout.GestureRecognizers>
+
+                    <Label Text="Configure" 
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        FontSize="16"
+                        VerticalOptions="Center"
+                        Margin="0,0,5,0"/>
+
+                    <Label Text="{x:Static icon:IconFont.Settings}" 
+                        Style="{x:StaticResource GoogleFont}"
+                        FontSize="24"  
+                        TextColor="White"
+                        VerticalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+  
         </StackLayout>
     </Grid>
 </ContentPage>
