@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icon="clr-namespace:ModelTrain"
+             x:Class="ModelTrain.Screens.HomeScreen"
+             Title="">
+    
+    <ScrollView>
+    <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25"
+            VerticalOptions="Center">
+
+        <!-- Centered Title -->
+        <Label Text="Model Train Track Designer"
+               FontSize="44"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"
+               HorizontalOptions="Center"
+               TextColor="Black"
+               />
+
+        <!-- Create Button -->
+            <Button
+                x:Name="CreateNewBtn"
+                Text="Create New"
+                WidthRequest="320"
+                HeightRequest="50"
+	/>
+
+        <!-- Edit Button -->
+            <Button
+                x:Name="EditPrvBtn"
+                Text="Edit Previous"
+                WidthRequest="320"
+                HeightRequest="50"
+				/>
+        
+        <!-- Collaborate Button -->
+            <Button
+                x:Name="CollabBtn"
+                Text="Collaborate"
+                WidthRequest="320"
+                HeightRequest="50"
+/>
+
+            <Image
+                Source="logo.png"
+                WidthRequest="400"
+                Margin="0,50,0,0"
+                SemanticProperties.Description="Track builder logo" />
+    </VerticalStackLayout>
+    </ScrollView>
+
+
+</ContentPage>

@@ -11,8 +11,9 @@
             VerticalOptions="Center">
 
             <!-- Centered Title -->
-            <Label Text="Model Train Track Designer"
+            <Label Text="Tac-A-Track"
                FontSize="44"
+                   FontAttributes="Italic"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center"
                HorizontalOptions="Center"
@@ -57,7 +58,8 @@
             <Button
                 x:Name="LoginBtn"
                 Text="Login"
-                WidthRequest="320"
+                FontSize="18"
+                WidthRequest="250"
                 HeightRequest="50"
 				/>
 
