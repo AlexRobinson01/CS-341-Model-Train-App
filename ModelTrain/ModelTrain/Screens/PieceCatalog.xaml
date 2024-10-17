@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModelTrain.Screens.PieceCatalog"
+             Title="PieceCatalog">
+
+    <!-- Vertical alignment - misc, catalog, selected rows -->
+    <Grid
+        RowDefinitions="*,5*,2*"
+        ColumnDefinitions="*">
+        
+        <!-- Misc buttons -->
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
+            RowDefinitions="*"
+            ColumnDefinitions="3*,2*,2*,*">
+            
+            <!-- Edit piece button -->
+            <Button
+                x:Name="Edit"
+                Grid.Row="0"
+                Grid.Column="1"
+                Padding="0"
+                Text="Edit Piece"
+                Style="{x:StaticResource GoogleFont}"
+                FontSize="16"
+                CornerRadius="0">
+                
+            </Button>
+            
+            <!-- Back button -->
+            <Button
+                x:Name="Back"
+                Grid.Row="0"
+                Grid.Column="3"
+                Padding="0"
+                Text="Back"
+                Style="{x:StaticResource GoogleFont}"
+                FontSize="16"
+                CornerRadius="0">
+                
+            </Button>
+        </Grid>
+        
+        <!-- Piece catalog -->
+        <!-- TODO: try to make draggable in later iteration -->
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            RowDefinitions="*"
+            ColumnDefinitions="*,4*,6*,10*,6*,4*,*">
+            
+            <!-- Left navigation button -->
+            <Button
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="&lt;"
+                FontSize="16"
+                BackgroundColor="Gray"
+                Padding="0"
+                Margin="0"
+                HeightRequest="40"
+                CornerRadius="0">
+
+            </Button>
+            
+            <!-- Second left piece -->
+            <Button
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="Piece LL"
+                FontSize="16"
+                Padding="0"
+                Margin="20"
+                HeightRequest="60">
+                
+            </Button>
+            
+            <!-- First left piece -->
+            <Button
+                Grid.Row="0"
+                Grid.Column="2"
+                Text="Piece L"
+                FontSize="16"
+                Padding="0"
+                Margin="20"
+                HeightRequest="100">
+                
+            </Button>
+            
+            <!-- Center (current) piece -->
+            <Button
+                Grid.Row="0"
+                Grid.Column="3"
+                Text="Piece C"
+                FontSize="16"
+                Padding="0"
+                Margin="20"
+                HeightRequest="200">
+                
+            </Button>
+            
+            <!-- First right piece -->
+            <Button
+                Grid.Row="0"
+                Grid.Column="4"
+                Text="Piece R"
+                FontSize="16"
+                Padding="0"
+                Margin="20"
+                HeightRequest="100">
+                
+            </Button>
+            
+            <!-- Second right piece -->
+            <Button
+                Grid.Row="0"
+                Grid.Column="5"
+                Text="Piece RR"
+                FontSize="16"
+                Padding="0"
+                Margin="20"
+                HeightRequest="60">
+                
+            </Button>
+            
+            <!-- Right navigation button -->
+            <Button
+                Grid.Row="0"
+                Grid.Column="6"
+                Text="&gt;"
+                FontSize="16"
+                Padding="0"
+                Margin="0"
+                HeightRequest="40"
+                CornerRadius="0"
+                BackgroundColor="Gray">
+                
+            </Button>
+        </Grid>
+        
+        <!-- Horizontal scrollable list of selected pieces -->
+        <!-- Will be the same pieces as shown on the list to the right of the track editor -->
+        <Frame
+            Grid.Row="2"
+            Grid.Column="0"
+            BorderColor="Gray"
+            CornerRadius="0"
+            Padding="0"
+            Margin="0">
+            <ScrollView
+                Orientation="Horizontal"
+                Margin="0"
+                Padding="0">
+                
+                <!-- Selected pieces go here -->
+                <HorizontalStackLayout
+                    Spacing="20"
+                    Padding="10"
+                    Margin="0">
+                    <Button
+                        Padding="0"
+                        Text="Piece A"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece B"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece C"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece D"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece E"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece F"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece G"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece H"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece I"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece J"
+                        WidthRequest="80"
+                        HeightRequest="80">
+
+                    </Button>
+                </HorizontalStackLayout>
+            </ScrollView>
+        </Frame>
+    </Grid>
+</ContentPage>
