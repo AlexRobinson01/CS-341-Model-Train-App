@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModelTrain.Screens.PieceEditor"
+              
+             Title="PieceEditor">
+    
+    <!-- Vertical alignment - main and misc buttons rows -->
+    <Grid
+        RowDefinitions="3*,*"
+        ColumnDefinitions="*">
+        
+        <!-- Piece image and rotation buttons -->
+        <Frame
+            Grid.Row="0"
+            Grid.Column="0"
+            Padding="0"
+            BorderColor="Gray"
+            CornerRadius="0">
+            
+            <!-- Grid for alignment -->
+            <Grid
+                RowDefinitions="*"
+                ColumnDefinitions="2*,3*,2*">
+                <Grid
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    RowDefinitions="*"
+                    ColumnDefinitions="*,4*,*">
+                    
+                    <!-- Rotate counterclockwise button -->
+                    <Button
+                        x:Name="RotateCCW"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="0"
+                        Padding="0"
+                        Text="CCW"
+                        Style="{x:StaticResource GoogleFont}"
+                        FontSize="16"
+                        HeightRequest="60">
+                        
+                    </Button>
+                    
+                    <!-- Piece image label -->
+                    <!-- TODO: make draggable and zoomable in later iteration -->
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="10"
+                        Padding="0"
+                        FontSize="16"
+                        HorizontalTextAlignment="Center"
+                        VerticalTextAlignment="Center"
+                        BackgroundColor="DarkCyan"
+                        TextColor="White">
+                        Piece Image; Can pan/zoom
+                    </Label>
+                    
+                    <!-- Rotate clockwise button -->
+                    <Button
+                        x:Name="RotateCW"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Margin="0"
+                        Padding="0"
+                        Text="CW"
+                        Style="{x:StaticResource GoogleFont}"
+                        FontSize="16"
+                        HeightRequest="60">
+
+                    </Button>
+                </Grid>
+            </Grid>
+        </Frame>
+        
+        <!-- Horizontal alignment - misc buttons -->
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            RowDefinitions="*"
+            ColumnDefinitions="2*,3*,2*">
+            
+            <!-- Confirm button with frame as padding and border -->
+            <Frame
+                Grid.Row="0"
+                Grid.Column="0"
+                BorderColor="Gray"
+                CornerRadius="0">
+                <Button
+                    x:Name="Confirm"
+                    Padding="0"
+                    Text="CONFIRM"
+                    Style="{x:StaticResource GoogleFont}"
+                    FontSize="16">
+
+                </Button>
+            </Frame>
+            
+            <!-- Change image button with frame as padding and border -->
+            <Frame
+                Grid.Row="0"
+                Grid.Column="1"
+                BorderColor="Gray"
+                CornerRadius="0">
+                <Button
+                    x:Name="ChangeImage"
+                    Padding="0"
+                    Style="{x:StaticResource GoogleFont}"
+                    Text="CHANGE IMAGE"
+                    FontSize="16">
+
+                </Button>
+            </Frame>
+            
+            <!-- Cancel button with frame as padding and border -->
+            <Frame
+                Grid.Row="0"
+                Grid.Column="2"
+                BorderColor="Gray"
+                CornerRadius="0">
+                <Button
+                    x:Name="Cancel"
+                    Padding="0"
+                    Text="CANCEL"
+                    Style="{x:StaticResource GoogleFont}"
+                    FontSize="16">
+
+                </Button>
+            </Frame>
+        </Grid>
+    </Grid>
+</ContentPage>

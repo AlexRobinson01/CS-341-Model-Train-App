@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModelTrain.Screens.PersonalProjects"
+             xmlns:icon="clr-namespace:ModelTrain"
+             Title="Personal Projects">
+
+    <Grid>
+        <!-- Define rows for the Grid -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <!-- Takes all available space -->
+            <RowDefinition Height="Auto"/>
+            <!-- Height for the buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- CollectionView -->
+        <ScrollView Grid.Row="0">
+            <CollectionView x:Name="collectionView" 
+                            ItemsSource="{Binding Items}" 
+                            HorizontalOptions="FillAndExpand">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="10,2,10,2" 
+                               Padding="5" 
+                               CornerRadius="20" 
+                               BorderColor="Gray" 
+                               HasShadow="True"
+                               HorizontalOptions="FillAndExpand" 
+                               VerticalOptions="Center">
+                            <Grid Padding="10" 
+                                  ColumnSpacing="5" 
+                                  RowSpacing="5" 
+                                  HorizontalOptions="FillAndExpand">
+
+                                <!-- Define 2 rows and 2 columns -->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Top-left corner -->
+                                <Label Text="{Binding ProjectName}"
+                                       Grid.Row="0" 
+                                       Grid.Column="0"
+                                       HorizontalOptions="Start" 
+                                       VerticalOptions="Start"/>
+
+                                <!-- Top-right corner (Icon) -->
+                                <Label Text="{x:Static icon:IconFont.Delete_outline}" 
+                                       Style="{x:StaticResource GoogleFont}"
+                                       Grid.Row="0" 
+                                       Grid.Column="1"
+                                       HorizontalOptions="End" 
+                                       VerticalOptions="Start" 
+                                       FontSize="20"  
+                                       TextColor="Red"/>
+
+                                <!-- Bottom-left corner -->
+                                <Label Text="{Binding DateCreated}"
+                                       Grid.Row="1" 
+                                       Grid.Column="0"
+                                       HorizontalOptions="Start" 
+                                       VerticalOptions="End"/>
+
+                                <!-- Bottom-right corner -->
+                                <Label Text="{Binding ProjectID}"
+                                       Grid.Row="1" 
+                                       Grid.Column="1"
+                                       HorizontalOptions="End" 
+                                       VerticalOptions="End"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
+        <!-- Buttons at the bottom -->
+        <StackLayout Grid.Row="1" 
+                     Orientation="Horizontal"
+                     HorizontalOptions="Center"
+                     VerticalOptions="End"
+                     Margin="0,0,0,30"
+                     Spacing="20">
+            <!-- Handle the click event -->
+            <Frame CornerRadius="10" BorderColor="Gray" Padding="10" BackgroundColor="{DynamicResource Primary}" HorizontalOptions="Center" WidthRequest="130"
+                   HeightRequest="60">
+                <StackLayout WidthRequest="100" Orientation="Horizontal" HorizontalOptions="Center">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnEditButtonClicked" />
+                    </StackLayout.GestureRecognizers>
+
+                    <Label Text="Edit" 
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           VerticalOptions="Center"
+                           FontSize="16"
+                           Margin="25,0,5,0"/>
+
+                    <Label Text="{x:Static icon:IconFont.Edit_document}" 
+                            Style="{x:StaticResource GoogleFont}"
+                            FontSize="24"  
+                            TextColor="White"
+                            VerticalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+            <!-- Handle the click event -->
+            <Frame CornerRadius="10" BorderColor="Gray" Padding="10" BackgroundColor="{DynamicResource Primary}" HorizontalOptions="Center" WidthRequest="130"
+                   HeightRequest="60">
+                <StackLayout WidthRequest="100" Orientation="Horizontal" HorizontalOptions="Center">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnConfigureButtonClicked" />
+                    </StackLayout.GestureRecognizers>
+
+                    <Label Text="Configure" 
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        FontSize="16"
+                        VerticalOptions="Center"
+                        Margin="0,0,5,0"/>
+
+                    <Label Text="{x:Static icon:IconFont.Settings}" 
+                        Style="{x:StaticResource GoogleFont}"
+                        FontSize="24"  
+                        TextColor="White"
+                        VerticalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+  
+        </StackLayout>
+    </Grid>
+</ContentPage>

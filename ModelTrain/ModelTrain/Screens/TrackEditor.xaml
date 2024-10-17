@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModelTrain.Screens.TrackEditor"
+             Title="Editor">
+    
+    <!-- Horizontal alignment - editor and piece selection columns -->
+    <Grid
+        RowDefinitions="*"
+        ColumnDefinitions="7*,*">
+        
+        <!-- Vertical alignment - editor and misc buttons rows -->
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
+            RowDefinitions="6*,*"
+            ColumnDefinitions="*">
+            
+            <!-- Main editor frame -->
+            <Frame
+                Grid.Row="0"
+                Grid.Column="0"
+                BorderColor="Gray"
+                BackgroundColor="LightGray"
+                CornerRadius="0">
+                <!-- Editor goes here -->
+                <Label
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                    Track Editor Window + Background
+                </Label>
+            </Frame>
+            
+            <!-- Back button -->
+            <!-- (Grid for alignment) -->
+            <Grid
+                Grid.Row="0"
+                Grid.Column="0"
+                RowDefinitions="*,15*"
+                ColumnDefinitions="*,15*">
+                <Button
+                    x:Name="Back"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Back"
+                    FontSize="12"
+                    Padding="0"
+                    Style="{x:StaticResource GoogleFont}"
+                    CornerRadius="0">
+
+                </Button>
+            </Grid>
+            
+            <!-- Misc buttons (save, background, undo, redo) -->
+            <Frame
+                Grid.Row="1"
+                Grid.Column="0"
+                BorderColor="Gray"
+                CornerRadius="0"
+                Margin="0"
+                Padding="0">
+                <Grid
+                    RowDefinitions="*"
+                    ColumnDefinitions="4*,6*,5*,5*">
+                    
+                    <!-- Save button -->
+                    <Button
+                        x:Name="Save"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Padding="0"
+                        Margin="6"
+                        FontSize="16"
+                        Style="{x:StaticResource GoogleFont}"
+                        Text="Save">
+
+                    </Button>
+                    
+                    <!-- Background button -->
+                    <Button
+                        x:Name="ChangeBackground"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Padding="0"
+                        Margin="6"
+                        FontSize="16"
+                        Style="{x:StaticResource GoogleFont}"
+                        Text="Change Background">
+
+                    </Button>
+                    
+                    <!-- Undo button -->
+                    <Button
+                        x:Name="Undo"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Padding="0"
+                        Margin="12"
+                        FontSize="16"
+                        Style="{x:StaticResource GoogleFont}"
+                        Text="UNDO">
+
+                    </Button>
+                    
+                    <!-- Redo button -->
+                    <Button
+                        x:Name="Redo"
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        Padding="0"
+                        Margin="12"
+                        FontSize="16"
+                        Text="REDO">
+
+                    </Button>
+                </Grid>
+            </Frame>
+        </Grid>
+        
+        <!-- Scrolling piece select list -->
+        <Frame
+            Grid.Row="0"
+            Grid.Column="1"
+            BorderColor="Gray"
+            CornerRadius="0"
+            Padding="0">
+            <ScrollView
+                Margin="0"
+                Padding="20">
+                
+                <!-- All pieces are in this layout -->
+                <VerticalStackLayout
+                    Spacing="20">
+                    <Button
+                        Padding="0"
+                        Text="Piece A"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece B"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece C"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece D"
+                        HeightRequest="80">
+
+                    </Button>
+                    <Button
+                        Padding="0"
+                        Text="Piece E"
+                        HeightRequest="80">
+
+                    </Button>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Frame>
+        
+        <!-- Piece catalog button, allows user to change which pieces they see -->
+        <!-- (Grid for alignment) -->
+        <Grid
+            Grid.Row="0"
+            Grid.Column="1"
+            RowDefinitions="*,11*"
+            ColumnDefinitions="*,5*">
+            <Button
+                x:Name="EditPieces"
+                Grid.Row="0"
+                Grid.Column="0"
+                Padding="0"
+                CornerRadius="0"
+                BackgroundColor="Gray"
+                FontSize="8"
+                Style="{x:StaticResource GoogleFont}"
+                Text="Edit">
+
+            </Button>
+        </Grid>
+    </Grid>
+</ContentPage>
