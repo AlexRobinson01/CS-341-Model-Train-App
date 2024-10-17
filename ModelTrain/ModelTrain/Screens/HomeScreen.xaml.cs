@@ -1,5 +1,10 @@
 namespace ModelTrain.Screens;
 
+/*
+ * This class is the background functionality/methods for the home page.
+ * Author: Krystal Schneider
+ * Date: October 16, 2024
+ */
 public partial class HomeScreen : ContentPage
 {
     public HomeScreen()
