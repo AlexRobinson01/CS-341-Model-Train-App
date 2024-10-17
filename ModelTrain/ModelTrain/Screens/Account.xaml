@@ -6,6 +6,21 @@
     <ContentPage.Content>
         <!-- Buttons for actions concerning user account -->
         <StackLayout Padding="20" Spacing="10">
+            <!-- Profile Circle with Initials -->
+            <Frame HeightRequest="120" WidthRequest="120" 
+               CornerRadius="60" 
+               HorizontalOptions="Center"
+               BackgroundColor="LightGray"
+               HasShadow="True"
+               Margin="0,0,0,15">
+                <Label Text="JD"
+                   FontSize="48"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   TextColor="White" />
+            </Frame>
+            <Label Text="John Doe" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"></Label>
+            <Label Text="johndoe@gmail.com" FontSize="16" HorizontalOptions="Center" Margin="0,0,0,20"></Label>
             <Button Text="Change Email"
                     HorizontalOptions="FillAndExpand"
                     BackgroundColor="White"

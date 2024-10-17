@@ -28,7 +28,22 @@
             TextColor="Black"
         />
 
-        <!-- Email Entry -->
+        <!-- First Name Entry -->
+        <Frame
+            BorderColor="Gray"
+            CornerRadius="5"
+            Padding="5"
+            Margin="10">    
+            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                <Label Text="{x:Static icon:IconFont.Person}" Style="{x:StaticResource GoogleFont}"></Label>
+                <Entry x:Name="FirstNameEntry" 
+                Placeholder="First Name" 
+                Keyboard="Text"
+                Margin="5,0,0,0"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- Last Name Entry -->
         <Frame
             BorderColor="Gray"
             CornerRadius="5"
@@ -36,12 +51,26 @@
             Margin="10">
             <StackLayout Orientation="Horizontal" VerticalOptions="Center">
                 <Label Text="{x:Static icon:IconFont.Person}" Style="{x:StaticResource GoogleFont}"></Label>
+                <Entry x:Name="LastNameEntry" 
+                Placeholder="Last Name" 
+                Keyboard="Text"
+                Margin="5,0,0,0"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- Email Entry -->
+        <Frame
+            BorderColor="Gray"
+            CornerRadius="5"
+            Padding="5"
+            Margin="10">
+            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                <Label Text="{x:Static icon:IconFont.Email}" Style="{x:StaticResource GoogleFont}"></Label>
                 <Entry x:Name="EmailEntry" 
                     Placeholder="Email" 
                     Keyboard="Text"
-                    Margin="5,0,0,0"/>  
+                    Margin="5,0,0,0"/>
             </StackLayout>
-
         </Frame>
 
         <!-- Password Entry -->
@@ -54,21 +83,6 @@
                 <Label Text="{x:Static icon:IconFont.Lock}" Style="{x:StaticResource GoogleFont}"></Label>
                 <Entry x:Name="PasswordEntry" 
                     Placeholder="Password" 
-                    IsPassword="True"
-                    Margin="5,0,0,0"/>
-            </StackLayout>
-        </Frame>
-
-        <!-- Password Entry -->
-        <Frame
-            BorderColor="Gray"
-            CornerRadius="5"
-            Padding="5"
-            Margin="10">    
-            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                <Label Text="{x:Static icon:IconFont.Lock_reset}" Style="{x:StaticResource GoogleFont}"></Label>
-                <Entry x:Name="ConfirmPasswordEntry" 
-                    Placeholder="Confirm Password" 
                     IsPassword="True"
                     Margin="5,0,0,0"/>
             </StackLayout>
