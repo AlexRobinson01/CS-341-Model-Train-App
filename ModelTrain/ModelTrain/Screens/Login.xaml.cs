@@ -14,6 +14,13 @@ public partial class Login : ContentPage
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)
     {
-        // Login logic
+        // Login
+        await Navigation.PushAsync(new HomeScreen()); ;
+    }
+
+    private async void OnCreateAccountClicked(object sender, EventArgs e)
+    {
+        // Navigate to the Create Account page
+        await Navigation.PushAsync(new CreateAccount());
     }
 }
