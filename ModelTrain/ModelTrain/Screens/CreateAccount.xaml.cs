@@ -11,4 +11,26 @@ public partial class CreateAccount : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private async void CreateAccountBtnClicked(object sender, EventArgs e)
+    {
+        // Create account logic
+
+
+        // Navigate to the Create Account page
+        bool accountCreated = true;
+
+        if (accountCreated)
+        {
+            await DisplayAlert("Success", "Account created successfully!", "OK");
+
+            // Pop the CreateAccountPage off the stack to return to LoginPage
+            await Navigation.PopAsync();
+        }
+        else
+        {
+            // Handle account creation failure
+            await DisplayAlert("Error", "Failed to create account. Please try again.", "OK");
+        }
+    }
 }

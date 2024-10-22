@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:icon="clr-namespace:ModelTrain"
+             xmlns:icon="clr-namespace:ModelTrain.Model"
              x:Class="ModelTrain.Screens.Login"
              Title="">
     <ScrollView>
@@ -61,14 +61,21 @@
                 FontSize="18"
                 WidthRequest="250"
                 HeightRequest="50"
+                Clicked="OnLoginButtonClicked"
 				/>
 
-            <!-- Create Account Link -->
-            <Label Text="Create an account"
+            <!-- Create Account Button -->
+            <Button
+                x:Name="CreateAccBtn"
+                Text="Create an account"
                 FontSize="14"
-                HorizontalTextAlignment="Center"
-                VerticalTextAlignment="Center"
-                TextColor="Blue"/>
+                WidthRequest="150"
+                HeightRequest="50"
+                TextColor="Blue"
+                BorderColor="Transparent"
+                BackgroundColor="Transparent"
+                Clicked="OnCreateAccountClicked"
+	            />
 
             <Image
                 Source="logo.png"

@@ -1,4 +1,5 @@
 namespace ModelTrain.Screens;
+using ModelTrain.Model;
 
 /**
  * This page should be viewed in Landscape for the best experience.
