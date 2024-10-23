@@ -6,3 +6,9 @@ Proposal:
 - This app would be most useful for model train hobbyists, as it lets them bring their track ideas to life, without spending so much time assembling and disassembling physical tracks if a design doesn’t work! It’s cool to be able to lay out your designs and know they’ll work without needing to assemble everything by hand first, and it’s essential for saving time on these projects!
 
 We plan to communicate via Discord, and meet in-person after each class (Tuesday and Thursday, around 4:30 until whenever the meeting concludes).
+
+Sprint 2 Changes
+- Added database connectivity to populate account screens profile circle, name, and email from database :)
+- Added business logic and database layers to run database methods through
+- Added more file organization with a model folder
+- Added navigation between all screens :)
