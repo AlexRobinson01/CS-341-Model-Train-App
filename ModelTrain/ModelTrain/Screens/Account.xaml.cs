@@ -1,3 +1,5 @@
+using System.Xml;
+using ModelTrain.Model;
 namespace ModelTrain.Screens;
 /*
  * This class is the background functionality/methods the Account page
@@ -6,8 +8,26 @@ namespace ModelTrain.Screens;
  */
 public partial class Account : ContentPage
 {
+    private IBusinessLogic BusinessLogic { get; set; }
     public Account()
     {
+        BusinessLogic = new BusinessLogic();
         InitializeComponent();
+        LoadUserData();
+    }
+
+    private async void LoadUserData()
+    {
+        // Replace with the actual logic to get the logged-in user's email
+        string userEmail = "johndoe@email.com";
+
+        User user = BusinessLogic.GetUserFromEmail(userEmail);
+
+        if (user != null)
+        {
+            nameLabel.Text = user.FullName;
+            emailLabel.Text = user.Email;
+            initialsLabel.Text = user.Initials; // Set the initials in the profile circle
+        }
     }
 }

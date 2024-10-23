@@ -7,4 +7,18 @@ public class BusinessLogic : IBusinessLogic
         {
             Database = new Database(); 
         }
+
+    // Get user with email
+    public User GetUserFromEmail(String email)
+    {
+        User userToGet = Database.GetUser(email);                                
+        if (userToGet != null)                                                                                  
+        {
+            return userToGet;                                                             
+        }
+        else
+        {
+            return null; // Throw exception
+        }
     }
+}

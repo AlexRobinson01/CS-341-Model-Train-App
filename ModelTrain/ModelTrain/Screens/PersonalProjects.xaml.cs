@@ -22,11 +22,13 @@ public partial class PersonalProjects : ContentPage
 
     private async void OnEditButtonClicked(object sender, EventArgs e)
     {
-        // Login logic
+        // Navigate to the Track Editor page
+        await Navigation.PushAsync(new TrackEditor());
     }
 
     private async void OnConfigureButtonClicked(object sender, EventArgs e)
     {
-        // Login logic
+        // Navigate to the Properties page
+        await Navigation.PushAsync(new PropertiesScreen());
     }
 }
