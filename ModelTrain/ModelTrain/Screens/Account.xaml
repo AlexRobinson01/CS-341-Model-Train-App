@@ -13,14 +13,15 @@
                BackgroundColor="LightGray"
                HasShadow="True"
                Margin="0,0,0,15">
-                <Label Text="JD"
+                <Label 
+                   x:Name="initialsLabel"
                    FontSize="48"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"
                    TextColor="White" />
             </Frame>
-            <Label Text="John Doe" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"></Label>
-            <Label Text="johndoe@gmail.com" FontSize="16" HorizontalOptions="Center" Margin="0,0,0,20"></Label>
+            <Label x:Name="nameLabel" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"></Label>
+            <Label x:Name="emailLabel" FontSize="16" HorizontalOptions="Center" Margin="0,0,0,20"></Label>
             <Button Text="Change Email"
                     HorizontalOptions="FillAndExpand"
                     BackgroundColor="White"

@@ -8,6 +8,6 @@ namespace ModelTrain.Model
 {
     public interface IDatabase
     {
-
+        public User GetUser(string email);
     }
 }

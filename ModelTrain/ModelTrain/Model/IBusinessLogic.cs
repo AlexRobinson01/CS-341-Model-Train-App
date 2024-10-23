@@ -8,6 +8,6 @@ namespace ModelTrain.Model
 {
     public interface IBusinessLogic
     {
-
+        public User GetUserFromEmail(String email);
     }
 }
