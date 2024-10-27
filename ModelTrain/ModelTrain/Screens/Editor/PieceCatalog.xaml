@@ -25,7 +25,8 @@
                 Text="Edit Piece"
                 Style="{x:StaticResource GoogleFont}"
                 FontSize="16"
-                CornerRadius="0">
+                CornerRadius="0"
+                Clicked="OnEditButtonClicked">
                 
             </Button>
             
@@ -38,7 +39,8 @@
                 Text="Back"
                 Style="{x:StaticResource GoogleFont}"
                 FontSize="16"
-                CornerRadius="0">
+                CornerRadius="0"
+                Clicked="OnBackButtonClicked">
                 
             </Button>
         </Grid>

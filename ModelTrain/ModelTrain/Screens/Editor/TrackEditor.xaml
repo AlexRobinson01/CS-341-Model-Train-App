@@ -46,7 +46,8 @@
                     FontSize="12"
                     Padding="0"
                     Style="{x:StaticResource GoogleFont}"
-                    CornerRadius="0">
+                    CornerRadius="0"
+                    Clicked="OnBackButtonClicked">
 
                 </Button>
             </Grid>
@@ -72,7 +73,8 @@
                         Margin="6"
                         FontSize="16"
                         Style="{x:StaticResource GoogleFont}"
-                        Text="Save">
+                        Text="Save"
+                        Clicked="OnSaveButtonClicked">
 
                     </Button>
                     
@@ -85,7 +87,8 @@
                         Margin="6"
                         FontSize="16"
                         Style="{x:StaticResource GoogleFont}"
-                        Text="Change Background">
+                        Text="Change Background"
+                        Clicked="OnBackgroundButtonClicked">
 
                     </Button>
                     
@@ -98,7 +101,8 @@
                         Margin="12"
                         FontSize="16"
                         Style="{x:StaticResource GoogleFont}"
-                        Text="UNDO">
+                        Text="UNDO"
+                        Clicked="OnUndoButtonClicked">
 
                     </Button>
                     
@@ -110,7 +114,8 @@
                         Padding="0"
                         Margin="12"
                         FontSize="16"
-                        Text="REDO">
+                        Text="REDO"
+                        Clicked="OnRedoButtonClicked">
 
                     </Button>
                 </Grid>
@@ -181,7 +186,8 @@
                 BackgroundColor="Gray"
                 FontSize="8"
                 Style="{x:StaticResource GoogleFont}"
-                Text="Edit">
+                Text="Edit"
+                Clicked="OnPieceEditButtonClicked">
 
             </Button>
         </Grid>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ModelTrain.Model.Track;
 
 namespace ModelTrain
 {
@@ -11,5 +7,7 @@ namespace ModelTrain
         public string ProjectName { get; set; }
         public string DateCreated { get; set; }
         public string ProjectID { get; set; }
+
+        public TrackBase Track { get; private set; }
     }
 }

@@ -92,7 +92,8 @@
                     Padding="0"
                     Text="CONFIRM"
                     Style="{x:StaticResource GoogleFont}"
-                    FontSize="16">
+                    FontSize="16"
+                    Clicked="OnConfirmButtonClicked">
 
                 </Button>
             </Frame>
@@ -124,7 +125,8 @@
                     Padding="0"
                     Text="CANCEL"
                     Style="{x:StaticResource GoogleFont}"
-                    FontSize="16">
+                    FontSize="16"
+                    Clicked="OnCancelButtonClicked">
 
                 </Button>
             </Frame>

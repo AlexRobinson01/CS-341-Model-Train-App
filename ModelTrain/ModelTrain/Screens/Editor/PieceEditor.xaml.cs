@@ -22,4 +22,16 @@ public partial class PieceEditor : ContentPage
 		ChangeImage.Text = IconFont.Image + " CHANGE IMAGE";
 		Cancel.Text = IconFont.Cancel + " CANCEL";
     }
+
+	private async void OnConfirmButtonClicked(object sender, EventArgs e)
+	{
+		// Should have gotten here from PieceCatalog, pop to avoid memory leak
+		await Navigation.PopAsync();
+	}
+
+	private async void OnCancelButtonClicked(object sender, EventArgs e)
+	{
+		// Should have gotten here from PieceCatalog, pop to avoid memory leak
+		await Navigation.PopAsync();
+	}
 }

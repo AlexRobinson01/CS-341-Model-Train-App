@@ -1,4 +1,5 @@
 namespace ModelTrain.Screens;
+
 using ModelTrain.Model;
 
 /**
@@ -17,5 +18,17 @@ public partial class PieceCatalog : ContentPage
 
 		Edit.Text = IconFont.Settings + " EDIT PIECE";
 		Back.Text = IconFont.Arrow_back + " BACK";
+	}
+
+	private async void OnEditButtonClicked(object sender, EventArgs e)
+	{
+		// Opens Piece Editor
+		await Navigation.PushAsync(new PieceEditor());
+	}
+
+	private async void OnBackButtonClicked(object sender, EventArgs e)
+	{
+		// Should have gotten here from TrackEditor, pop to avoid memory leak
+		await Navigation.PopAsync();
 	}
 }
