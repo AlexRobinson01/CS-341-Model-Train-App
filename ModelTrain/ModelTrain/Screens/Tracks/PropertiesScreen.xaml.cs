@@ -1,5 +1,5 @@
+using System.Xml;
 using ModelTrain.Model;
-using ModelTrain.Model.Track;
 namespace ModelTrain.Screens;
 
 /*
@@ -9,23 +9,21 @@ namespace ModelTrain.Screens;
  */
 public partial class PropertiesScreen : ContentPage
 {
-    private readonly IBusinessLogic businessLogic;
 
-    private readonly PersonalProject loadedProject;
-    private readonly ActionHandler actionHandler;
-
-    public PropertiesScreen(PersonalProject project)
+    public PropertiesScreen()
     {
         InitializeComponent();
 
-        businessLogic = new BusinessLogic();
+        //Creating temporary dummy data. Will pull from real project when finished
+        PersonalProject DummyVariable = new PersonalProject { ProjectName = "Project 1", LastEditor = "John Doe", DateModified = "1/1/1999", Size = "24kb" };
 
-        loadedProject = project;
-        actionHandler = new(project.Track);
+        sizeLabel.Text = DummyVariable.Size;
+        lastEditedLabel.Text = DummyVariable.LastEditor;
+        lastEditedByLabel.Text = DummyVariable.DateModified;
     }
 
     private async void OnShareButtonClicked(object sender, EventArgs e)
     {
-        // Login logic
+        // TODO: Add sharing features
     }
 }

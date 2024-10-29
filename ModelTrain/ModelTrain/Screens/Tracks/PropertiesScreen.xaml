@@ -3,16 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:icon="clr-namespace:ModelTrain.Model"
              x:Class="ModelTrain.Screens.PropertiesScreen"
-             Title="">
-    
-    <ScrollView>
-    <VerticalStackLayout
+             Title="PropertiesScreen">
+
+    <ContentPage.Content>
+        <VerticalStackLayout
             Padding="30,0"
             Spacing="25"
             VerticalOptions="Center">
 
         <!-- Centered Title -->
-        <Label Text="Properties of [projectName]"
+            <Label Text="Properties of Project"
                FontSize="32"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center"
@@ -61,8 +61,8 @@
             <Label x:Name="sizeLabel"></Label>
             <Label x:Name="lastEditedLabel"></Label>
             <Label x:Name="lastEditedByLabel"></Label>
-    </VerticalStackLayout>
-    </ScrollView>
+        </VerticalStackLayout>
+    </ContentPage.Content>
 
 
 </ContentPage>
