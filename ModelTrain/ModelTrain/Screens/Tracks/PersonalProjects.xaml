@@ -109,7 +109,8 @@
                             VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
-            <!-- Handle the click event -->
+            
+            <!-- Handle the click event 
             <Frame CornerRadius="10" BorderColor="Gray" Padding="10" BackgroundColor="{DynamicResource Primary}" HorizontalOptions="Center" WidthRequest="130"
                    HeightRequest="60">
                 <StackLayout WidthRequest="100" Orientation="Horizontal" HorizontalOptions="Center">
@@ -131,7 +132,7 @@
                         VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
-  
+            -->
         </StackLayout>
     </Grid>
 </ContentPage>

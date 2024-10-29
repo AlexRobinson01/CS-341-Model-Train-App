@@ -7,8 +7,8 @@ namespace ModelTrain
         {
             InitializeComponent();
 
-            //CHANGE new NavigationPage(new YOURSCREEN()) to view screen
-            MainPage = new NavigationPage(new Login());
+            //DO NOT CHANGE new NavigationPage(new YOURSCREEN()) to view screen
+            MainPage = new AppShell();
 
             //MainPage = new AppShell();
             //// Navigate to the login page when the app starts
