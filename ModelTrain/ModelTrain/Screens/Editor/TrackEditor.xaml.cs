@@ -15,23 +15,23 @@ public partial class TrackEditor : ContentPage
 
 	private readonly PersonalProject loadedProject;
 	private readonly ActionHandler actionHandler;
+	/*
+		public TrackEditor(PersonalProject project)
+		{
+			InitializeComponent();
 
-	public TrackEditor(PersonalProject project)
-	{
-		InitializeComponent();
+			Back.Text = IconFont.Arrow_back + " BACK";
+			EditPieces.Text = IconFont.Settings;
 
-		Back.Text = IconFont.Arrow_back + " BACK";
-		EditPieces.Text = IconFont.Settings;
+			Save.Text = IconFont.Save + " SETTINGS";
+			ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
 
-		Save.Text = IconFont.Save + " SETTINGS";
-		ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
+			businessLogic = new BusinessLogic();
 
-		businessLogic = new BusinessLogic();
-
-		loadedProject = project;
-		actionHandler = new(project.Track);
-	}
-
+			loadedProject = project;
+			actionHandler = new(project.Track);
+		}
+	*/
 	private async void OnPieceEditButtonClicked(object sender, EventArgs e)
 	{
 		// Opens Piece Catalog

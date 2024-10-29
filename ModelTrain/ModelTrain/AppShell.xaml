@@ -7,11 +7,30 @@
     xmlns:screens="clr-namespace:ModelTrain.Screens"
     Shell.FlyoutBehavior="Disabled"
     Title="ModelTrain">
+    <TabBar>
+        <!-- Home Tab -->
+        <Tab Title="Home"
+             Icon="home.png">
+            <ShellContent ContentTemplate="{DataTemplate screens:PersonalProjects}"/>
+        </Tab>
+
+        <!-- Tracks Tab -->
+        <Tab Title="New Track"
+             Icon="add.png">
+            <ShellContent ContentTemplate="{DataTemplate screens:NewTrack}"/>
+        </Tab>
+
+        <!-- Account Tab -->
+        <Tab Title="Account"
+             Icon="account.png">
+            <ShellContent ContentTemplate="{DataTemplate screens:Account}"/>
+        </Tab>
+    </TabBar>
 
     <!-- To switch screen change screens:YOURSCREENHERE-->
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate screens:Login}"  
-        Route="screen" />
+        ContentTemplate="{DataTemplate screens:Account}"
+        Route="screen"/>
 
 </Shell>
