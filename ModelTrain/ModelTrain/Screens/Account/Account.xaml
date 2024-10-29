@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ModelTrain.Screens.Account"
-             Title="Account">
+<ContentPage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="ModelTrain.Screens.Account"
+        Title="Account">
         <ContentPage.Content>
                 <!-- Buttons for actions concerning user account -->
-                <StackLayout Padding="20"
-                             Spacing="10">
+                <StackLayout
+                        Padding="20"
+                        Spacing="10">
                         <!-- Profile Circle with Initials -->
-                        <Frame HeightRequest="120"
-                               WidthRequest="120"
-                               CornerRadius="60"
-                               HorizontalOptions="Center"
-                               BackgroundColor="LightGray"
-                               HasShadow="True"
-                               Margin="0,0,0,15">
+                        <Frame
+                                HeightRequest="120"
+                                WidthRequest="120"
+                                CornerRadius="60"
+                                HorizontalOptions="Center"
+                                BackgroundColor="LightGray"
+                                HasShadow="True"
+                                Margin="0,0,0,15">
                                 <Label
                                         x:Name="initialsLabel"
                                         FontSize="48"
@@ -22,36 +25,43 @@
                                         VerticalTextAlignment="Center"
                                         TextColor="White"/>
                         </Frame>
-                        <Label x:Name="nameLabel"
-                               FontSize="18"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"></Label>
-                        <Label x:Name="emailLabel"
-                               FontSize="16"
-                               HorizontalOptions="Center"
-                               Margin="0,0,0,20"></Label>
-                        <Button Text="Change Email"
+                        <Label
+                                x:Name="nameLabel"
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                HorizontalOptions="Center"></Label>
+                        <Label
+                                x:Name="emailLabel"
+                                FontSize="16"
+                                HorizontalOptions="Center"
+                                Margin="0,0,0,20"></Label>
+                        <Button
+                                Text="Change Email"
                                 HorizontalOptions="FillAndExpand"
                                 BackgroundColor="White"
                                 BorderColor="Black"
                                 TextColor="Black"
                                 BorderWidth="1"/>
 
-                        <Button Text="Change Password"
+                        <Button
+                                Text="Change Password"
+                                HorizontalOptions="FillAndExpand"
+                                BackgroundColor="White"
+                                BorderColor="Black"
+                                TextColor="Black"
+                                BorderWidth="1"
+                                Clicked="OnChangePasswordButtonClicked"/>
+
+                        <Button
+                                Text="Download Tracks"
                                 HorizontalOptions="FillAndExpand"
                                 BackgroundColor="White"
                                 BorderColor="Black"
                                 TextColor="Black"
                                 BorderWidth="1"/>
 
-                        <Button Text="Download Tracks"
-                                HorizontalOptions="FillAndExpand"
-                                BackgroundColor="White"
-                                BorderColor="Black"
-                                TextColor="Black"
-                                BorderWidth="1"/>
-
-                        <Button Text="Delete Account"
+                        <Button
+                                Text="Delete Account"
                                 HorizontalOptions="FillAndExpand"
                                 BackgroundColor="White"
                                 BorderColor="Black"
