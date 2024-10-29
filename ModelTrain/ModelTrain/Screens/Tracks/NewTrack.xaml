@@ -2,26 +2,30 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModelTrain.Screens.NewTrack"
-             Title="NewTrack">
-	<ContentPage.Content>
-        <!-- Title for screen -->
-		<StackLayout Padding="20" Spacing="30" VerticalOptions="Center">
-			<Label Text="Make a New Track?"
-                   FontSize="Large"
-                   HorizontalOptions="Center" />
-            <!-- Two buttons to either make a personal or shared track -->
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
-				<Button Text="Shared"
-                        WidthRequest="100"
-                        HeightRequest="50"
-                        BackgroundColor="LightGray"
-                        CornerRadius="10" />
-				<Button Text="Private"
-                        WidthRequest="100"
-                        HeightRequest="50"
-                        BackgroundColor="LightGray"
-                        CornerRadius="10" />
-			</StackLayout>
-		</StackLayout>
-	</ContentPage.Content>
+             Title="New Track">
+      <ContentPage.Content>
+            <!-- Title for screen -->
+            <StackLayout Padding="20"
+                         Spacing="30"
+                         VerticalOptions="Center">
+                  <Label Text="Make a New Track?"
+                         FontSize="Large"
+                         HorizontalOptions="Center"/>
+                  <!-- Two buttons to either make a personal or shared track -->
+                  <StackLayout Orientation="Horizontal"
+                               HorizontalOptions="Center"
+                               Spacing="20">
+                        <Button Text="Shared"
+                                WidthRequest="100"
+                                HeightRequest="50"
+                                BackgroundColor="LightGray"
+                                CornerRadius="10"/>
+                        <Button Text="Private"
+                                WidthRequest="100"
+                                HeightRequest="50"
+                                BackgroundColor="LightGray"
+                                CornerRadius="10"/>
+                  </StackLayout>
+            </StackLayout>
+      </ContentPage.Content>
 </ContentPage>

@@ -18,9 +18,10 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Horizontal" Padding="10">
+                    <StackLayout Orientation="Horizontal"
+                                 Padding="10">
                         <!-- Static Image Placeholder -->
-                        <Frame WidthRequest= "100"
+                        <Frame WidthRequest="100"
                                HeightRequest="80"
                                BackgroundColor="LightGray"
                                BorderColor="Black"
@@ -29,14 +30,14 @@
                             <Label Text="img preview"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"
-                                   FontSize="Small" />
+                                   FontSize="Small"/>
                         </Frame>
 
                         <!-- Hardcoded Track Details Text -->
                         <Label Text="{Binding .}"
                                VerticalOptions="Center"
                                FontSize="Medium"
-                               Margin="10,0,0,0" />
+                               Margin="10,0,0,0"/>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
