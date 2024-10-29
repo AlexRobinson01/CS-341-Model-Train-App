@@ -16,7 +16,8 @@ public partial class TrackEditor : ContentPage
 	private readonly PersonalProject loadedProject;
 	private readonly ActionHandler actionHandler;
 
-	public TrackEditor(PersonalProject project)
+	// TODO: generalize project to allow both PersonalProject's and SharedProject's
+	public TrackEditor(PersonalProject? project = null)
 	{
 		InitializeComponent();
 
@@ -27,6 +28,7 @@ public partial class TrackEditor : ContentPage
 		ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
 
 		businessLogic = new BusinessLogic();
+		project ??= new();
 
 		loadedProject = project;
 		actionHandler = new(project.Track);
