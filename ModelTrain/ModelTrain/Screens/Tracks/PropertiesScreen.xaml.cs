@@ -1,3 +1,5 @@
+using ModelTrain.Model;
+using ModelTrain.Model.Track;
 namespace ModelTrain.Screens;
 
 /*
@@ -7,9 +9,19 @@ namespace ModelTrain.Screens;
  */
 public partial class PropertiesScreen : ContentPage
 {
-    public PropertiesScreen()
+    private readonly IBusinessLogic businessLogic;
+
+    private readonly PersonalProject loadedProject;
+    private readonly ActionHandler actionHandler;
+
+    public PropertiesScreen(PersonalProject project)
     {
         InitializeComponent();
+
+        businessLogic = new BusinessLogic();
+
+        loadedProject = project;
+        actionHandler = new(project.Track);
     }
 
     private async void OnShareButtonClicked(object sender, EventArgs e)

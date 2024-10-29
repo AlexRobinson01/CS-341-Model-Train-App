@@ -58,9 +58,9 @@
                 Margin="0,50,0,0"
                 SemanticProperties.Description="Track builder logo" />
 
-            <Label Text="Size of Project: Xmb"></Label>
-            <Label Text="Last Edited On: 1/1/1999"></Label>
-            <Label Text="Last Edited By: John Doe"></Label>
+            <Label x:Name="sizeLabel"></Label>
+            <Label x:Name="lastEditedLabel"></Label>
+            <Label x:Name="lastEditedByLabel"></Label>
     </VerticalStackLayout>
     </ScrollView>
 
