@@ -16,21 +16,21 @@
 
         <!-- CollectionView -->
         <ScrollView Grid.Row="0">
-            <CollectionView x:Name="collectionView" 
-                            ItemsSource="{Binding Items}" 
+            <CollectionView x:Name="collectionView"
+                            ItemsSource="{Binding Items}"
                             HorizontalOptions="FillAndExpand">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="10,2,10,2" 
-                               Padding="5" 
-                               CornerRadius="20" 
-                               BorderColor="Gray" 
+                        <Frame Margin="10,2,10,2"
+                               Padding="5"
+                               CornerRadius="20"
+                               BorderColor="Gray"
                                HasShadow="True"
-                               HorizontalOptions="FillAndExpand" 
+                               HorizontalOptions="FillAndExpand"
                                VerticalOptions="Center">
-                            <Grid Padding="10" 
-                                  ColumnSpacing="5" 
-                                  RowSpacing="5" 
+                            <Grid Padding="10"
+                                  ColumnSpacing="5"
+                                  RowSpacing="5"
                                   HorizontalOptions="FillAndExpand">
 
                                 <!-- Define 2 rows and 2 columns -->
@@ -45,33 +45,33 @@
 
                                 <!-- Top-left corner -->
                                 <Label Text="{Binding ProjectName}"
-                                       Grid.Row="0" 
+                                       Grid.Row="0"
                                        Grid.Column="0"
-                                       HorizontalOptions="Start" 
+                                       HorizontalOptions="Start"
                                        VerticalOptions="Start"/>
 
                                 <!-- Top-right corner (Icon) -->
-                                <Label Text="{x:Static icon:IconFont.Delete_outline}" 
+                                <Label Text="{x:Static icon:IconFont.Delete_outline}"
                                        Style="{x:StaticResource GoogleFont}"
-                                       Grid.Row="0" 
+                                       Grid.Row="0"
                                        Grid.Column="1"
-                                       HorizontalOptions="End" 
-                                       VerticalOptions="Start" 
-                                       FontSize="20"  
+                                       HorizontalOptions="End"
+                                       VerticalOptions="Start"
+                                       FontSize="20"
                                        TextColor="Red"/>
 
                                 <!-- Bottom-left corner -->
                                 <Label Text="{Binding DateCreated}"
-                                       Grid.Row="1" 
+                                       Grid.Row="1"
                                        Grid.Column="0"
-                                       HorizontalOptions="Start" 
+                                       HorizontalOptions="Start"
                                        VerticalOptions="End"/>
 
                                 <!-- Bottom-right corner -->
                                 <Label Text="{Binding ProjectID}"
-                                       Grid.Row="1" 
+                                       Grid.Row="1"
                                        Grid.Column="1"
-                                       HorizontalOptions="End" 
+                                       HorizontalOptions="End"
                                        VerticalOptions="End"/>
                             </Grid>
                         </Frame>
@@ -81,58 +81,72 @@
         </ScrollView>
 
         <!-- Buttons at the bottom -->
-        <StackLayout Grid.Row="1" 
+        <StackLayout Grid.Row="1"
                      Orientation="Horizontal"
                      HorizontalOptions="Center"
                      VerticalOptions="End"
                      Margin="0,0,0,30"
                      Spacing="20">
             <!-- Handle the click event -->
-            <Frame CornerRadius="10" BorderColor="Gray" Padding="10" BackgroundColor="{DynamicResource Primary}" HorizontalOptions="Center" WidthRequest="130"
+            <Frame CornerRadius="10"
+                   BorderColor="Gray"
+                   Padding="10"
+                   BackgroundColor="{DynamicResource Primary}"
+                   HorizontalOptions="Center"
+                   WidthRequest="130"
                    HeightRequest="60">
-                <StackLayout WidthRequest="100" Orientation="Horizontal" HorizontalOptions="Center">
+                <StackLayout WidthRequest="100"
+                             Orientation="Horizontal"
+                             HorizontalOptions="Center">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnEditButtonClicked" />
+                        <TapGestureRecognizer Tapped="OnEditButtonClicked"/>
                     </StackLayout.GestureRecognizers>
 
-                    <Label Text="Edit" 
+                    <Label Text="Edit"
                            FontAttributes="Bold"
                            TextColor="White"
                            VerticalOptions="Center"
                            FontSize="16"
                            Margin="25,0,5,0"/>
 
-                    <Label Text="{x:Static icon:IconFont.Edit_document}" 
-                            Style="{x:StaticResource GoogleFont}"
-                            FontSize="24"  
-                            TextColor="White"
-                            VerticalOptions="Center"/>
+                    <Label Text="{x:Static icon:IconFont.Edit_document}"
+                           Style="{x:StaticResource GoogleFont}"
+                           FontSize="24"
+                           TextColor="White"
+                           VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
-            
-            <!-- Handle the click event 
-            <Frame CornerRadius="10" BorderColor="Gray" Padding="10" BackgroundColor="{DynamicResource Primary}" HorizontalOptions="Center" WidthRequest="130"
+
+            <!-- Handle the click event -->
+            <Frame CornerRadius="10"
+                   BorderColor="Gray"
+                   Padding="10"
+                   BackgroundColor="{DynamicResource Primary}"
+                   HorizontalOptions="Center"
+                   WidthRequest="130"
                    HeightRequest="60">
-                <StackLayout WidthRequest="100" Orientation="Horizontal" HorizontalOptions="Center">
+                <StackLayout WidthRequest="100"
+                             Orientation="Horizontal"
+                             HorizontalOptions="Center">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnConfigureButtonClicked" />
+                        <TapGestureRecognizer Tapped="OnConfigureButtonClicked"/>
                     </StackLayout.GestureRecognizers>
 
-                    <Label Text="Configure" 
-                        FontAttributes="Bold"
-                        TextColor="White"
-                        FontSize="16"
-                        VerticalOptions="Center"
-                        Margin="0,0,5,0"/>
+                    <Label Text="Configure"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           FontSize="16"
+                           VerticalOptions="Center"
+                           Margin="0,0,5,0"/>
 
-                    <Label Text="{x:Static icon:IconFont.Settings}" 
-                        Style="{x:StaticResource GoogleFont}"
-                        FontSize="24"  
-                        TextColor="White"
-                        VerticalOptions="Center"/>
+                    <Label Text="{x:Static icon:IconFont.Settings}"
+                           Style="{x:StaticResource GoogleFont}"
+                           FontSize="24"
+                           TextColor="White"
+                           VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
-            -->
+
         </StackLayout>
     </Grid>
 </ContentPage>

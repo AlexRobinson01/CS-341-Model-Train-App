@@ -8,55 +8,9 @@
     Shell.FlyoutBehavior="Disabled"
     Title="ModelTrain">
 
-    <!-- TabBar for screens that need bottom navigation -->
-    <TabBar>
-        <!-- New Track Tab -->
-        <Tab Title="New Track"
-             Icon="add.png">
-            <ShellContent ContentTemplate="{DataTemplate screens:NewTrack}"/>
-        </Tab>
-        <!-- Home Tab -->
-        <Tab Title="Home"
-             Icon="home.png">
-            <ShellContent ContentTemplate="{DataTemplate screens:PersonalProjects}"/>
-        </Tab>
-        <!-- Account Tab -->
-        <Tab Title="Account"
-             Icon="account.png">
-            <ShellContent ContentTemplate="{DataTemplate screens:Account}"/>
-        </Tab>
-    </TabBar>
-
-    <!-- Screens without TabBar -->
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate screens:Login}"
-        Route="login"/>
-
-    <ShellContent
-        Title="Create Account"
-        ContentTemplate="{DataTemplate screens:CreateAccount}"
-        Route="createaccount"/>
-
-    <ShellContent
-        Title="Track Editor"
-        ContentTemplate="{DataTemplate screens:TrackEditor}"
-        Route="trackeditor"/>
-
-    <ShellContent
-        Title="Piece Catalog"
-        ContentTemplate="{DataTemplate screens:PieceCatalog}"
-        Route="piececatalog"/>
-
-    <ShellContent
-        Title="Properties"
-        ContentTemplate="{DataTemplate screens:PropertiesScreen}"
-        Route="propertiesscreen"/>
-
     <!-- To switch screen change screens:YOURSCREENHERE-->
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate screens:Login}"
-        Route="screen"/>
+        Title="Login"
+        ContentTemplate="{DataTemplate screens:Login}"/>
 
 </Shell>
