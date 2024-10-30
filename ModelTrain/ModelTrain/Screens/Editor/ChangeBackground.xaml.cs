@@ -1,3 +1,5 @@
+using ModelTrain.Services;
+
 namespace ModelTrain.Screens;
 
 /*
@@ -50,5 +52,17 @@ public partial class ChangeBackground : ContentPage
             await sourceStream.CopyToAsync(localFileStream);
         }
         await Navigation.PopAsync();
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        DeviceOrientation.SetLandscape();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        DeviceOrientation.SetPortrait();
     }
 }
