@@ -4,20 +4,29 @@ namespace ModelTrain.Model.Track
 {
     public class TrackBase
     {
-        public string ID { get; private set; }
-
+        // The list of segments this track holds
         private readonly List<Segment> segments;
 
-        public TrackBase(string id)
+        public TrackBase()
         {
             segments = new();
-            ID = id;
         }
 
         public string GetSegmentsAsString()
         {
+            // Return a Base64 representation of the data in the current segments
+
             try
             {
+                // Format:
+                // Byte:  Segment type
+                // Float: X position
+                // Float: Y position
+                // Short: Degrees of rotation
+                // Int32: Index of snapped start segment
+                // Int32: Index of snapped end segment
+
+                // TODO: better documentation
                 MemoryStream stream = new();
                 BinaryWriter writer = new(stream);
 
@@ -50,10 +59,21 @@ namespace ModelTrain.Model.Track
 
         public bool LoadSegmentsFromString(string segmentsStr)
         {
+            // Take in a Base64 representation of segment data and replace the current segments
+            // with that data
             segments.Clear();
             
             try
             {
+                // Format:
+                // Byte:  Segment type
+                // Float: X position
+                // Float: Y position
+                // Short: Degrees of rotation
+                // Int32: Index of snapped start segment
+                // Int32: Index of snapped end segment
+
+                // TODO: better documentation
                 byte[] bytes = Convert.FromBase64String(segmentsStr);
 
                 MemoryStream stream = new(bytes);

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModelTrain.Screens.ChangeBackground"
              xmlns:icon="clr-namespace:ModelTrain.Model"
-             Title="ChangeBackground">
+             Title="Change Background">
 
     <!-- Buttons For Cameral or Gallery -->
     <StackLayout Grid.Row="1" 

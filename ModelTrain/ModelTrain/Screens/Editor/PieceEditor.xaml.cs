@@ -3,12 +3,10 @@ using ModelTrain.Services;
 namespace ModelTrain.Screens;
 
 /**
- * This page should be viewed in Landscape for the best experience.
- * 
  * Description: Allows a user to change the image associated with their selected piece,
  * in case they don't like the appearane of the current piece(s).
  * Author: Alex Robinson
- * Date: 10/16/2024
+ * Date: 10/30/2024
  */
 public partial class PieceEditor : ContentPage
 {
@@ -39,12 +37,14 @@ public partial class PieceEditor : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
+		// Force Landscape mode when opening page
         DeviceOrientation.SetLandscape();
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+		// Revert to Portrait mode when closing page
         DeviceOrientation.SetPortrait();
     }
 }

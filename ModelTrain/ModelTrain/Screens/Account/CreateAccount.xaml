@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModelTrain.Screens.CreateAccount"
              xmlns:icon="clr-namespace:ModelTrain.Model"
-             Title="">
+             Title="Create Account">
     <VerticalStackLayout
     Padding="30,0"
     Spacing="25"

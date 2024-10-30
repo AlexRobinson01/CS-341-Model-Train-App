@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModelTrain.Screens.PieceEditor"
              NavigationPage.HasNavigationBar="False"
-             Title="PieceEditor">
+             Title="">
     
     <!-- Vertical alignment - main and misc buttons rows -->
     <Grid

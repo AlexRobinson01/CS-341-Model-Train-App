@@ -4,6 +4,10 @@ namespace ModelTrain.Model.Track
 {
     public class Segment
     {
+        // Represents a piece placed on the track, containing a position, rotation,
+        // and other pieces this one is snapped to, along with API for setting each
+
+        // TODO: documentation
         public SegmentType SegmentType { get; private set; }
 
         public float X { get; private set; }
