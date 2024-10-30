@@ -14,4 +14,12 @@ public partial class NewTrack : BasePage
     {
         await Navigation.PopAsync();
     }
+    private async void OnPrivateButtonClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TrackEditor());
+    }
+    private async void OnSharedButtonClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TrackEditor());
+    }
 }

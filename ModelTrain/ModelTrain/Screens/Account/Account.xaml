@@ -42,7 +42,6 @@
                                 BorderColor="Black"
                                 TextColor="Black"
                                 BorderWidth="1"/>
-
                         <Button
                                 Text="Change Password"
                                 HorizontalOptions="FillAndExpand"
@@ -51,7 +50,6 @@
                                 TextColor="Black"
                                 BorderWidth="1"
                                 Clicked="OnChangePasswordButtonClicked"/>
-
                         <Button
                                 Text="Download Tracks"
                                 HorizontalOptions="FillAndExpand"
@@ -59,14 +57,14 @@
                                 BorderColor="Black"
                                 TextColor="Black"
                                 BorderWidth="1"/>
-
                         <Button
-                                Text="Delete Account"
+                                Text="Log Out"
                                 HorizontalOptions="FillAndExpand"
                                 BackgroundColor="White"
                                 BorderColor="Black"
                                 TextColor="Black"
-                                BorderWidth="1"/>
+                                BorderWidth="1"
+                                Clicked="OnLogOutButtonClicked"/>
                 </StackLayout>
         </ContentPage.Content>
 </ContentPage>

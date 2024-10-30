@@ -17,8 +17,14 @@ public partial class Account : ContentPage
     }
     private async void OnChangePasswordButtonClicked(object sender, EventArgs e)
     {
-        // Navigation to New Track Screen
-        await Navigation.PushAsync(new NewTrack());
+        // Navigation to Change Password page
+        await Navigation.PushAsync(new ResetPassword());
+    }
+
+    private async void OnLogOutButtonClicked(object sender, EventArgs e)
+    {
+        // Navigation to Login page
+        await Navigation.PushAsync(new Login());
     }
     private async void LoadUserData()
     {
