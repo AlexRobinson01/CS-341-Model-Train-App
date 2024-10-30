@@ -10,5 +10,5 @@ We plan to communicate via Discord, and meet in-person after each class (Tuesday
 Sprint 2 Changes
 - Added database connectivity to populate account screens profile circle, name, and email from database :)
 - Added business logic and database layers to run database methods through
-- Added more file organization with a model folder
+- Added more file organization with a model folder and various categorical folders
 - Added navigation between all screens :)
