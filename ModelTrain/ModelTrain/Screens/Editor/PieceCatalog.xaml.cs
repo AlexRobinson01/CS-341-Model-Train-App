@@ -1,6 +1,7 @@
 namespace ModelTrain.Screens;
 
 using ModelTrain.Model;
+using ModelTrain.Services;
 
 /**
  * This page should be viewed in Landscape for the best experience.
@@ -30,5 +31,17 @@ public partial class PieceCatalog : ContentPage
 	{
 		// Should have gotten here from TrackEditor, pop to avoid memory leak
 		await Navigation.PopAsync();
-	}
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        DeviceOrientation.SetLandscape();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        DeviceOrientation.SetPortrait();
+    }
 }

@@ -1,5 +1,6 @@
 using ModelTrain.Model;
 using ModelTrain.Model.Track;
+using ModelTrain.Services;
 namespace ModelTrain.Screens;
 
 /**
@@ -15,23 +16,25 @@ public partial class TrackEditor : ContentPage
 
 	private readonly PersonalProject loadedProject;
 	private readonly ActionHandler actionHandler;
-	/*
-		public TrackEditor(PersonalProject project)
-		{
-			InitializeComponent();
 
-			Back.Text = IconFont.Arrow_back + " BACK";
-			EditPieces.Text = IconFont.Settings;
+	// TODO: generalize project to allow both PersonalProject's and SharedProject's
+	public TrackEditor(PersonalProject? project = null)
+	{
+		InitializeComponent();
 
-			Save.Text = IconFont.Save + " SETTINGS";
-			ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
+		Back.Text = IconFont.Arrow_back + " BACK";
+		EditPieces.Text = IconFont.Settings;
 
-			businessLogic = new BusinessLogic();
+		Save.Text = IconFont.Save + " SETTINGS";
+		ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
 
-			loadedProject = project;
-			actionHandler = new(project.Track);
-		}
-	*/
+		businessLogic = new BusinessLogic();
+		project ??= new();
+
+		loadedProject = project;
+		actionHandler = new(project.Track);
+	}
+	
 	private async void OnPieceEditButtonClicked(object sender, EventArgs e)
 	{
 		// Opens Piece Catalog
@@ -68,4 +71,16 @@ public partial class TrackEditor : ContentPage
 	{
 		actionHandler.Redo();
 	}
+
+    protected override void OnAppearing()
+    {
+		base.OnAppearing();
+		DeviceOrientation.SetLandscape();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+		DeviceOrientation.SetPortrait();
+    }
 }

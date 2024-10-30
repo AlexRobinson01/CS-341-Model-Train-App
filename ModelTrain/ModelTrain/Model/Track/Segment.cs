@@ -4,35 +4,35 @@ namespace ModelTrain.Model.Track
 {
     public class Segment
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public SegmentType SegmentType { get; private set; }
+
+        public float X { get; private set; }
+        public float Y { get; private set; }
 
         public int Rotation { get; private set; }
 
-        private Segment? snappedStartSegment;
-        private Segment? snappedEndSegment;
+        public Segment? SnappedStartSegment { get; private set; }
+        public Segment? SnappedEndSegment { get; private set; }
 
-        public readonly Vector2 Size = Vector2.One;
-        public readonly Vector2 StartSnapOffset = new(0, 0.5f);
-        public readonly Vector2 EndSnapOffset = new(0, -0.5f);
-        private readonly int endSnapRotationOffset = 0;
+        public readonly Vector2 Size;
+        public readonly Vector2 StartSnapOffset;
+        public readonly Vector2 EndSnapOffset;
+        public readonly int EndSnapRotationOffset;
 
-        public Segment(Vector2? size = null, Vector2? startSnapOffset = null, Vector2? endSnapOffset = null)
+        public Segment(SegmentType type)
         {
-            Size = size ?? Size;
-            StartSnapOffset = startSnapOffset ?? StartSnapOffset;
-            EndSnapOffset = endSnapOffset ?? EndSnapOffset;
+            SegmentType = type;
 
-            // TODO: do some trig to find the end rotation
+            SegmentMetrics.GetFromType(type, out Vector2 size, out Vector2 snapLengths, out Vector2 angles);
+
+            Size = size;
+            StartSnapOffset = new Vector2((float)Math.Cos(angles.X), (float)Math.Sin(angles.X)) * snapLengths.X;
+            EndSnapOffset = new Vector2((float)Math.Cos(angles.Y), (float)Math.Sin(angles.Y)) * snapLengths.Y;
+
+            EndSnapRotationOffset = (int)angles.Y;
         }
 
-        public static Segment FromType(SegmentType type)
-        {
-            (Vector2?, Vector2?, Vector2?) metrics = SegmentMetrics.GetFromType(type);
-            return new(metrics.Item1, metrics.Item2, metrics.Item3);
-        }
-
-        public void MoveTo(int x, int y)
+        public void MoveTo(float x, float y)
         {
             X = x;
             Y = y;
@@ -45,24 +45,24 @@ namespace ModelTrain.Model.Track
 
         public bool SnapToStart(Segment snap)
         {
-            snappedStartSegment ??= snap;
-            return snappedStartSegment == snap;
+            SnappedStartSegment ??= snap;
+            return SnappedStartSegment == snap;
         }
 
         public bool SnapToEnd(Segment snap)
         {
-            snappedEndSegment ??= snap;
-            return snappedEndSegment == snap;
+            SnappedEndSegment ??= snap;
+            return SnappedEndSegment == snap;
         }
 
         public void UnsnapStart()
         {
-            snappedStartSegment = null;
+            SnappedStartSegment = null;
         }
 
         public void UnsnapEnd()
         {
-            snappedEndSegment = null;
+            SnappedEndSegment = null;
         }
     }
 }
