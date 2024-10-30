@@ -21,19 +21,19 @@ public partial class TrackEditor : ContentPage
 	{
 		InitializeComponent();
 
-		Back.Text = IconFont.Arrow_back + " BACK";
-		EditPieces.Text = IconFont.Settings;
+			Back.Text = IconFont.Arrow_back + " BACK";
+			EditPieces.Text = IconFont.Settings;
 
-		Save.Text = IconFont.Save + " SETTINGS";
-		ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
+			Save.Text = IconFont.Save + " SETTINGS";
+			ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
 
 		businessLogic = new BusinessLogic();
 		project ??= new();
 
-		loadedProject = project;
-		actionHandler = new(project.Track);
-	}
-
+			loadedProject = project;
+			actionHandler = new(project.Track);
+		}
+	*/
 	private async void OnPieceEditButtonClicked(object sender, EventArgs e)
 	{
 		// Opens Piece Catalog

@@ -8,7 +8,7 @@ namespace ModelTrain.Screens;
  */
 public partial class ChangeBackground : ContentPage
 {
-	public ChangeBackground()
+    public ChangeBackground()
 	{
         InitializeComponent();
     }
@@ -16,10 +16,39 @@ public partial class ChangeBackground : ContentPage
     private async void OnCameraButtonClicked(object sender, EventArgs e)
     {
         //Logic
+        if (MediaPicker.Default.IsCaptureSupported)
+        {
+            FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
+
+            if (photo != null)
+            {
+                // save the file into local storage
+                string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+
+                using Stream sourceStream = await photo.OpenReadAsync();
+                using FileStream localFileStream = File.OpenWrite(localFilePath);
+
+                await sourceStream.CopyToAsync(localFileStream);
+            }
+        }
+        await Navigation.PopAsync();
     }
 
     private async void OnGalleryButtonClicked(object sender, EventArgs e)
     {
         //Logic
+        FileResult photo = await MediaPicker.Default.PickPhotoAsync();
+
+        if (photo != null)
+        {
+            // save the file into local storage
+            string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+
+            using Stream sourceStream = await photo.OpenReadAsync();
+            using FileStream localFileStream = File.OpenWrite(localFilePath);
+
+            await sourceStream.CopyToAsync(localFileStream);
+        }
+        await Navigation.PopAsync();
     }
 }

@@ -9,10 +9,6 @@ namespace ModelTrain
 
             //CHANGE new NavigationPage(new YOURSCREEN()) to view screen
             MainPage = new NavigationPage(new Login());
-
-            //MainPage = new AppShell();
-            //// Navigate to the login page when the app starts
-            //Shell.Current.GoToAsync("//screen");
         }
     }
 }

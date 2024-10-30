@@ -10,8 +10,7 @@
 
     <!-- To switch screen change screens:YOURSCREENHERE-->
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate screens:Login}"  
-        Route="screen" />
+        Title="Login"
+        ContentTemplate="{DataTemplate screens:Login}"/>
 
 </Shell>

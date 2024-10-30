@@ -15,7 +15,11 @@ public partial class Account : ContentPage
         InitializeComponent();
         LoadUserData();
     }
-
+    private async void OnChangePasswordButtonClicked(object sender, EventArgs e)
+    {
+        // Navigation to New Track Screen
+        await Navigation.PushAsync(new NewTrack());
+    }
     private async void LoadUserData()
     {
         // Replace with the actual logic to get the logged-in user's email

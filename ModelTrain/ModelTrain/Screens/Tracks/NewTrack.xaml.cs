@@ -4,10 +4,14 @@ namespace ModelTrain.Screens;
  * Author: Taylor Showalter
  * Date: October 16, 2024
  */
-public partial class NewTrack : ContentPage
+public partial class NewTrack : BasePage
 {
     public NewTrack()
     {
         InitializeComponent();
+    }
+    private async void OnHomeButtonClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new HomeScreen());
     }
 }
