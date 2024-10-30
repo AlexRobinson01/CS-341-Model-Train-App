@@ -12,6 +12,6 @@ public partial class NewTrack : BasePage
     }
     private async void OnHomeButtonClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new HomeScreen());
+        await Navigation.PopAsync();
     }
 }

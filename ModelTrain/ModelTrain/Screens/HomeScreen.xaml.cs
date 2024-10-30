@@ -10,6 +10,13 @@ public partial class HomeScreen : ContentPage
     public HomeScreen()
     {
         InitializeComponent();
+        ToolbarItems.Add(new ToolbarItem
+        {
+            IconImageSource = "account.png",
+            Order = ToolbarItemOrder.Primary,
+            Priority = 0,
+            Command = new Command(async () => await Navigation.PushAsync(new Account()))
+        });
     }
 
     private async void OnCreateNewButtonClicked(object sender, EventArgs e)
