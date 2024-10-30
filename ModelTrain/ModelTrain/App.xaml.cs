@@ -1,4 +1,5 @@
 ﻿using ModelTrain.Screens;
+using ModelTrain.Services;
 namespace ModelTrain
 {
     public partial class App : Application
@@ -9,6 +10,8 @@ namespace ModelTrain
 
             //CHANGE new NavigationPage(new YOURSCREEN()) to view screen
             MainPage = new NavigationPage(new Login());
+
+            DeviceOrientation.SetPortrait();
         }
     }
 }

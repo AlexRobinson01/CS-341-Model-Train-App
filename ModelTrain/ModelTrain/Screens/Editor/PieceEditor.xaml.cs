@@ -1,4 +1,5 @@
 using ModelTrain.Model;
+using ModelTrain.Services;
 namespace ModelTrain.Screens;
 
 /**
@@ -33,5 +34,17 @@ public partial class PieceEditor : ContentPage
 	{
 		// Should have gotten here from PieceCatalog, pop to avoid memory leak
 		await Navigation.PopAsync();
-	}
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        DeviceOrientation.SetLandscape();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        DeviceOrientation.SetPortrait();
+    }
 }
