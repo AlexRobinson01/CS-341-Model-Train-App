@@ -10,20 +10,30 @@ public partial class HomeScreen : ContentPage
     public HomeScreen()
     {
         InitializeComponent();
+        ToolbarItems.Add(new ToolbarItem
+        {
+            IconImageSource = "account.png",
+            Order = ToolbarItemOrder.Primary,
+            Priority = 0,
+            Command = new Command(async () => await Navigation.PushAsync(new Account()))
+        });
     }
 
     private async void OnCreateNewButtonClicked(object sender, EventArgs e)
     {
-        // Login logic
+        // Navigation to New Track Screen
+        await Navigation.PushAsync(new NewTrack());
     }
 
     private async void OnEditPreviousButtonClicked(object sender, EventArgs e)
     {
-        // Login logic
+        // Navigation to Personal Storage
+        await Navigation.PushAsync(new PersonalProjects());
     }
 
     private async void OnCollaborateButtonClicked(object sender, EventArgs e)
     {
-        // Login logic
+        // Navigation to Collaborative Storage
+        await Navigation.PushAsync(new CollaborativeStorage());
     }
 }
