@@ -34,5 +34,12 @@
             return true;
         }
 
+        public bool CreateAccount(String firstName, String lastName, String email, String password)
+        {
+            bool accountCreated = true;
+
+            return accountCreated;
+        }
+
     }
 }
