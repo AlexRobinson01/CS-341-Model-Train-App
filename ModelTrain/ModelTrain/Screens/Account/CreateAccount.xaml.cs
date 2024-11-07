@@ -18,10 +18,6 @@ public partial class CreateAccount : ContentPage
 
     private async void CreateAccountBtnClicked(object sender, EventArgs e)
     {
-        // Create account logic
-
-
-        // Navigate to the Create Account page
         bool accountCreated = false;
         bool emptyInputs = false;
         string firstName = FirstNameEntry.Text;
@@ -37,17 +33,19 @@ public partial class CreateAccount : ContentPage
             emptyInputs = true;
             await DisplayAlert("Error", "Failed to create account. " +
                 "All inputs must contain values. Please try again.", "OK");
-        }
-
-        if (!emptyInputs && BusinessLogic.CreateAccount(firstName, lastName, email, password))
-        {
-            await DisplayAlert("Success", "Account created successfully!", "OK");
-
-            // Pop the CreateAccountPage off the stack to return to LoginPage
-            await Navigation.PopAsync();
         } else
         {
-            await DisplayAlert("Error", "Failed to create account. Please try again.", "OK");
+            if (!emptyInputs && await BusinessLogic.CreateAccount(firstName, lastName, email, password))
+            {
+                await DisplayAlert("Success", "Account created successfully!", "OK");
+
+                // Pop the CreateAccountPage off the stack to return to LoginPage
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                await DisplayAlert("Error", "Failed to create account. Email already in use.", "OK");
+            }
         }
     }
 }

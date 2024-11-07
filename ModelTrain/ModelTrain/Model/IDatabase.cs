@@ -9,5 +9,7 @@ namespace ModelTrain.Model
     public interface IDatabase
     {
         public User GetUser(string email);
+        public Task<bool> IsNewEmail(string email);
+        public Task CreateAccount(string firstName, string lastName, string email, string password);
     }
 }

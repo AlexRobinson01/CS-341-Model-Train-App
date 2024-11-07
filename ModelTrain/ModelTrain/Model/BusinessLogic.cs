@@ -34,11 +34,16 @@
             return true;
         }
 
-        public bool CreateAccount(String firstName, String lastName, String email, String password)
+        public async Task<bool> CreateAccount(String firstName, String lastName, String email, String password)
         {
-            bool accountCreated = true;
-
-            return accountCreated;
+            bool uniqueEmail = await Database.IsNewEmail(email);
+            if (uniqueEmail)
+            {
+                await Database.CreateAccount(firstName, lastName, email, password);
+                return true;
+            }
+            return false;
+            
         }
 
     }
