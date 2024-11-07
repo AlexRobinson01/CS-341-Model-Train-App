@@ -24,8 +24,15 @@ public partial class Login : ContentPage
             await DisplayAlert("Error", "Must input values to login. Please try again.", "OK");
         } else
         {
-            BusinessLogic.ValidateLoginInput(email, password);
-            await Navigation.PushAsync(new HomeScreen());
+            if(await BusinessLogic.ValidateLoginInput(email, password))
+            {
+                //ADD LOGIN FUNCTIONALITY HERE
+                await Navigation.PushAsync(new HomeScreen());
+            } else
+            {
+                await DisplayAlert("Error", "Invalid email or password. Please try again.", "OK");
+            }
+            
         }
     }
 

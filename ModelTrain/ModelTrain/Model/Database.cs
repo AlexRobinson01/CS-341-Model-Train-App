@@ -123,5 +123,41 @@ namespace ModelTrain.Model
                 throw;
             }
         }
+
+        public async Task<bool> IsCorrectPassword(string email, string password)
+        {
+            // SQL query to get the stored password for the provided email
+            string query = "SELECT password FROM users WHERE email = @Email";
+
+            try
+            {
+                using (var connection = new NpgsqlConnection(connString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        // Add parameter
+                        command.Parameters.AddWithValue("@Email", email);
+
+                        // Execute query and retrieve the stored password
+                        var result = await command.ExecuteScalarAsync();
+                        if (result != null)
+                        {
+                            string storedPassword = (string)result;
+                            // Check if the stored password matches the provided password
+                            return storedPassword == password;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error: {ex.Message}");
+            }
+
+            // Return false if email not found or password doesn't match
+            return false;
+        }
     }
 }
