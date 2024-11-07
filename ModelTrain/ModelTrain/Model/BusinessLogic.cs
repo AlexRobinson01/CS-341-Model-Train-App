@@ -28,5 +28,11 @@
             // TODO: save project to database; allow for shared projects too
             return new Random().Next() % 2 == 0;
         }
+
+        public bool ValidateLoginInput(String email, String password)
+        {
+            return true;
+        }
+
     }
 }

@@ -1,3 +1,4 @@
+using ModelTrain.Model;
 namespace ModelTrain.Screens;
 
 /*
@@ -7,15 +8,25 @@ namespace ModelTrain.Screens;
  */
 public partial class Login : ContentPage
 {
-	public Login()
+    private IBusinessLogic BusinessLogic { get; set; }
+    public Login()
 	{
 		InitializeComponent();
-	}
+        BusinessLogic = new BusinessLogic();
+    }
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)
     {
-        // Login
-        await Navigation.PushAsync(new HomeScreen()); ;
+        string email = EmailEntry.Text;
+        string password = PasswordEntry.Text;
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            await DisplayAlert("Error", "Must input values to login. Please try again.", "OK");
+        } else
+        {
+            BusinessLogic.ValidateLoginInput(email, password);
+            await Navigation.PushAsync(new HomeScreen());
+        }
     }
 
     private async void OnCreateAccountClicked(object sender, EventArgs e)
