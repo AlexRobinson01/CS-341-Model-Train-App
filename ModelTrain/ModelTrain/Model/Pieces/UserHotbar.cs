@@ -12,7 +12,7 @@ namespace ModelTrain.Model.Pieces
         static UserHotbar()
         {
             localDatabase = new LocalDatabase();
-            Pieces = localDatabase.Pieces;
+            Pieces = localDatabase.Hotbar;
         }
         
         public static void MovePiece(int oldIndex, int newIndex)
