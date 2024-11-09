@@ -1,11 +1,9 @@
-using Microsoft.Maui.Platform;
 using ModelTrain.Model;
 using ModelTrain.Model.Pieces;
 using ModelTrain.Model.Track;
 using ModelTrain.Services;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
-using System.Numerics;
 namespace ModelTrain.Screens;
 
 /**
@@ -19,6 +17,8 @@ public partial class TrackEditor : ContentPage
 
 	private readonly PersonalProject loadedProject;
 	private readonly ActionHandler actionHandler;
+
+	private readonly List<TrackObject> objects = new();
 
 	// TODO: generalize project to allow both PersonalProjects and SharedProjects
 	public TrackEditor(PersonalProject? project = null)
@@ -43,6 +43,24 @@ public partial class TrackEditor : ContentPage
 		loadedProject = project;
 		// Contains a timeline of each edit made to a track to allow for undoing and redoing
 		actionHandler = new(project.Track);
+
+		project.Track.OnTrackReload += (s, e) => ReloadObjects();
+		ReloadObjects();
+	}
+
+	private void ReloadObjects()
+	{
+		objects.Clear();
+
+		foreach (Segment segment in loadedProject.Track.Segments)
+		{
+			TrackObject obj = new(segment)
+			{
+				ActionHandler = actionHandler
+			};
+			
+			objects.Add(obj);
+		}
 	}
 	
 	private async void OnPieceEditButtonClicked(object sender, EventArgs e)
@@ -96,7 +114,7 @@ public partial class TrackEditor : ContentPage
         DeviceOrientation.SetPortrait();
     }
 
-	private Segment? draggingSegment;
+	private TrackObject? draggingObject;
 
 	private void OnHotbarPiecePressed(object sender, EventArgs e)
 	{
@@ -128,7 +146,7 @@ public partial class TrackEditor : ContentPage
 
 				break;
 			case SKTouchAction.Moved:
-				if (draggingSegment == null)
+				if (draggingObject == null)
 					return;
 
 				// Move segment
@@ -137,7 +155,7 @@ public partial class TrackEditor : ContentPage
 			case SKTouchAction.Exited:
 			case SKTouchAction.Cancelled:
 			case SKTouchAction.Released:
-				if (draggingSegment == null)
+				if (draggingObject == null)
 					return;
 
                 if (IsWithinEditorFrame(x, y))

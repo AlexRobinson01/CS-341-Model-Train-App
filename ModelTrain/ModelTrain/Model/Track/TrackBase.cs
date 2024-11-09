@@ -5,12 +5,9 @@ namespace ModelTrain.Model.Track
     public class TrackBase
     {
         // The list of segments this track holds
-        private readonly List<Segment> segments;
-
-        public TrackBase()
-        {
-            segments = new();
-        }
+        public readonly List<Segment> Segments = new();
+        // An event that gets fired after calling LoadSegmentsFromString()
+        public event EventHandler OnTrackReload;
 
         public string GetSegmentsAsString()
         {
@@ -30,9 +27,9 @@ namespace ModelTrain.Model.Track
                 MemoryStream stream = new();
                 BinaryWriter writer = new(stream);
 
-                for (int i = 0; i < segments.Count; i++)
+                for (int i = 0; i < Segments.Count; i++)
                 {
-                    Segment segment = segments[i];
+                    Segment segment = Segments[i];
 
                     writer.Write((byte)segment.SegmentType);
 
@@ -40,8 +37,8 @@ namespace ModelTrain.Model.Track
                     writer.Write(segment.Y);
                     writer.Write((short)segment.Rotation);
 
-                    writer.Write(segment.SnappedStartSegment == null ? -1 : segments.IndexOf(segment.SnappedStartSegment));
-                    writer.Write(segment.SnappedEndSegment == null ? -1 : segments.IndexOf(segment.SnappedEndSegment));
+                    writer.Write(segment.SnappedStartSegment == null ? -1 : Segments.IndexOf(segment.SnappedStartSegment));
+                    writer.Write(segment.SnappedEndSegment == null ? -1 : Segments.IndexOf(segment.SnappedEndSegment));
                 }
 
                 byte[] bytes = stream.ToArray();
@@ -61,7 +58,7 @@ namespace ModelTrain.Model.Track
         {
             // Take in a Base64 representation of segment data and replace the current segments
             // with that data
-            segments.Clear();
+            Segments.Clear();
             
             try
             {
@@ -84,13 +81,16 @@ namespace ModelTrain.Model.Track
                 while (stream.Position + 1 < stream.Length)
                 {
                     SegmentType type = (SegmentType)reader.ReadByte();
-                    Segment segment = new(type);
+                    Segment segment = new(type)
+                    {
+                        X = reader.ReadSingle(),
+                        Y = reader.ReadSingle(),
 
-                    segment.MoveTo(reader.ReadSingle(), reader.ReadSingle());
-                    segment.Rotate(reader.ReadInt16());
+                        Rotation = reader.ReadInt16()
+                    };
 
                     set.Add((segment, new(reader.ReadInt32(), reader.ReadInt32())));
-                    segments.Add(segment);
+                    Segments.Add(segment);
                 }
 
                 for (int i = 0; i < set.Count; i++)
@@ -99,23 +99,35 @@ namespace ModelTrain.Model.Track
                     Vector2 snapped = set[i].Item2;
 
                     if (snapped.X >= 0)
-                        segment.SnapToStart(segments[(int)snapped.X]);
+                        segment.SnappedStartSegment = Segments[(int)snapped.X];
                     if (snapped.Y >= 0)
-                        segment.SnapToEnd(segments[(int)snapped.Y]);
+                        segment.SnappedEndSegment = Segments[(int)snapped.Y];
                 }
 
                 reader.Close();
                 stream.Close();
 
+                OnTrackReload.Invoke(this, new());
                 return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Failed to load segments from string:\n{e}");
-                segments.Clear();
+                Segments.Clear();
 
+                OnTrackReload.Invoke(this, new());
                 return false;
             }
+        }
+
+        public void AddSegment(Segment segment)
+        {
+            Segments.Add(segment);
+        }
+
+        public void RemoveSegment(Segment segment)
+        {
+            Segments.Remove(segment);
         }
     }
 }
