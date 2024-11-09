@@ -27,7 +27,7 @@ namespace ModelTrain.Model.Track
         {
             SegmentType = type;
 
-            SegmentMetrics.GetFromType(type, out Vector2 size, out Vector2 snapLengths, out Vector2 angles);
+            SegmentInfo.GetMetrics(type, out Vector2 size, out Vector2 snapLengths, out Vector2 angles);
 
             Size = size;
             StartSnapOffset = new Vector2((float)Math.Cos(angles.X), (float)Math.Sin(angles.X)) * snapLengths.X;
