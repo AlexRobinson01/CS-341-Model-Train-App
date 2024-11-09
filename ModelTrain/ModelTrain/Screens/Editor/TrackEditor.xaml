@@ -205,6 +205,11 @@
         <skia:SKCanvasView Grid.Row="0" Grid.Column="0"
                            EnableTouchEvents="True"
                            Touch="OnEditorWindowTouched"
-                           Background="Transparent"/>
+                           Background="Transparent">
+            <skia:SKCanvasView.GestureRecognizers>
+                <PinchGestureRecognizer
+                    PinchUpdated="OnEditorPinchUpdated"/>
+            </skia:SKCanvasView.GestureRecognizers>
+        </skia:SKCanvasView>
     </Grid>
 </ContentPage>

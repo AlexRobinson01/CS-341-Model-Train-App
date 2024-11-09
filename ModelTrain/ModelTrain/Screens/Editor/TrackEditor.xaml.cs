@@ -154,4 +154,9 @@ public partial class TrackEditor : ContentPage
 
 		e.Handled = true;
 	}
+
+	private void OnEditorPinchUpdated(object sender, PinchGestureUpdatedEventArgs e)
+	{
+		Console.WriteLine(e.Scale);
+	}
 }
