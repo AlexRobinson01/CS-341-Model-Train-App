@@ -1,6 +1,11 @@
+using Microsoft.Maui.Platform;
 using ModelTrain.Model;
+using ModelTrain.Model.Pieces;
 using ModelTrain.Model.Track;
 using ModelTrain.Services;
+using SkiaSharp;
+using SkiaSharp.Views.Maui;
+using System.Numerics;
 namespace ModelTrain.Screens;
 
 /**
@@ -19,13 +24,15 @@ public partial class TrackEditor : ContentPage
 	public TrackEditor(PersonalProject? project = null)
 	{
 		InitializeComponent();
-
+		
 		// Adding icons to text
 		Back.Text = IconFont.Arrow_back + " BACK";
 		EditPieces.Text = IconFont.Settings;
 
 		Save.Text = IconFont.Save + " SETTINGS";
 		ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
+		
+		HotbarCollection.ItemsSource = UserHotbar.Pieces;
 
 		// For use in saving
 		businessLogic = new BusinessLogic();
@@ -88,4 +95,63 @@ public partial class TrackEditor : ContentPage
         // Revert to Portrait mode when closing page
         DeviceOrientation.SetPortrait();
     }
+
+	private Segment? draggingSegment;
+
+	private void OnHotbarPiecePressed(object sender, EventArgs e)
+	{
+		if (sender is Button button)
+		{
+			// TODO: store which button was pressed to begin dragging
+			string name = button.StyleId;
+			button.BackgroundColor = Color.FromRgba(255, 0, 0, 255);
+        }
+	}
+
+	private bool IsWithinEditorFrame(double x, double y)
+	{
+		return x >= EditorFrame.X && x <= EditorFrame.X + EditorFrame.Width
+			&& y >= EditorFrame.Y && y <= EditorFrame.Y + EditorFrame.Height;
+	}
+
+	private void OnEditorWindowTouched(object sender, SKTouchEventArgs e)
+	{
+		SKPoint pos = e.Location;
+		double x = pos.X;
+		double y = pos.Y;
+
+		Console.WriteLine(e.ActionType);
+
+		switch (e.ActionType)
+		{
+			case SKTouchAction.Pressed:
+
+				break;
+			case SKTouchAction.Moved:
+				if (draggingSegment == null)
+					return;
+
+				// Move segment
+
+				break;
+			case SKTouchAction.Exited:
+			case SKTouchAction.Cancelled:
+			case SKTouchAction.Released:
+				if (draggingSegment == null)
+					return;
+
+                if (IsWithinEditorFrame(x, y))
+                {
+                    // Place segment
+                }
+                else
+                {
+                    // Remove segment
+                }
+
+                break;
+		}
+
+		e.Handled = true;
+	}
 }
