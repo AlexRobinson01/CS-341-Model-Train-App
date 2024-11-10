@@ -1,11 +1,10 @@
 ﻿using ModelTrain.Model.Pieces;
-using System.Collections.ObjectModel;
 
 namespace ModelTrain.Model
 {
     public interface ILocalDatabase
     {
-        public ObservableCollection<PieceBase> Hotbar { get; set; }
+        public PieceList Hotbar { get; set; }
         
         public bool SaveToFile();
         public bool LoadFromFile();

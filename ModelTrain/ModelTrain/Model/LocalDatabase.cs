@@ -11,16 +11,11 @@ namespace ModelTrain.Model
     {
         private readonly Dictionary<string, SettingBase> userSettings = new();
 
-        public ObservableCollection<PieceBase> Hotbar { get; set; }
+        public PieceList Hotbar { get; set; }
 
         public LocalDatabase()
         {
-            Hotbar = new();
-
-            foreach (SegmentType type in Enum.GetValues(typeof(SegmentType)))
-            {
-                Hotbar.Add(new(type));
-            }
+            Hotbar = PieceInfo.GetDefaultPieces();
 
             // TODO: load settings, properly fill hotbar
         }

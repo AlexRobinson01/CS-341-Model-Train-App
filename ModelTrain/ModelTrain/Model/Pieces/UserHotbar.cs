@@ -1,11 +1,10 @@
 ﻿using ModelTrain.Model.Track;
-using System.Collections.ObjectModel;
 
 namespace ModelTrain.Model.Pieces
 {
     public class UserHotbar
     {
-        public static ObservableCollection<PieceBase> Pieces { get; private set; }
+        public static PieceList Pieces { get; private set; }
 
         private static readonly ILocalDatabase localDatabase;
 

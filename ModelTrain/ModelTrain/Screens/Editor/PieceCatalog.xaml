@@ -64,10 +64,26 @@
                 Padding="0"
                 Margin="0"
                 HeightRequest="40"
-                CornerRadius="0">
+                CornerRadius="0"
+                Clicked="OnRotateLeftButtonClicked">
 
             </Button>
-            
+
+            <!-- Right navigation button -->
+            <Button
+                Grid.Row="0"
+                Grid.Column="6"
+                Text="&gt;"
+                FontSize="16"
+                Padding="0"
+                Margin="0"
+                HeightRequest="40"
+                CornerRadius="0"
+                BackgroundColor="Gray"
+                Clicked="OnRotateRightButtonClicked">
+
+            </Button>
+
             <!-- Second left piece -->
             <Button
                 Grid.Row="0"
@@ -125,20 +141,6 @@
                 Padding="0"
                 Margin="20"
                 HeightRequest="60">
-                
-            </Button>
-            
-            <!-- Right navigation button -->
-            <Button
-                Grid.Row="0"
-                Grid.Column="6"
-                Text="&gt;"
-                FontSize="16"
-                Padding="0"
-                Margin="0"
-                HeightRequest="40"
-                CornerRadius="0"
-                BackgroundColor="Gray">
                 
             </Button>
         </Grid>

@@ -1,6 +1,7 @@
 namespace ModelTrain.Screens;
 
 using ModelTrain.Model;
+using ModelTrain.Model.Pieces;
 using ModelTrain.Services;
 
 /**
@@ -11,6 +12,8 @@ using ModelTrain.Services;
  */
 public partial class PieceCatalog : ContentPage
 {
+	private readonly PieceList defaultPieces = PieceInfo.GetDefaultPieces();
+
 	public PieceCatalog()
 	{
 		InitializeComponent();
@@ -37,4 +40,14 @@ public partial class PieceCatalog : ContentPage
         // Force Landscape mode when opening page
         DeviceOrientation.SetLandscape();
     }
+
+	private void OnRotateLeftButtonClicked()
+	{
+		defaultPieces.RotateLeft();
+	}
+
+	private void OnRotateRightButtonClicked()
+	{
+		defaultPieces.RotateRight();
+	}
 }
