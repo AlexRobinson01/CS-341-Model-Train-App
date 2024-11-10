@@ -18,6 +18,7 @@
         <ScrollView Grid.Row="0">
             <CollectionView x:Name="collectionView"
                             ItemsSource="{Binding Items}"
+                            SelectionMode="None"
                             HorizontalOptions="FillAndExpand">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -28,6 +29,9 @@
                                HasShadow="True"
                                HorizontalOptions="FillAndExpand"
                                VerticalOptions="Center">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnProjectTapped" />
+                            </Frame.GestureRecognizers>
                             <Grid Padding="10"
                                   ColumnSpacing="5"
                                   RowSpacing="5"
