@@ -70,9 +70,12 @@ public partial class TrackEditor : ContentPage
 	}
 
 	private async void OnBackButtonClicked(object sender, EventArgs e)
-	{
-		// Will return to either My Tracks or Shared Tracks depending on how the user got here
-		await Navigation.PopAsync();
+    {
+        // Revert to Portrait mode when closing page
+        DeviceOrientation.SetPortrait();
+
+        // Will return to either My Tracks or Shared Tracks depending on how the user got here
+        await Navigation.PopAsync();
 	}
 
 	private async void OnBackgroundButtonClicked(object sender, EventArgs e)
@@ -111,13 +114,19 @@ public partial class TrackEditor : ContentPage
 
 	private void OnHotbarPiecePressed(object sender, EventArgs e)
 	{
-		if (sender is Button button)
-		{
-			// TODO: store which button was pressed to begin dragging
-			string name = button.StyleId;
-			button.BackgroundColor = Color.FromRgba(255, 0, 0, 255);
-        }
-	}
+		if (sender is not Button button)
+			return;
+		if (!Enum.TryParse(typeof(SegmentType), button.StyleId, out object? type))
+			return;
+		if (type is not SegmentType segmentType)
+			return;
+
+        PieceBase piece = new(segmentType);
+        TrackObject trackObject = new(loadedProject.Track, piece);
+
+        objects.Add(trackObject);
+        draggingObject = trackObject;
+    }
 
 	private bool IsWithinEditorFrame(double x, double y)
 	{
@@ -136,30 +145,38 @@ public partial class TrackEditor : ContentPage
 		switch (e.ActionType)
 		{
 			case SKTouchAction.Pressed:
+				TrackObject? minDistObject = null;
+				double minDist = double.MaxValue;
+
+				foreach (TrackObject trackObject in objects)
+				{
+					SKPoint objectPos = new(trackObject.BoundSegment.X, trackObject.BoundSegment.Y);
+					double distance = (objectPos - pos).Length;
+
+					if (distance < 50 && distance < minDist)
+					{
+						minDistObject = trackObject;
+						minDist = distance;
+					}
+				}
+
+				if (minDistObject != null)
+					draggingObject = minDistObject;
 
 				break;
 			case SKTouchAction.Moved:
-				if (draggingObject == null)
-					return;
-
-				// Move segment
-
+				draggingObject?.MoveTo((float)x, (float)y);
 				break;
 			case SKTouchAction.Exited:
 			case SKTouchAction.Cancelled:
 			case SKTouchAction.Released:
-				if (draggingObject == null)
-					return;
-
-                if (IsWithinEditorFrame(x, y))
-                {
-                    // Place segment
-                }
-                else
-                {
-                    // Remove segment
+				if (draggingObject != null && !IsWithinEditorFrame(x, y))
+				{
+                    draggingObject.RemoveFrom(loadedProject.Track);
+					objects.Remove(draggingObject);
                 }
 
+				draggingObject = null;
                 break;
 		}
 

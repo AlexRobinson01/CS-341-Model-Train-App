@@ -51,7 +51,7 @@ namespace ModelTrain.Model.Track
             });
         }
 
-        public void Remove(TrackBase track)
+        public void RemoveFrom(TrackBase track)
         {
             Run(() =>
             {
