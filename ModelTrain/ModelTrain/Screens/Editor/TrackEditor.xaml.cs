@@ -107,14 +107,7 @@ public partial class TrackEditor : ContentPage
         DeviceOrientation.SetLandscape();
     }
 
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-        // Revert to Portrait mode when closing page
-        DeviceOrientation.SetPortrait();
-    }
-
-	private TrackObject? draggingObject;
+    private TrackObject? draggingObject;
 
 	private void OnHotbarPiecePressed(object sender, EventArgs e)
 	{

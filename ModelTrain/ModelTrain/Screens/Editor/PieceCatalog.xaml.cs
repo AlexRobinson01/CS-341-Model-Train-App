@@ -37,11 +37,4 @@ public partial class PieceCatalog : ContentPage
         // Force Landscape mode when opening page
         DeviceOrientation.SetLandscape();
     }
-
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-        // Revert to Portrait mode when closing page
-        DeviceOrientation.SetPortrait();
-    }
 }
