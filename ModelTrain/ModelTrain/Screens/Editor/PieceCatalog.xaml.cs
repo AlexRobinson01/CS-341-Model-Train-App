@@ -41,12 +41,12 @@ public partial class PieceCatalog : ContentPage
         DeviceOrientation.SetLandscape();
     }
 
-	private void OnRotateLeftButtonClicked()
+	private void OnRotateLeftButtonClicked(object sender, EventArgs e)
 	{
 		defaultPieces.RotateLeft();
 	}
 
-	private void OnRotateRightButtonClicked()
+	private void OnRotateRightButtonClicked(object sender, EventArgs e)
 	{
 		defaultPieces.RotateRight();
 	}

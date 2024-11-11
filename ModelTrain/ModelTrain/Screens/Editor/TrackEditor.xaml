@@ -10,6 +10,7 @@
     <Grid
         RowDefinitions="*"
         ColumnDefinitions="*">
+        
         <!-- Horizontal alignment - editor and piece selection columns -->
         <Grid Grid.Row="0" Grid.Column="0"
             RowDefinitions="*"
@@ -29,12 +30,29 @@
                     BorderColor="Gray"
                     BackgroundColor="LightGray"
                     CornerRadius="0">
-                    <!-- Editor goes here -->
-                    <Label
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center">
-                        Track Editor Window + Background
-                    </Label>
+                    <Grid
+                        RowDefinitions="*"
+                        ColumnDefinitions="*">
+                        <!-- Editor goes here -->
+                        <Label Grid.Row="0" Grid.Column="0"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center">
+                            Track Editor Window + Background
+                        </Label>
+
+                        <!-- Captures touch events on the track space -->
+                        <skia:SKCanvasView Grid.Row="0" Grid.Column="0"
+                            x:Name="TouchHandler"
+                            EnableTouchEvents="True"
+                            Touch="OnEditorPanelTouched"
+                            Background="Transparent">
+                            <skia:SKCanvasView.GestureRecognizers>
+                                <PinchGestureRecognizer
+                                    PinchUpdated="OnEditorPinchUpdated"/>
+                            </skia:SKCanvasView.GestureRecognizers>
+                        </skia:SKCanvasView>
+                    </Grid>
+                    
                 </Frame>
 
                 <!-- Back button -->
@@ -160,7 +178,7 @@
                                         WidthRequest="60"
                                         Text="{Binding Name}"
                                         ClassId="{Binding Name}"
-                                        Pressed="OnHotbarPiecePressed">
+                                        Clicked="OnHotbarPieceClicked">
 
                                     </Button>
 
@@ -200,16 +218,5 @@
                 </Button>
             </Grid>
         </Grid>
-
-        <!-- Captures touch events on the entire window -->
-        <skia:SKCanvasView Grid.Row="0" Grid.Column="0"
-                           EnableTouchEvents="True"
-                           Touch="OnEditorWindowTouched"
-                           Background="Transparent">
-            <skia:SKCanvasView.GestureRecognizers>
-                <PinchGestureRecognizer
-                    PinchUpdated="OnEditorPinchUpdated"/>
-            </skia:SKCanvasView.GestureRecognizers>
-        </skia:SKCanvasView>
     </Grid>
 </ContentPage>

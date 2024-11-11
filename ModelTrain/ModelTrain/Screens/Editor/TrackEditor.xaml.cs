@@ -112,11 +112,11 @@ public partial class TrackEditor : ContentPage
 
     private TrackObject? draggingObject;
 
-	private void OnHotbarPiecePressed(object sender, EventArgs e)
+	private void OnHotbarPieceClicked(object sender, EventArgs e)
 	{
 		if (sender is not Button button)
 			return;
-		if (!Enum.TryParse(typeof(SegmentType), button.StyleId, out object? type))
+		if (!Enum.TryParse(typeof(SegmentType), button.ClassId, out object? type))
 			return;
 		if (type is not SegmentType segmentType)
 			return;
@@ -124,8 +124,11 @@ public partial class TrackEditor : ContentPage
         PieceBase piece = new(segmentType);
         TrackObject trackObject = new(loadedProject.Track, piece);
 
+		double x = EditorFrame.X + EditorFrame.Width / 2;
+		double y = EditorFrame.Y + EditorFrame.Height / 2;
+
+		trackObject.MoveTo(x, y);
         objects.Add(trackObject);
-        draggingObject = trackObject;
     }
 
 	private bool IsWithinEditorFrame(double x, double y)
@@ -134,7 +137,7 @@ public partial class TrackEditor : ContentPage
 			&& y >= EditorFrame.Y && y <= EditorFrame.Y + EditorFrame.Height;
 	}
 
-	private void OnEditorWindowTouched(object sender, SKTouchEventArgs e)
+	private void OnEditorPanelTouched(object sender, SKTouchEventArgs e)
 	{
 		SKPoint pos = e.Location;
 		double x = pos.X;
@@ -167,18 +170,20 @@ public partial class TrackEditor : ContentPage
 			case SKTouchAction.Moved:
 				draggingObject?.MoveTo((float)x, (float)y);
 				break;
-			case SKTouchAction.Exited:
-			case SKTouchAction.Cancelled:
 			case SKTouchAction.Released:
+				draggingObject = null;
+				break;
+            case SKTouchAction.Exited:
+            case SKTouchAction.Cancelled:
 				if (draggingObject != null && !IsWithinEditorFrame(x, y))
 				{
-                    draggingObject.RemoveFrom(loadedProject.Track);
+					draggingObject.RemoveFrom(loadedProject.Track);
 					objects.Remove(draggingObject);
-                }
+				}
 
 				draggingObject = null;
-                break;
-		}
+				break;
+        }
 
 		e.Handled = true;
 	}

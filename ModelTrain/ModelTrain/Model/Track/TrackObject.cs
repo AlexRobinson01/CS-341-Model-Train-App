@@ -43,6 +43,8 @@ namespace ModelTrain.Model.Track
             });
         }
 
+        public void MoveTo(double x, double y) => MoveTo((float)x, (float)y);
+
         public void Rotate(int rotation)
         {
             Run(() =>
