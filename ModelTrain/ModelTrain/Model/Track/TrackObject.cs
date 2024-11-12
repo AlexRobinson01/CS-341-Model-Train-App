@@ -10,8 +10,6 @@ namespace ModelTrain.Model.Track
         public PieceBase BoundPiece { get; private set; }
         public Segment BoundSegment { get; private set; }
 
-        public ActionHandler? ActionHandler { get; set; }
-
         public TrackObject(Segment linkedSegment)
         {
             BoundPiece = new(linkedSegment.SegmentType);
@@ -26,71 +24,42 @@ namespace ModelTrain.Model.Track
             track.AddSegment(BoundSegment);
         }
 
-        private void Run(Action action)
-        {
-            if (ActionHandler != null)
-                ActionHandler.Run(action);
-            else
-                action.Invoke();
-        }
-
         public void MoveTo(float x, float y)
         {
-            Run(() =>
-            {
-                BoundSegment.X = x;
-                BoundSegment.Y = y;
-            });
+            BoundSegment.X = x;
+            BoundSegment.Y = y;
         }
 
         public void MoveTo(double x, double y) => MoveTo((float)x, (float)y);
 
         public void Rotate(int rotation)
         {
-            Run(() =>
-            {
-                BoundSegment.Rotation = rotation;
-            });
+            BoundSegment.Rotation = rotation;
         }
 
         public void RemoveFrom(TrackBase track)
         {
-            Run(() =>
-            {
-                track.RemoveSegment(BoundSegment);
-            });
+            track.RemoveSegment(BoundSegment);
         }
 
         public void SnapToStart(Segment snap)
         {
-            Run(() =>
-            {
-                BoundSegment.SnappedStartSegment ??= snap;
-            });
+            BoundSegment.SnappedStartSegment ??= snap;
         }
 
         public void SnapToEnd(Segment snap)
         {
-            Run(() =>
-            {
-                BoundSegment.SnappedEndSegment ??= snap;
-            });
+            BoundSegment.SnappedEndSegment ??= snap;
         }
 
         public void UnsnapStart()
         {
-            Run(() =>
-            {
-                BoundSegment.SnappedStartSegment = null;
-            });
+            BoundSegment.SnappedStartSegment = null;
         }
 
         public void UnsnapEnd()
         {
-            Run(() =>
-            {
-                BoundSegment.SnappedEndSegment = null;
-            });
+            BoundSegment.SnappedEndSegment = null;
         }
     }
 }

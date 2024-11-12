@@ -29,7 +29,7 @@ public partial class TrackEditor : ContentPage
 		Back.Text = IconFont.Arrow_back + " BACK";
 		EditPieces.Text = IconFont.Settings;
 
-		Save.Text = IconFont.Save + " SETTINGS";
+		Save.Text = IconFont.Save + " SAVE";
 		ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
 		
 		HotbarCollection.ItemsSource = UserHotbar.Pieces;
@@ -53,14 +53,7 @@ public partial class TrackEditor : ContentPage
 		objects.Clear();
 
 		foreach (Segment segment in loadedProject.Track.Segments)
-		{
-			TrackObject obj = new(segment)
-			{
-				ActionHandler = actionHandler
-			};
-			
-			objects.Add(obj);
-		}
+			objects.Add(new(segment));
 	}
 	
 	private async void OnPieceEditButtonClicked(object sender, EventArgs e)
@@ -172,6 +165,7 @@ public partial class TrackEditor : ContentPage
 				break;
 			case SKTouchAction.Released:
 				draggingObject = null;
+				actionHandler.Run();
 				break;
             case SKTouchAction.Exited:
             case SKTouchAction.Cancelled:
@@ -182,6 +176,7 @@ public partial class TrackEditor : ContentPage
 				}
 
 				draggingObject = null;
+				actionHandler.Run();
 				break;
         }
 

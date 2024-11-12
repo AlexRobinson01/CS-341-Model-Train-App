@@ -15,7 +15,7 @@
             linkedTrack = track;
         }
 
-        public void Run(Action action)
+        public void Run()
         {
             // If any actions have been undone and not redone, clear them from the list
             // to remove them from the edit history
@@ -24,7 +24,6 @@
 
             // Save current track state and run the given action
             TakeSnapshot();
-            action.Invoke();
         }
 
         public void Undo()
