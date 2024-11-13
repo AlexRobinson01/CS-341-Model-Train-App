@@ -22,12 +22,12 @@ namespace ModelTrain.Model.Pieces
             image = type switch
             {
                 SegmentType.Straight => "piece_straight.png",
-                SegmentType.Curve15 => "piece_curve15.png",
-                SegmentType.Curve30 => "piece_curve30.png",
-                SegmentType.Curve45 => "piece_curve45.png",
-                SegmentType.Curve60 => "piece_curve60.png",
-                SegmentType.Curve75 => "piece_curve75.png",
-                SegmentType.Curve90 => "piece_curve90.png",
+                SegmentType.Curve15 => "piece_15curve.png",
+                SegmentType.Curve30 => "piece_30curve.png",
+                SegmentType.Curve45 => "piece_45curve.png",
+                SegmentType.Curve60 => "piece_60curve.png",
+                SegmentType.Curve75 => "piece_75curve.png",
+                SegmentType.Curve90 => "piece_90curve.png",
                 _ => ""
             };
         }
