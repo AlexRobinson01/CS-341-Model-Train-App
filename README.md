@@ -14,6 +14,7 @@ Sprint 3 Changes
 - Created the API for a local database for the user's settings and hotbar layout
 - Fixed some portrait/landscape and navigation bugs
 - Created some images for track pieces :)
+- Adjusted Collaborative Storage appearance and added home buttons to various screens
 
 Sprint 2 Changes
 - Added database connectivity to populate account screens profile circle, name, and email from database :)
