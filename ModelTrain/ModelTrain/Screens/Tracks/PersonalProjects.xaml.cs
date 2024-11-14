@@ -46,7 +46,7 @@ public partial class PersonalProjects : ContentPage
             _selectedFrame.BackgroundColor = Colors.LightGray;
         }
     }
-    
+
     private async void OnEditButtonClicked(object sender, EventArgs e)
     {
         // Navigate to the Track Editor page
@@ -64,6 +64,11 @@ public partial class PersonalProjects : ContentPage
     {
         // Navigate to the Properties page
         await Navigation.PushAsync(new PropertiesScreen());
+    }
+    private async void OnHomeButtonClicked(object sender, EventArgs e)
+    {
+        // Clear the navigation stack by setting a new NavigationPage with HomeScreen as the root
+        Application.Current.MainPage = new NavigationPage(new HomeScreen());
     }
 
 }
