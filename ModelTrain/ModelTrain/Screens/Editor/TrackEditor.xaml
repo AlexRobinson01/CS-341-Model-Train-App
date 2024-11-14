@@ -60,8 +60,8 @@
                 <Grid
                     Grid.Row="0"
                     Grid.Column="0"
-                    RowDefinitions="*,15*"
-                    ColumnDefinitions="*,15*">
+                    RowDefinitions="*,5*"
+                    ColumnDefinitions="*,9*">
                     <Button
                         x:Name="Back"
                         Grid.Row="0"
@@ -71,6 +71,7 @@
                         Padding="0"
                         Style="{x:StaticResource GoogleFont}"
                         CornerRadius="0"
+                        VerticalOptions="FillAndExpand"
                         Clicked="OnBackButtonClicked">
 
                     </Button>
@@ -201,8 +202,8 @@
             <Grid
                 Grid.Row="0"
                 Grid.Column="1"
-                RowDefinitions="*,11*"
-                ColumnDefinitions="*,5*">
+                RowDefinitions="*,7*"
+                ColumnDefinitions="*,4*">
                 <Button
                     x:Name="EditPieces"
                     Grid.Row="0"
