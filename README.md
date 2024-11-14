@@ -7,6 +7,15 @@ Proposal:
 
 We plan to communicate via Discord, and meet in-person after each class (Tuesday and Thursday, around 4:30 until whenever the meeting concludes).
 
+Sprint 3 Changes
+- Implemented credential validation for login/create account screens :)
+- Created drag/drop functionality for pieces on the track editor (currently not rendered, will be finished next sprint following the addition of piece images) :) :)
+- Hotbar items now appear in the track editor
+- Created the API for a local database for the user's settings and hotbar layout
+- Fixed some portrait/landscape and navigation bugs
+- Created some images for track pieces :)
+- Adjusted Collaborative Storage appearance and added home buttons to various screens
+
 Sprint 2 Changes
 - Added database connectivity to populate account screens profile circle, name, and email from database :)
 - Added business logic and database layers to run database methods through

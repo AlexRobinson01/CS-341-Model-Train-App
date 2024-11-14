@@ -18,6 +18,7 @@
         <ScrollView Grid.Row="0">
             <CollectionView x:Name="collectionView"
                             ItemsSource="{Binding Items}"
+                            SelectionMode="None"
                             HorizontalOptions="FillAndExpand">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -28,6 +29,9 @@
                                HasShadow="True"
                                HorizontalOptions="FillAndExpand"
                                VerticalOptions="Center">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnProjectTapped"/>
+                            </Frame.GestureRecognizers>
                             <Grid Padding="10"
                                   ColumnSpacing="5"
                                   RowSpacing="5"
@@ -116,6 +120,16 @@
                            VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
+
+            <ImageButton
+                Source="home.png"
+                Clicked="OnHomeButtonClicked"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
+                Grid.Row="1"
+                WidthRequest="50"
+                HeightRequest="50"
+                Margin="5"/>
 
             <!-- Handle the click event -->
             <Frame CornerRadius="10"

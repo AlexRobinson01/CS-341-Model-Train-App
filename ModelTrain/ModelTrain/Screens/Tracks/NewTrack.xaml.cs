@@ -4,7 +4,7 @@ namespace ModelTrain.Screens;
  * Author: Taylor Showalter
  * Date: October 16, 2024
  */
-public partial class NewTrack : BasePage
+public partial class NewTrack : ContentPage
 {
     public NewTrack()
     {
@@ -12,7 +12,8 @@ public partial class NewTrack : BasePage
     }
     private async void OnHomeButtonClicked(object sender, EventArgs e)
     {
-        await Navigation.PopAsync();
+        // Clear the navigation stack by setting a new NavigationPage with HomeScreen as the root
+        Application.Current.MainPage = new NavigationPage(new HomeScreen());
     }
     private async void OnPrivateButtonClicked(object sender, EventArgs e)
     {

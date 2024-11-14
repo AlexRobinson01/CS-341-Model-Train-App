@@ -1,6 +1,7 @@
 namespace ModelTrain.Screens;
 
 using ModelTrain.Model;
+using ModelTrain.Model.Pieces;
 using ModelTrain.Services;
 
 /**
@@ -11,6 +12,8 @@ using ModelTrain.Services;
  */
 public partial class PieceCatalog : ContentPage
 {
+	private readonly PieceList defaultPieces = PieceInfo.GetDefaultPieces();
+
 	public PieceCatalog()
 	{
 		InitializeComponent();
@@ -38,10 +41,13 @@ public partial class PieceCatalog : ContentPage
         DeviceOrientation.SetLandscape();
     }
 
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-        // Revert to Portrait mode when closing page
-        DeviceOrientation.SetPortrait();
-    }
+	private void OnRotateLeftButtonClicked(object sender, EventArgs e)
+	{
+		defaultPieces.RotateLeft();
+	}
+
+	private void OnRotateRightButtonClicked(object sender, EventArgs e)
+	{
+		defaultPieces.RotateRight();
+	}
 }

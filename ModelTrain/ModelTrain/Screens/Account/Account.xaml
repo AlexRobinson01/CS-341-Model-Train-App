@@ -51,13 +51,6 @@
                                 BorderWidth="1"
                                 Clicked="OnChangePasswordButtonClicked"/>
                         <Button
-                                Text="Download Tracks"
-                                HorizontalOptions="FillAndExpand"
-                                BackgroundColor="White"
-                                BorderColor="Black"
-                                TextColor="Black"
-                                BorderWidth="1"/>
-                        <Button
                                 Text="Log Out"
                                 HorizontalOptions="FillAndExpand"
                                 BackgroundColor="White"

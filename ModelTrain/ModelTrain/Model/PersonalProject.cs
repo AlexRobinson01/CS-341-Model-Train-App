@@ -12,6 +12,6 @@ namespace ModelTrain
         public string? Size { get; set; }
         public string[]? Collaborators { get; set; }
 
-        public TrackBase Track { get; private set; }
+        public TrackBase Track { get; set; }
     }
 }

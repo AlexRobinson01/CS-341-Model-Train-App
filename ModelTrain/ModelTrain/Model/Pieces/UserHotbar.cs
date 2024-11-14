@@ -1,32 +1,33 @@
-﻿using System.Collections.ObjectModel;
+﻿using ModelTrain.Model.Track;
 
 namespace ModelTrain.Model.Pieces
 {
     public class UserHotbar
     {
-        public static ObservableCollection<PieceBase> Pieces { get; private set; }
+        public static PieceList Pieces { get; private set; }
 
-        private static ILocalDatabase localDatabase;
+        private static readonly ILocalDatabase localDatabase;
 
         static UserHotbar()
         {
             localDatabase = new LocalDatabase();
-            Pieces = localDatabase.Pieces;
+            Pieces = localDatabase.Hotbar;
         }
         
-        public static void UpdatePiece(int index, PieceBase piece)
+        public static void MovePiece(int oldIndex, int newIndex)
         {
-
+            Pieces.Move(oldIndex, newIndex);
         }
 
-        public static void AddPiece(int index, PieceBase piece)
+        public static void AddPiece(int index, SegmentType segmentType)
         {
-
+            if (Pieces.FirstOrDefault(n => n.SegmentType == segmentType) == null)
+                Pieces.Insert(index, new(segmentType));
         }
 
         public static void RemovePiece(int index)
         {
-
+            Pieces.RemoveAt(index);
         }
     }
 }

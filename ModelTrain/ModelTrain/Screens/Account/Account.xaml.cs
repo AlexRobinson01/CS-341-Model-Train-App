@@ -24,7 +24,7 @@ public partial class Account : ContentPage
     private async void OnLogOutButtonClicked(object sender, EventArgs e)
     {
         // Navigation to Login page
-        await Navigation.PushAsync(new Login());
+        Application.Current.MainPage = new NavigationPage(new Login());
     }
     private async void LoadUserData()
     {

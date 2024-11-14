@@ -64,5 +64,100 @@ namespace ModelTrain.Model
             conn.Close();                                                                                                     // Close the connection
             return userToGet;
         }
+
+        public async Task<bool> IsNewEmail(string email)
+        {
+            // SQL query to check if email exists
+            string query = "SELECT COUNT(*) FROM users WHERE email = @Email";
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    await conn.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Email", email);
+
+                        // Execute the command and check if any records were found
+                        var count = (long)await command.ExecuteScalarAsync();
+                        return count == 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task CreateAccount(string firstName, string lastName, string email, string password)
+        {
+            // SQL statement to insert a new user
+            string query = "INSERT INTO users (firstname, lastname, email, password) VALUES (@FirstName, @LastName, @Email, @Password)";
+
+            try
+            {
+                using (var connection = new NpgsqlConnection(connString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        // Set up parameters
+                        command.Parameters.AddWithValue("@FirstName", firstName);
+                        command.Parameters.AddWithValue("@LastName", lastName);
+                        command.Parameters.AddWithValue("@Email", email);
+                        command.Parameters.AddWithValue("@Password", password);
+
+                        // Execute the insert command
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<bool> IsCorrectPassword(string email, string password)
+        {
+            // SQL query to get the stored password for the provided email
+            string query = "SELECT password FROM users WHERE email = @Email";
+
+            try
+            {
+                using (var connection = new NpgsqlConnection(connString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        // Add parameter
+                        command.Parameters.AddWithValue("@Email", email);
+
+                        // Execute query and retrieve the stored password
+                        var result = await command.ExecuteScalarAsync();
+                        if (result != null)
+                        {
+                            string storedPassword = (string)result;
+                            // Check if the stored password matches the provided password
+                            return storedPassword == password;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error: {ex.Message}");
+            }
+
+            // Return false if email not found or password doesn't match
+            return false;
+        }
     }
 }

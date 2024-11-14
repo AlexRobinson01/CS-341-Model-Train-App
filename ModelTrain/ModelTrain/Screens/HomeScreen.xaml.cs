@@ -2,21 +2,14 @@ namespace ModelTrain.Screens;
 
 /*
  * This class is the background functionality/methods for the home page.
- * Author: Krystal Schneider
+ * Author: Krystal Schneider & Taylor Showalter
  * Date: October 16, 2024
  */
-public partial class HomeScreen : ContentPage
+public partial class HomeScreen : BasePage
 {
     public HomeScreen()
     {
         InitializeComponent();
-        ToolbarItems.Add(new ToolbarItem
-        {
-            IconImageSource = "account.png",
-            Order = ToolbarItemOrder.Primary,
-            Priority = 0,
-            Command = new Command(async () => await Navigation.PushAsync(new Account()))
-        });
     }
 
     private async void OnCreateNewButtonClicked(object sender, EventArgs e)

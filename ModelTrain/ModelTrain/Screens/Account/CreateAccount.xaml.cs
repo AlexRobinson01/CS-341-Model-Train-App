@@ -1,3 +1,5 @@
+using ModelTrain.Model;
+
 namespace ModelTrain.Screens;
 
 /*
@@ -7,30 +9,43 @@ namespace ModelTrain.Screens;
  */
 public partial class CreateAccount : ContentPage
 {
-	public CreateAccount()
+    private IBusinessLogic BusinessLogic { get; set; }
+    public CreateAccount()
 	{
 		InitializeComponent();
-	}
+        BusinessLogic = new BusinessLogic();
+    }
 
     private async void CreateAccountBtnClicked(object sender, EventArgs e)
     {
-        // Create account logic
+        bool accountCreated = false;
+        bool emptyInputs = false;
+        string firstName = FirstNameEntry.Text;
+        string lastName = LastNameEntry.Text;
+        string email = EmailEntry.Text;
+        string password = PasswordEntry.Text;
 
-
-        // Navigate to the Create Account page
-        bool accountCreated = true;
-
-        if (accountCreated)
+        if (string.IsNullOrEmpty(firstName) ||
+            string.IsNullOrEmpty(lastName) ||
+            string.IsNullOrEmpty(email) ||
+            string.IsNullOrEmpty(password))
+            {
+            emptyInputs = true;
+            await DisplayAlert("Error", "Failed to create account. " +
+                "All inputs must contain values. Please try again.", "OK");
+        } else
         {
-            await DisplayAlert("Success", "Account created successfully!", "OK");
+            if (!emptyInputs && await BusinessLogic.CreateAccount(firstName, lastName, email, password))
+            {
+                await DisplayAlert("Success", "Account created successfully!", "OK");
 
-            // Pop the CreateAccountPage off the stack to return to LoginPage
-            await Navigation.PopAsync();
-        }
-        else
-        {
-            // Handle account creation failure
-            await DisplayAlert("Error", "Failed to create account. Please try again.", "OK");
+                // Pop the CreateAccountPage off the stack to return to LoginPage
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                await DisplayAlert("Error", "Failed to create account. Email already in use.", "OK");
+            }
         }
     }
 }

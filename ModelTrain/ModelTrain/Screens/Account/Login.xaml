@@ -32,7 +32,7 @@
                     <Label Text="{x:Static icon:IconFont.Person}" Style="{x:StaticResource GoogleFont}"></Label>
                     <Entry x:Name="EmailEntry" 
                     Placeholder="Email" 
-                    Keyboard="Text"
+                    Keyboard="Email"
                     Margin="5,0,0,0"/>
                 </StackLayout>
                 
