@@ -3,16 +3,41 @@
     public class BusinessLogic : IBusinessLogic
     {
         private IDatabase Database { get; set; }
+        // Static instance of BusinessLogic
+        private static BusinessLogic _instance;
+        // Lock object for thread safety
+        private static readonly object _lock = new object();
+        private String email = "";
 
         public BusinessLogic()
         {
             Database = new Database();
         }
 
-        // Get user with email
-        public User GetUserFromEmail(String email)
+        // Public method to get the single instance of BusinessLogic
+        public static BusinessLogic Instance
         {
-            User userToGet = Database.GetUser(email);
+            get
+            {
+                // Use double-checked locking to ensure thread safety
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new BusinessLogic();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        // Get user with email
+        public User GetUserFromEmail()
+        {
+            User userToGet = Database.GetUser(this.email);
             if (userToGet != null)
             {
                 return userToGet;
@@ -40,6 +65,7 @@
             {
                 return false;
             }
+            this.email = email;
             return true;
         }
 

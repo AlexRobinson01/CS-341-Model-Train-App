@@ -8,11 +8,9 @@ namespace ModelTrain.Screens;
  */
 public partial class Login : ContentPage
 {
-    private IBusinessLogic BusinessLogic { get; set; }
     public Login()
 	{
 		InitializeComponent();
-        BusinessLogic = new BusinessLogic();
     }
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)
@@ -24,7 +22,7 @@ public partial class Login : ContentPage
             await DisplayAlert("Error", "Must input values to login. Please try again.", "OK");
         } else
         {
-            if(await BusinessLogic.ValidateLoginInput(email, password))
+            if(await BusinessLogic.Instance.ValidateLoginInput(email, password))
             {
                 //ADD LOGIN FUNCTIONALITY HERE
                 await Navigation.PushAsync(new HomeScreen());

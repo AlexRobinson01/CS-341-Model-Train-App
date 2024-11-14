@@ -8,10 +8,8 @@ namespace ModelTrain.Screens;
  */
 public partial class Account : ContentPage
 {
-    private IBusinessLogic BusinessLogic { get; set; }
     public Account()
     {
-        BusinessLogic = new BusinessLogic();
         InitializeComponent();
         LoadUserData();
     }
@@ -28,10 +26,8 @@ public partial class Account : ContentPage
     }
     private async void LoadUserData()
     {
-        // Replace with the actual logic to get the logged-in user's email
-        string userEmail = "johndoe@email.com";
 
-        User user = BusinessLogic.GetUserFromEmail(userEmail);
+        User user = BusinessLogic.Instance.GetUserFromEmail();
 
         if (user != null)
         {
