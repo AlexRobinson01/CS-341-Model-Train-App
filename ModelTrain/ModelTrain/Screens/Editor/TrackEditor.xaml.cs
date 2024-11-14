@@ -37,7 +37,7 @@ public partial class TrackEditor : ContentPage
 		// For use in saving
 		businessLogic = new BusinessLogic();
 		// Default to a blank project to load for now
-		project ??= new();
+		project ??= new() { Track = new() };
 
 		// Cache the loaded project and prepare an ActionHandler for it
 		loadedProject = project;
