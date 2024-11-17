@@ -7,8 +7,8 @@ namespace ModelTrain.Model.Track
         public static void GetMetrics(SegmentType type, out Vector2 size, out Vector2 snapLengths, out Vector2 angles)
         {
             // May change later depending on curve, but for now this is fine
-            size = Vector2.One;
-            snapLengths = Vector2.One;
+            size = Vector2.One * 100;
+            snapLengths = Vector2.One * 50;
 
             // SegmentType maps to the angle associated with that type
             angles = new(0, 180 + type switch

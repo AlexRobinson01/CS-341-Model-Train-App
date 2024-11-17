@@ -4,6 +4,8 @@ using ModelTrain.Model.Track;
 using ModelTrain.Services;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
+using System.Numerics;
+using System.Reflection;
 namespace ModelTrain.Screens;
 
 /**
@@ -89,11 +91,13 @@ public partial class TrackEditor : ContentPage
 	private void OnUndoButtonClicked(object sender, EventArgs e)
 	{
 		actionHandler.Undo();
+		RedrawCanvas();
 	}
 
 	private void OnRedoButtonClicked(object sender, EventArgs e)
 	{
 		actionHandler.Redo();
+		RedrawCanvas();
     }
 
     protected override void OnAppearing()
@@ -117,17 +121,20 @@ public partial class TrackEditor : ContentPage
         PieceBase piece = new(segmentType);
         TrackObject trackObject = new(loadedProject.Track, piece);
 
-		double x = EditorFrame.X + EditorFrame.Width / 2;
-		double y = EditorFrame.Y + EditorFrame.Height / 2;
+		double x = EditorFrame.Width - trackObject.BoundSegment.Size.X / 4;
+		double y = EditorFrame.Height - trackObject.BoundSegment.Size.Y / 4;
 
 		trackObject.MoveTo(x, y);
         objects.Add(trackObject);
+
+        actionHandler.AddWaypoint();
+        RedrawCanvas();
     }
 
 	private bool IsWithinEditorFrame(double x, double y)
 	{
-		return x >= EditorFrame.X && x <= EditorFrame.X + EditorFrame.Width
-			&& y >= EditorFrame.Y && y <= EditorFrame.Y + EditorFrame.Height;
+		return x >= EditorFrame.X && x <= EditorFrame.X + EditorCanvas.CanvasSize.Width
+			&& y >= EditorFrame.Y && y <= EditorFrame.Y + EditorCanvas.CanvasSize.Height;
 	}
 
 	private void OnEditorPanelTouched(object sender, SKTouchEventArgs e)
@@ -135,8 +142,6 @@ public partial class TrackEditor : ContentPage
 		SKPoint pos = e.Location;
 		double x = pos.X;
 		double y = pos.Y;
-
-		Console.WriteLine(e.ActionType);
 
 		switch (e.ActionType)
 		{
@@ -149,7 +154,7 @@ public partial class TrackEditor : ContentPage
 					SKPoint objectPos = new(trackObject.BoundSegment.X, trackObject.BoundSegment.Y);
 					double distance = (objectPos - pos).Length;
 
-					if (distance < 50 && distance < minDist)
+					if (distance < trackObject.BoundSegment.Size.X && distance < minDist)
 					{
 						minDistObject = trackObject;
 						minDist = distance;
@@ -162,11 +167,9 @@ public partial class TrackEditor : ContentPage
 				break;
 			case SKTouchAction.Moved:
 				draggingObject?.MoveTo((float)x, (float)y);
+				RedrawCanvas();
 				break;
 			case SKTouchAction.Released:
-				draggingObject = null;
-				actionHandler.Run();
-				break;
             case SKTouchAction.Exited:
             case SKTouchAction.Cancelled:
 				if (draggingObject != null && !IsWithinEditorFrame(x, y))
@@ -176,15 +179,48 @@ public partial class TrackEditor : ContentPage
 				}
 
 				draggingObject = null;
-				actionHandler.Run();
+				actionHandler.AddWaypoint();
+				RedrawCanvas();
 				break;
         }
 
 		e.Handled = true;
 	}
 
+	private void RedrawCanvas()
+	{
+		EditorCanvas.InvalidateSurface();
+	}
+
 	private void OnEditorPinchUpdated(object sender, PinchGestureUpdatedEventArgs e)
 	{
 		Console.WriteLine(e.Scale);
 	}
+
+    private void OnPaintEditorCanvas(object sender, SKPaintSurfaceEventArgs e)
+    {
+        Assembly assembly = GetType().GetTypeInfo().Assembly;
+        SKCanvas canvas = e.Surface.Canvas;
+		canvas.Clear();
+
+		foreach (TrackObject obj in objects)
+		{
+			string resourceID = obj.BoundPiece.Image;
+            using Stream? stream = assembly.GetManifestResourceStream(resourceID);
+
+            if (stream != null)
+            {
+                SKBitmap bmp = SKBitmap.Decode(stream);
+				Vector2 size = obj.BoundSegment.Size;
+				Vector2 pos = -size / 2;
+
+				SKRect dest = new(pos.X, pos.Y, pos.X + size.X, pos.Y + size.Y);
+				canvas.Translate(obj.BoundSegment.X, obj.BoundSegment.Y);
+				canvas.RotateDegrees(obj.BoundSegment.Rotation);
+                canvas.DrawBitmap(bmp, dest);
+
+				canvas.ResetMatrix();
+            }
+        }
+    }
 }

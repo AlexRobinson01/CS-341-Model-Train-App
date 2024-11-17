@@ -25,6 +25,7 @@
 
                 <!-- Main editor frame -->
                 <Frame x:Name="EditorFrame"
+                    Padding="0"
                     Grid.Row="0"
                     Grid.Column="0"
                     BorderColor="Gray"
@@ -42,10 +43,11 @@
 
                         <!-- Captures touch events on the track space -->
                         <skia:SKCanvasView Grid.Row="0" Grid.Column="0"
-                            x:Name="TouchHandler"
+                            x:Name="EditorCanvas"
                             EnableTouchEvents="True"
                             Touch="OnEditorPanelTouched"
-                            Background="Transparent">
+                            Background="Transparent"
+                            PaintSurface="OnPaintEditorCanvas">
                             <skia:SKCanvasView.GestureRecognizers>
                                 <PinchGestureRecognizer
                                     PinchUpdated="OnEditorPinchUpdated"/>

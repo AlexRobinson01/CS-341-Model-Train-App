@@ -5,7 +5,7 @@
         // Holds a set of Base64 strings that represent each previous state of the track
         // as it is edited in TrackEditor
         private readonly List<string> snapshots;
-        private int curIndex;
+        private int curIndex = -1;
         // The track that these actions will be applied to
         private readonly TrackBase linkedTrack;
 
@@ -13,14 +13,17 @@
         {
             snapshots = new();
             linkedTrack = track;
+
+            AddWaypoint();
         }
 
-        public void Run()
+        public void AddWaypoint()
         {
             // If any actions have been undone and not redone, clear them from the list
             // to remove them from the edit history
             while (curIndex + 1 < snapshots.Count)
                 snapshots.RemoveAt(curIndex + 1);
+            curIndex++;
 
             // Save current track state and run the given action
             TakeSnapshot();
@@ -32,13 +35,13 @@
                 return;
 
             // Return to the previous state of the track in memory from the snapshots list
-            LoadSnapshot();
             curIndex--;
+            LoadSnapshot();
         }
 
         public void Redo()
         {
-            if (curIndex >= snapshots.Count)
+            if (curIndex + 1 >= snapshots.Count)
                 return;
 
             // Return to the next state of the track in memory from the snapshots list

@@ -1,5 +1,4 @@
 ﻿using ModelTrain.Model.Track;
-using System.Collections.ObjectModel;
 
 namespace ModelTrain.Model.Pieces
 {
@@ -30,6 +29,8 @@ namespace ModelTrain.Model.Pieces
                 SegmentType.Curve90 => "piece_90curve.png",
                 _ => ""
             };
+
+            image = $"ModelTrain.DefaultImages.{image}";
         }
 
         public static PieceList GetDefaultPieces()
