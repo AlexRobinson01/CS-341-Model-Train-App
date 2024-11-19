@@ -12,6 +12,7 @@ public partial class Account : ContentPage
     {
         InitializeComponent();
         LoadUserData();
+        DarkModeSwitch.IsToggled = Application.Current.UserAppTheme == AppTheme.Dark;
     }
     private async void OnChangePasswordButtonClicked(object sender, EventArgs e)
     {
@@ -23,6 +24,19 @@ public partial class Account : ContentPage
     {
         // Navigation to Login page
         Application.Current.MainPage = new NavigationPage(new Login());
+    }
+    private void OnDarkModeSwitchToggled(object sender, ToggledEventArgs e)
+    {
+        if (e.Value)
+        {
+            Application.Current.UserAppTheme = AppTheme.Dark;
+            Preferences.Set("UserTheme", "Dark");
+        }
+        else
+        {
+            Application.Current.UserAppTheme = AppTheme.Light;
+            Preferences.Set("UserTheme", "Light");
+        }
     }
     private async void LoadUserData()
     {
