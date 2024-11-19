@@ -1,4 +1,7 @@
-﻿namespace ModelTrain.Model
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+namespace ModelTrain.Model
 {
     public class BusinessLogic : IBusinessLogic
     {
@@ -79,6 +82,29 @@
             }
             return false;
             
+        }
+
+        public async Task<bool> DeleteProjectById(String projectId)
+        {
+            if (await Database.DeletePersonalProject(projectId) && await Database.RemoveProjectFromUsersAsync(projectId))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<List<Guid>> GetUserProjects()
+        {
+            List<Guid> userProjects = new List<Guid>();
+            userProjects = await Database.GetUserProjectIdsAsync(this.email);
+            return userProjects;
+        }
+
+        public async Task<List<PersonalProject>> GetProjectsByIds(List<Guid> projectIds)
+        {
+            List<PersonalProject> userProjects = new List<PersonalProject>();
+            userProjects = await Database.GetProjectsByIdsAsync(projectIds);
+            return userProjects;
         }
 
     }

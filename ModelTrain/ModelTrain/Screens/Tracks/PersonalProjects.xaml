@@ -62,7 +62,12 @@
                                        HorizontalOptions="End"
                                        VerticalOptions="Start"
                                        FontSize="20"
-                                       TextColor="Red"/>
+                                       TextColor="Red"
+                                       BindingContext="{Binding .}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnDeleteIconTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
 
                                 <!-- Bottom-left corner -->
                                 <Label Text="{Binding DateCreated}"
