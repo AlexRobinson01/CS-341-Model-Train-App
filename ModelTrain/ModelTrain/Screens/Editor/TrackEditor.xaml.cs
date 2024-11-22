@@ -6,6 +6,7 @@ using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using System.Numerics;
 using System.Reflection;
+
 namespace ModelTrain.Screens;
 
 /**
@@ -15,6 +16,16 @@ namespace ModelTrain.Screens;
  */
 public partial class TrackEditor : ContentPage
 {
+	private static readonly SKPaint SnapColor = new()
+	{
+		Color = SKColors.LimeGreen
+	};
+
+	private static readonly SKPaint SelectShadow = new()
+	{
+		Color = SKColor.Parse("#5F7F7F7F")
+	};
+
 	private readonly IBusinessLogic businessLogic;
 
 	private readonly PersonalProject loadedProject;
@@ -108,6 +119,8 @@ public partial class TrackEditor : ContentPage
     }
 
     private TrackObject? draggingObject;
+	private TrackObject? selectedObject;
+	private TrackObject? snappedObject;
 
 	private void OnHotbarPieceClicked(object sender, EventArgs e)
 	{
@@ -120,7 +133,7 @@ public partial class TrackEditor : ContentPage
 
         PieceBase piece = new(segmentType);
         TrackObject trackObject = new(loadedProject.Track, piece);
-
+		
 		double x = EditorFrame.Width - trackObject.BoundSegment.Size.X / 4;
 		double y = EditorFrame.Height - trackObject.BoundSegment.Size.Y / 4;
 
@@ -137,36 +150,99 @@ public partial class TrackEditor : ContentPage
 			&& y >= EditorFrame.Y && y <= EditorFrame.Y + EditorCanvas.CanvasSize.Height;
 	}
 
+	private static Vector2? GetSnapLocation(TrackObject toSnap, TrackObject snapTo, out bool isSnapToStartCloser, out bool isToSnapStartCloser)
+	{
+		Vector2 snapToStartOffset = snapTo.BoundSegment.StartSnapOffset;
+		Vector2 snapToEndOffset = snapTo.BoundSegment.EndSnapOffset;
+
+        Vector2 snapToPos = new(snapTo.BoundSegment.X, snapTo.BoundSegment.Y);
+        Vector2 snapToStart = snapToStartOffset + snapToPos;
+        Vector2 snapToEnd = snapToEndOffset + snapToPos;
+        Vector2 snapToRotation = snapTo.BoundSegment.SnapRotationOffset;
+
+		Vector2 toSnapPos = new(toSnap.BoundSegment.X, toSnap.BoundSegment.Y);
+        Vector2 toSnapRotation = toSnap.BoundSegment.SnapRotationOffset;
+
+        isSnapToStartCloser = (toSnapPos - snapToEnd).Length() > (toSnapPos - snapToStart).Length();
+        Vector2 snapLocation = isSnapToStartCloser ? snapToStart + snapToStartOffset : snapToEnd + snapToEndOffset;
+
+        float rotationOffset = isSnapToStartCloser ? snapToRotation.X : snapToRotation.Y;
+        float startRotation = (rotationOffset - toSnapRotation.X) % 360;
+        float endRotation = (rotationOffset - toSnapRotation.Y) % 360;
+
+        isToSnapStartCloser = Math.Abs(endRotation) > Math.Abs(startRotation);
+
+		if (isSnapToStartCloser && snapTo.BoundSegment.SnappedStartSegment != null)
+			return null;
+		else if (!isSnapToStartCloser && snapTo.BoundSegment.SnappedEndSegment != null)
+			return null;
+		return snapLocation;
+    }
+
+	private TrackObject? GetClosestTrackObject(SKPoint pos, TrackObject? exclude = null)
+	{
+        TrackObject? minDistObject = null;
+        double minDist = double.MaxValue;
+
+        foreach (TrackObject obj in objects)
+        {
+			if (obj == exclude)
+				continue;
+
+			if (exclude != null)
+			{
+				Segment? snappedStart = obj.BoundSegment.SnappedStartSegment;
+				Segment? snappedEnd = obj.BoundSegment.SnappedEndSegment;
+
+				if (snappedStart != null && snappedEnd != null)
+					continue;
+			}
+
+            SKPoint objectPos = new(obj.BoundSegment.X, obj.BoundSegment.Y);
+            double distance = (objectPos - pos).Length;
+
+            if (distance < obj.BoundSegment.Size.X && distance < minDist)
+            {
+                minDistObject = obj;
+                minDist = distance;
+            }
+        }
+
+		return minDistObject;
+    }
+
 	private void OnEditorPanelTouched(object sender, SKTouchEventArgs e)
 	{
 		SKPoint pos = e.Location;
 		double x = pos.X;
 		double y = pos.Y;
+		Vector2 posVec = new((float)x, (float)y);
 
 		switch (e.ActionType)
 		{
 			case SKTouchAction.Pressed:
-				TrackObject? minDistObject = null;
-				double minDist = double.MaxValue;
+				TrackObject? closestObject = GetClosestTrackObject(pos);
 
-				foreach (TrackObject trackObject in objects)
+				if (closestObject != null)
 				{
-					SKPoint objectPos = new(trackObject.BoundSegment.X, trackObject.BoundSegment.Y);
-					double distance = (objectPos - pos).Length;
-
-					if (distance < trackObject.BoundSegment.Size.X && distance < minDist)
-					{
-						minDistObject = trackObject;
-						minDist = distance;
-					}
+					draggingObject = closestObject;
+					selectedObject = closestObject;
 				}
+				else
+					selectedObject = null;
 
-				if (minDistObject != null)
-					draggingObject = minDistObject;
-
+				RedrawCanvas();
 				break;
 			case SKTouchAction.Moved:
-				draggingObject?.MoveTo((float)x, (float)y);
+				if (draggingObject != null)
+				{
+					snappedObject = GetClosestTrackObject(pos, draggingObject);
+					draggingObject.MoveTo(posVec.X, posVec.Y);
+
+					draggingObject.UnsnapStart();
+					draggingObject.UnsnapEnd();
+				}
+
 				RedrawCanvas();
 				break;
 			case SKTouchAction.Released:
@@ -177,8 +253,27 @@ public partial class TrackEditor : ContentPage
 					draggingObject.RemoveFrom(loadedProject.Track);
 					objects.Remove(draggingObject);
 				}
+				else if (draggingObject != null && snappedObject != null)
+				{
+					Vector2? snapLocation = GetSnapLocation(draggingObject, snappedObject, out bool isStartCloser, out bool isDragStartCloser);
+					if (snapLocation != null)
+					{
+						draggingObject.MoveTo(snapLocation?.X ?? 0, snapLocation?.Y ?? 0);
+
+						if (isStartCloser)
+							snappedObject.SnapToStart(draggingObject.BoundSegment);
+						else
+							snappedObject.SnapToEnd(draggingObject.BoundSegment);
+
+						if (!isDragStartCloser)
+							draggingObject.SnapToStart(snappedObject.BoundSegment);
+						else
+							draggingObject.SnapToEnd(snappedObject.BoundSegment);
+					}
+                }
 
 				draggingObject = null;
+				snappedObject = null;
 				actionHandler.AddWaypoint();
 				RedrawCanvas();
 				break;
@@ -219,7 +314,40 @@ public partial class TrackEditor : ContentPage
 				canvas.RotateDegrees(obj.BoundSegment.Rotation);
                 canvas.DrawBitmap(bmp, dest);
 
+				if (draggingObject != null && draggingObject != obj)
+				{
+                    Vector2 startOffset = obj.BoundSegment.StartSnapOffset;
+                    Vector2 endOffset = obj.BoundSegment.EndSnapOffset;
+
+                    if (snappedObject == obj)
+                    {
+						if (obj.BoundSegment.SnappedStartSegment == null)
+							canvas.DrawCircle(startOffset.X * 2, startOffset.Y * 2, 30, SelectShadow);
+						if (obj.BoundSegment.SnappedEndSegment == null)
+							canvas.DrawCircle(endOffset.X * 2, endOffset.Y * 2, 30, SelectShadow);
+                    }
+
+					if (obj.BoundSegment.SnappedStartSegment == null)
+						canvas.DrawCircle(startOffset.X, startOffset.Y, 10, SnapColor);
+					if (obj.BoundSegment.SnappedEndSegment == null)
+                        canvas.DrawCircle(endOffset.X, endOffset.Y, 10, SnapColor);
+                }
+
+				if (selectedObject == obj || draggingObject == obj)
+					canvas.DrawCircle(0, 0, obj.BoundSegment.Size.X / 2, SelectShadow);
+
 				canvas.ResetMatrix();
+            }
+
+            if (snappedObject != null && draggingObject != null)
+            {
+				Vector2? snapLocation = GetSnapLocation(draggingObject, snappedObject, out _, out _);
+
+				if (snapLocation != null)
+				{
+                    canvas.ResetMatrix();
+                    canvas.DrawCircle(snapLocation?.X ?? 0, snapLocation?.Y ?? 0, 25, SnapColor);
+                }
             }
         }
     }

@@ -54,11 +54,23 @@ namespace ModelTrain.Model.Track
 
         public void UnsnapStart()
         {
+            Segment? snappedStart = BoundSegment.SnappedStartSegment;
+            if (snappedStart?.SnappedStartSegment == BoundSegment)
+                snappedStart.SnappedStartSegment = null;
+            else if (snappedStart?.SnappedEndSegment == BoundSegment)
+                snappedStart.SnappedEndSegment = null;
+
             BoundSegment.SnappedStartSegment = null;
         }
 
         public void UnsnapEnd()
         {
+            Segment? snappedEnd = BoundSegment.SnappedEndSegment;
+            if (snappedEnd?.SnappedStartSegment == BoundSegment)
+                snappedEnd.SnappedStartSegment = null;
+            else if (snappedEnd?.SnappedEndSegment == BoundSegment)
+                snappedEnd.SnappedEndSegment = null;
+
             BoundSegment.SnappedEndSegment = null;
         }
     }

@@ -11,7 +11,7 @@ namespace ModelTrain.Model.Track
             snapLengths = Vector2.One * 50;
 
             // SegmentType maps to the angle associated with that type
-            angles = new(0, 180 + type switch
+            angles = new Vector2(0, 180 - type switch
             {
                 SegmentType.Straight => 0,
                 SegmentType.Curve15 => 15,
@@ -21,7 +21,7 @@ namespace ModelTrain.Model.Track
                 SegmentType.Curve75 => 75,
                 SegmentType.Curve90 => 90,
                 _ => 0
-            });
+            }) + new Vector2(90, 90);
         }
     }
 }
