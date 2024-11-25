@@ -2,8 +2,20 @@
 
 namespace ModelTrain.Model.Pieces
 {
-    public class PieceInfo
+    /**
+     * Description: Static methods to get default image/name/etc. info for pieces
+     * Author: Alex Robinson
+     * Last updated: 11/24/2024
+     */
+    public static class PieceInfo
     {
+        /// <summary>
+        /// Takes in a SegmentType and populates two given strings with their relevant piece info
+        /// associated with this type
+        /// </summary>
+        /// <param name="type">The SegmentType to fetch piece info for</param>
+        /// <param name="name">A string reference that will be populated with the piece's name</param>
+        /// <param name="image">A string reference that will be populated with the piece's image path</param>
         public static void GetInfo(SegmentType type, out string name, out string image)
         {
             name = type switch
@@ -33,10 +45,14 @@ namespace ModelTrain.Model.Pieces
             image = $"ModelTrain.DefaultImages.{image}";
         }
 
+        /// <summary>
+        /// Fills a new PieceList with a piece for each of the default SegmentTypes
+        /// </summary>
+        /// <returns>A PieceList containing one piece per SegmentType value</returns>
         public static PieceList GetDefaultPieces()
         {
             PieceList pieces = new();
-
+            
             foreach (SegmentType type in Enum.GetValues(typeof(SegmentType)))
                 pieces.Add(new(type));
 

@@ -1,5 +1,10 @@
 ﻿namespace ModelTrain.Model.Track
 {
+    /**
+     * Description: Keeps logs of a track's edits to allow undoing/redoing edits
+     * Author: Alex Robinson
+     * Last updated: 11/24/2024
+     */
     public class ActionHandler
     {
         // Holds a set of Base64 strings that represent each previous state of the track
@@ -9,6 +14,10 @@
         // The track that these actions will be applied to
         private readonly TrackBase linkedTrack;
 
+        /// <summary>
+        /// ActionHandler constructor - Initializes new edit history for a given TrackBase
+        /// </summary>
+        /// <param name="track">The track to apply edit history to</param>
         public ActionHandler(TrackBase track)
         {
             snapshots = new();
@@ -29,8 +38,12 @@
             TakeSnapshot();
         }
 
+        /// <summary>
+        /// Undoes an edit in the edit history
+        /// </summary>
         public void Undo()
         {
+            // Nothing to undo
             if (curIndex <= 0)
                 return;
 
@@ -39,6 +52,9 @@
             LoadSnapshot();
         }
 
+        /// <summary>
+        /// Redoes an undone edit in the edit history
+        /// </summary>
         public void Redo()
         {
             if (curIndex + 1 >= snapshots.Count)
@@ -49,6 +65,9 @@
             LoadSnapshot();
         }
 
+        /// <summary>
+        /// Takes a snapshot of the assigned track and stores it in the snapshots list
+        /// </summary>
         private void TakeSnapshot()
         {
             // Store the current state of the track into the snapshots list
@@ -56,6 +75,9 @@
             snapshots.Add(snapshot);
         }
 
+        /// <summary>
+        /// Retrieves a snapshot from the snapshots list and applies it to the assigned track
+        /// </summary>
         private void LoadSnapshot()
         {
             // Load the stored state of the track from the snapshots list
