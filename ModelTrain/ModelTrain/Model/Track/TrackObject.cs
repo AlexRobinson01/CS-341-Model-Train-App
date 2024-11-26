@@ -3,7 +3,7 @@
 namespace ModelTrain.Model.Track
 {
     /**
-     * Description: Binds a PieceBase and Segment together with an API to manage rendering
+     * Description: Binds a Piece and Segment together with an API to manage rendering
      * and editing each of these
      * Author: Alex Robinson
      * Last updated: 11/24/2024
@@ -11,12 +11,12 @@ namespace ModelTrain.Model.Track
     public class TrackObject
     {
         // Provides a way to get image data and segment data out of the same object
-        public PieceBase BoundPiece { get; private set; }
+        public Piece BoundPiece { get; private set; }
         public Segment BoundSegment { get; private set; }
 
         /// <summary>
         /// TrackObject constructor - Creates a new TrackObject bound to a given Segment,
-        /// creating a new PieceBase to bind to from the Segment's SegmentType
+        /// creating a new Piece to bind to from the Segment's SegmentType
         /// </summary>
         /// <param name="linkedSegment">The Segment to bind to this TrackObject</param>
         public TrackObject(Segment linkedSegment)
@@ -26,13 +26,13 @@ namespace ModelTrain.Model.Track
         }
 
         /// <summary>
-        /// TrackObject constructor - Creates a new TrackObject bound to a given PieceBase,
-        /// creating a new Segment to bind to from the PieceBase's SegmentType,
+        /// TrackObject constructor - Creates a new TrackObject bound to a given Piece,
+        /// creating a new Segment to bind to from the Piece's SegmentType,
         /// adding it to the given TrackBase in the process
         /// </summary>
         /// <param name="track">The TrackBase to add a new Segment to</param>
-        /// <param name="linkedPiece">The PieceBase to bind to this TrackObject</param>
-        public TrackObject(TrackBase track, PieceBase linkedPiece)
+        /// <param name="linkedPiece">The Piece to bind to this TrackObject</param>
+        public TrackObject(TrackBase track, Piece linkedPiece)
         {
             BoundPiece = linkedPiece;
             BoundSegment = new(linkedPiece.SegmentType);

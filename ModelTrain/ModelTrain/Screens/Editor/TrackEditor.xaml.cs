@@ -141,7 +141,7 @@ public partial class TrackEditor : ContentPage
 		if (type is not SegmentType segmentType)
 			return;
 
-        PieceBase piece = new(segmentType);
+        Piece piece = new(segmentType);
         TrackObject trackObject = new(loadedProject.Track, piece);
 		
 		// Attempting to place the piece in the center of the screen

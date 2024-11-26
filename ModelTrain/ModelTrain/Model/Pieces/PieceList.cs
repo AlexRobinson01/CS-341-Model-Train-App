@@ -8,7 +8,7 @@ namespace ModelTrain.Model.Pieces
      * Author: Alex Robinson
      * Last updated: 11/24/2024
      */
-    public class PieceList : ObservableCollection<PieceBase>
+    public class PieceList : ObservableCollection<Piece>
     {
         /// <summary>
         /// Rotates the contents of this PieceList left, by moving the first element to the end
@@ -16,7 +16,7 @@ namespace ModelTrain.Model.Pieces
         public void RotateLeft()
         {
             // Rotating left moves the first item to the end
-            PieceBase first = this[0];
+            Piece first = this[0];
             RemoveAt(0);
             Add(first);
         }
@@ -27,7 +27,7 @@ namespace ModelTrain.Model.Pieces
         public void RotateRight()
         {
             // Rotating right moves the last item to the front
-            PieceBase last = this[Count - 1];
+            Piece last = this[Count - 1];
             RemoveAt(Count - 1);
             Insert(0, last);
         }

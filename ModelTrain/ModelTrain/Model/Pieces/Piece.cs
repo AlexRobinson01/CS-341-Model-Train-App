@@ -8,7 +8,7 @@ namespace ModelTrain.Model.Pieces
      * Author: Alex Robinson
      * Last updated: 11/23/2024
      */
-    public class PieceBase
+    public class Piece
     {
         public SegmentType SegmentType { get; private set; }
         public string Name { get; private set; }
@@ -20,10 +20,10 @@ namespace ModelTrain.Model.Pieces
         public Vector2 ImageOffset { get; private set; }
 
         /// <summary>
-        /// PieceBase constructor - sets default values to those assigned to the given SegmentType
+        /// Piece constructor - sets default values to those assigned to the given SegmentType
         /// </summary>
         /// <param name="type">The SegmentType to assign to this piece</param>
-        public PieceBase(SegmentType type)
+        public Piece(SegmentType type)
         {
             SegmentType = type;
 
@@ -34,7 +34,7 @@ namespace ModelTrain.Model.Pieces
         }
 
         /// <summary>
-        /// Updates the current PieceBase's image rotation, scale, and offset to the given values
+        /// Updates the current Piece's image rotation, scale, and offset to the given values
         /// </summary>
         /// <param name="rotation">The new rotation to apply to this piece's image</param>
         /// <param name="scale">The new scale to apply to this piece's image</param>

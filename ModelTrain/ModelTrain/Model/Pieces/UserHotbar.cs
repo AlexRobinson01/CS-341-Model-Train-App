@@ -46,12 +46,35 @@ namespace ModelTrain.Model.Pieces
         }
 
         /// <summary>
+        /// Adds a piece to the hotbar defined by its SegmentType
+        /// </summary>
+        /// <param name="segmentType">The SegmentType that the new piece should be associated with</param>
+        public static void AddPiece(SegmentType segmentType)
+        {
+            // Ensures no pieces with this SegmentType exist already, avoiding duplicates
+            if (Pieces.FirstOrDefault(n => n.SegmentType == segmentType) == null)
+                Pieces.Add(new(segmentType));
+        }
+
+        /// <summary>
         /// Removes a piece from the hotbar at a given index
         /// </summary>
         /// <param name="index">The location to remove a piece from</param>
         public static void RemovePiece(int index)
         {
             Pieces.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// Removes a piece from the hotbar with a given SegmentType
+        /// </summary>
+        /// <param name="segmentType">The SegmentType to remove from the hotbar</param>
+        public static void RemovePiece(SegmentType segmentType)
+        {
+            Piece? piece = Pieces.FirstOrDefault(n => n.SegmentType == segmentType);
+
+            if (piece != null)
+                Pieces.Remove(piece);
         }
     }
 }

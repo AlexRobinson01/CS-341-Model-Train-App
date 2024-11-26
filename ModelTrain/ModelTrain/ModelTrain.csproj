@@ -81,6 +81,9 @@
 	  <MauiXaml Update="Screens\CollaborativeStorage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Screens\Components\PieceImage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Screens\CreateAccount.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

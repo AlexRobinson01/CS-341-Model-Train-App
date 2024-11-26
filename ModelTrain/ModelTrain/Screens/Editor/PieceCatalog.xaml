@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ModelTrain.Screens.PieceCatalog"
              NavigationPage.HasNavigationBar="False"
+             xmlns:local="clr-namespace:ModelTrain.Screens.Components"
              Title="">
 
     <!-- Vertical alignment - misc, catalog, selected rows -->
     <Grid
-        RowDefinitions="*,5*,2*"
-        ColumnDefinitions="*">
+        RowDefinitions="*,5*,100"
+        ColumnDefinitions="*"
+        Padding="0">
         
         <!-- Misc buttons -->
         <Grid
@@ -86,63 +88,98 @@
 
             <!-- Second left piece -->
             <Button
+                Clicked="OnLLButtonClicked"
                 Grid.Row="0"
                 Grid.Column="1"
-                Text="Piece LL"
-                FontSize="16"
-                Padding="0"
-                Margin="20"
+                WidthRequest="60"
                 HeightRequest="60">
                 
             </Button>
+
+            <local:PieceImage
+                Grid.Row="0"
+                Grid.Column="1"
+                WidthRequest="50"
+                HeightRequest="50"
+                x:Name="LLImage">
+                
+            </local:PieceImage>
             
             <!-- First left piece -->
             <Button
+                Clicked="OnLButtonClicked"
                 Grid.Row="0"
                 Grid.Column="2"
-                Text="Piece L"
-                FontSize="16"
-                Padding="0"
-                Margin="20"
+                WidthRequest="100"
                 HeightRequest="100">
                 
             </Button>
+
+            <local:PieceImage
+                Grid.Row="0"
+                Grid.Column="2"
+                WidthRequest="85"
+                HeightRequest="85"
+                x:Name="LImage">
+                
+            </local:PieceImage>
             
             <!-- Center (current) piece -->
             <Button
+                Clicked="OnCButtonClicked"
                 Grid.Row="0"
                 Grid.Column="3"
-                Text="Piece C"
-                FontSize="16"
-                Padding="0"
-                Margin="20"
+                WidthRequest="200"
                 HeightRequest="200">
                 
             </Button>
+
+            <local:PieceImage
+                Grid.Row="0"
+                Grid.Column="3"
+                WidthRequest="170"
+                HeightRequest="170"
+                x:Name="CImage">
+                
+            </local:PieceImage>
             
             <!-- First right piece -->
             <Button
+                Clicked="OnRButtonClicked"
                 Grid.Row="0"
                 Grid.Column="4"
-                Text="Piece R"
-                FontSize="16"
-                Padding="0"
-                Margin="20"
+                WidthRequest="100"
                 HeightRequest="100">
                 
             </Button>
+
+            <local:PieceImage
+                Grid.Row="0"
+                Grid.Column="4"
+                WidthRequest="85"
+                HeightRequest="85"
+                x:Name="RImage">
+                
+            </local:PieceImage>
             
             <!-- Second right piece -->
             <Button
+                Clicked="OnRRButtonClicked"
                 Grid.Row="0"
                 Grid.Column="5"
-                Text="Piece RR"
-                FontSize="16"
-                Padding="0"
-                Margin="20"
+                WidthRequest="60"
                 HeightRequest="60">
                 
             </Button>
+
+            <local:PieceImage
+                Grid.Row="0"
+                Grid.Column="5"
+                WidthRequest="50"
+                HeightRequest="50"
+                x:Name="RRImage">
+                
+            </local:PieceImage>
         </Grid>
         
         <!-- Horizontal scrollable list of selected pieces -->
@@ -157,84 +194,40 @@
             <ScrollView
                 Orientation="Horizontal"
                 Margin="0"
-                Padding="0">
-                
-                <!-- Selected pieces go here -->
-                <HorizontalStackLayout
-                    Spacing="20"
-                    Padding="10"
-                    Margin="0">
-                    <Button
-                        Padding="0"
-                        Text="Piece A"
-                        WidthRequest="80"
-                        HeightRequest="80">
+                Padding="20">
 
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece B"
-                        WidthRequest="80"
-                        HeightRequest="80">
+                <!-- All pieces are in this layout -->
+                <CollectionView
+                    ItemsLayout="HorizontalList"
+                    x:Name="HotbarCollection"
+                    ItemsSource="{Binding Items}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                RowDefinitions="*"
+                                ColumnDefinitions="*"
+                                HorizontalOptions="Center">
 
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece C"
-                        WidthRequest="80"
-                        HeightRequest="80">
+                                <Button
+                                    Grid.Row="0" Grid.Column="0"
+                                    Padding="0" Margin="5,0,5,0"
+                                    HeightRequest="60"
+                                    WidthRequest="60"
+                                    ClassId="{Binding Name}"
+                                    Clicked="OnHotbarPieceClicked">
 
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece D"
-                        WidthRequest="80"
-                        HeightRequest="80">
+                                </Button>
 
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece E"
-                        WidthRequest="80"
-                        HeightRequest="80">
+                                <local:PieceImage
+                                    ClassId="{Binding Name}"
+                                    HeightRequest="50"
+                                    WidthRequest="50">
 
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece F"
-                        WidthRequest="80"
-                        HeightRequest="80">
-
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece G"
-                        WidthRequest="80"
-                        HeightRequest="80">
-
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece H"
-                        WidthRequest="80"
-                        HeightRequest="80">
-
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece I"
-                        WidthRequest="80"
-                        HeightRequest="80">
-
-                    </Button>
-                    <Button
-                        Padding="0"
-                        Text="Piece J"
-                        WidthRequest="80"
-                        HeightRequest="80">
-
-                    </Button>
-                </HorizontalStackLayout>
+                                </local:PieceImage>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </ScrollView>
         </Frame>
     </Grid>
