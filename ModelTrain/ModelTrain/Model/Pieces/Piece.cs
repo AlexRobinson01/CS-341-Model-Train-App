@@ -6,7 +6,7 @@ namespace ModelTrain.Model.Pieces
     /**
      * Description: A container for image data associated with whatever SegmentType is assigned to it
      * Author: Alex Robinson
-     * Last updated: 11/23/2024
+     * Last updated: 11/27/2024
      */
     public class Piece
     {
@@ -31,6 +31,10 @@ namespace ModelTrain.Model.Pieces
             PieceInfo.GetInfo(type, out string name, out string image);
             Name = name;
             Image = image;
+
+            // Default rotation, scale, and offset for this image, also from PieceInfo
+            PieceInfo.GetRSO(type, out float rotation, out float scale, out Vector2 offset);
+            UpdateImageRSO(rotation, scale, offset);
         }
 
         /// <summary>

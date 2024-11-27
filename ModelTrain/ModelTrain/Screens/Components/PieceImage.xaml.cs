@@ -3,6 +3,7 @@ using System.Reflection;
 using SkiaSharp.Views.Maui;
 using ModelTrain.Model.Track;
 using ModelTrain.Model.Pieces;
+using ModelTrain.Services;
 
 namespace ModelTrain.Screens.Components;
 
@@ -21,8 +22,6 @@ public partial class PieceImage : Grid
         if (type is not SegmentType segmentType)
             return;
 
-        // Will be used for retrieving an embedded image for this piece
-        Assembly assembly = GetType().GetTypeInfo().Assembly;
         // Prepare the canvas to be drawn to
         SKCanvas canvas = e.Surface.Canvas;
         canvas.Clear();
@@ -30,13 +29,16 @@ public partial class PieceImage : Grid
         // Uses the ClassId from earlier to determine image data
         Piece piece = new(segmentType);
         string resourceID = piece.Image;
-        using Stream? stream = assembly.GetManifestResourceStream(resourceID);
+        SKBitmap? bmp = ImageFileDecoder.GetBitmapFromFile(this, resourceID);
 
-        if (stream != null)
+        if (bmp != null)
         {
-            // Prepare a bitmap to be drawn to the canvas
-            SKBitmap bmp = SKBitmap.Decode(stream);
             SKRect dest = new(0, 0, e.Info.Width, e.Info.Height);
+
+            // Adjust the canvas with the piece's image info
+            canvas.RotateDegrees(piece.ImageRotation);
+            canvas.Scale(piece.ImageScale);
+            canvas.Translate(piece.ImageOffset.X, piece.ImageOffset.Y);
             // Draw the bitmap on the canvas
             canvas.DrawBitmap(bmp, dest);
         }

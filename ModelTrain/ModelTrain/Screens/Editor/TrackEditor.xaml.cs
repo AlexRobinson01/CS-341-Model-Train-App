@@ -12,7 +12,7 @@ namespace ModelTrain.Screens;
 /**
  * Description: The main track editor page, allows someone to modify the track they have opened
  * Author: Alex Robinson
- * Last updated: 11/24/2024
+ * Last updated: 11/27/2024
  */
 public partial class TrackEditor : ContentPage
 {
@@ -50,7 +50,7 @@ public partial class TrackEditor : ContentPage
 		EditPieces.Text = IconFont.Settings;
 
 		Save.Text = IconFont.Save + " SAVE";
-		ChangeBackground.Text = IconFont.Image + " CHANGE BACKGROUND";
+		ChangeBackground.Text = IconFont.Image + " BACKGROUND";
 		
 		HotbarCollection.ItemsSource = UserHotbar.Pieces;
 
@@ -67,6 +67,9 @@ public partial class TrackEditor : ContentPage
 		// Connecting to the track's OnTrackReload event to detect when it changes
 		project.Track.OnTrackReload += (s, e) => ReloadObjects();
 		ReloadObjects();
+
+		savedTrack = project.Track.GetSegmentsAsString();
+		UpdateSavedIndicator();
 	}
 
 	/// <summary>
@@ -88,11 +91,15 @@ public partial class TrackEditor : ContentPage
 
 	private async void OnBackButtonClicked(object sender, EventArgs e)
     {
-        // Revert to Portrait mode when closing page
-        DeviceOrientation.SetPortrait();
+		bool isSaved = savedTrack == loadedProject.Track.GetSegmentsAsString();
+		if (isSaved || await DisplayPromptAsync("Unsaved Track", "Exit without saving?", "YES", "NO") == "YES")
+		{
+            // Revert to Portrait mode when closing page
+            DeviceOrientation.SetPortrait();
 
-        // Will return to either My Tracks or Shared Tracks depending on how the user got here
-        await Navigation.PopAsync();
+            // Will return to either My Tracks or Shared Tracks depending on how the user got here
+            await Navigation.PopAsync();
+        }
 	}
 
 	private async void OnBackgroundButtonClicked(object sender, EventArgs e)
@@ -105,21 +112,28 @@ public partial class TrackEditor : ContentPage
 	{
 		// TODO: descriptive error messages, functional saving
 		if (businessLogic.SaveProject(loadedProject))
-			await DisplayAlert("Success", "Track saved successfully!", "OK");
+		{
+			savedTrack = loadedProject.Track.GetSegmentsAsString();
+            await DisplayAlert("Success", "Track saved successfully!", "OK");
+        }
 		else
 			await DisplayAlert("Failure", "Track failed to save!", "OK");
+
+		UpdateSavedIndicator();
 	}
 
 	private void OnUndoButtonClicked(object sender, EventArgs e)
 	{
 		actionHandler.Undo();
 		RedrawCanvas();
+		UpdateSavedIndicator();
 	}
 
 	private void OnRedoButtonClicked(object sender, EventArgs e)
 	{
 		actionHandler.Redo();
 		RedrawCanvas();
+		UpdateSavedIndicator();
     }
 
     protected override void OnAppearing()
@@ -168,6 +182,7 @@ public partial class TrackEditor : ContentPage
 		// Marking this in the edit history so it can be returned to later
         actionHandler.AddWaypoint();
         RedrawCanvas();
+		UpdateSavedIndicator();
     }
 
 	/// <summary>
@@ -358,8 +373,11 @@ public partial class TrackEditor : ContentPage
 				draggingObject = null;
 				snappedObject = null;
 				actionHandler.AddWaypoint();
+
+				// Update track and save button with current data
 				RedrawCanvas();
-				break;
+                UpdateSavedIndicator();
+                break;
         }
 
 		// Tell the OS that we would like to receive more touch events (move, release)
@@ -391,25 +409,35 @@ public partial class TrackEditor : ContentPage
 		SKCanvas canvas = e.Surface.Canvas;
 		canvas.Clear();
 
+		
+
 		foreach (TrackObject obj in objects)
 		{
 			// Get the image for this object as an embedded resource
 			string resourceID = obj.BoundPiece.Image;
-            using Stream? stream = assembly.GetManifestResourceStream(resourceID);
+			SKBitmap? bmp = ImageFileDecoder.GetBitmapFromFile(this, resourceID);
 
-            if (stream != null)
+            if (bmp != null)
             {
-				// Prepare a bitmap to be drawn to the canvas
-                SKBitmap bmp = SKBitmap.Decode(stream);
+				// Prepare bitmap data for drawing bmp to the canvas
 				Vector2 size = obj.BoundSegment.Size;
 				Vector2 pos = -size / 2;
+                SKRect dest = new(pos.X, pos.Y, pos.X + size.X, pos.Y + size.Y);
 
-				// Align the canvas's center point where this piece should be rendered and draw the image
-				SKRect dest = new(pos.X, pos.Y, pos.X + size.X, pos.Y + size.Y);
-				canvas.Translate(obj.BoundSegment.X, obj.BoundSegment.Y);
+                // Align the canvas's center point where this piece should be rendered and draw the image
+                canvas.Translate(obj.BoundSegment.X, obj.BoundSegment.Y);
 				// canvas.RotateDegrees applies clockwise, while trig functions apply counterclockwise
 				canvas.RotateDegrees(-obj.BoundSegment.Rotation);
-                canvas.DrawBitmap(bmp, dest);
+				SKMatrix curMatrix = canvas.TotalMatrix;
+
+				// Apply piece image rotation, scale, and offset then draw the bitmap
+				canvas.RotateDegrees(obj.BoundPiece.ImageRotation);
+				canvas.Scale(obj.BoundPiece.ImageScale);
+				canvas.Translate(obj.BoundPiece.ImageOffset.X, obj.BoundPiece.ImageOffset.Y);
+				canvas.DrawBitmap(bmp, dest);
+				
+				// Reset canvas matrix to before image rotation, scale, and offset
+				canvas.SetMatrix(curMatrix);
 
 				// Additional circles should be rendered if an object is being dragged
 				if (draggingObject != null && draggingObject != obj)
@@ -455,6 +483,15 @@ public partial class TrackEditor : ContentPage
 		canvas.ResetMatrix();
     }
 
+	/// <summary>
+	/// Changes the background color of the Save button depending on whether the track is saved
+	/// </summary>
+	private void UpdateSavedIndicator()
+	{
+		bool isSaved = savedTrack == loadedProject.Track.GetSegmentsAsString();
+		Save.BackgroundColor = isSaved ? Colors.Green : Colors.Orange;
+	}
+
 	private int autosaveIndex = 0;
 
 	/// <summary>
@@ -470,8 +507,15 @@ public partial class TrackEditor : ContentPage
 			{
 				// 5 minutes in milliseconds
 				Thread.Sleep(5 * 60000);
+
 				if (index == autosaveIndex)
-					businessLogic.SaveProject(loadedProject);
+				{
+					// Save the track
+					bool success = businessLogic.SaveProject(loadedProject);
+					if (success)
+						savedTrack = loadedProject.Track.GetSegmentsAsString();
+					UpdateSavedIndicator();
+				}
 			}
 		});
 	}

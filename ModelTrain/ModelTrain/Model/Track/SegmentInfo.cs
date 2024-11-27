@@ -5,7 +5,7 @@ namespace ModelTrain.Model.Track
     /**
      * Description: A static method to get the default size, snap length, and angle metrics for a Segment
      * Author: Alex Robinson
-     * Last updated: 11/24/2024
+     * Last updated: 11/27/2024
      */
     public static class SegmentInfo
     {
@@ -26,11 +26,11 @@ namespace ModelTrain.Model.Track
             angles = new Vector2(0, 180 - type switch
             {
                 SegmentType.Straight => 0,
-                SegmentType.Curve15 => 15,
+                //SegmentType.Curve15 => 15,
                 SegmentType.Curve30 => 30,
                 SegmentType.Curve45 => 45,
                 SegmentType.Curve60 => 60,
-                SegmentType.Curve75 => 75,
+                //SegmentType.Curve75 => 75,
                 SegmentType.Curve90 => 90,
                 _ => 0
             }) + new Vector2(90, 90);
