@@ -17,22 +17,29 @@ public partial class Login : ContentPage
     {
         string email = EmailEntry.Text;
         string password = PasswordEntry.Text;
+
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
             await DisplayAlert("Error", "Must input values to login. Please try again.", "OK");
-        } else
+        }
+        else
         {
-            if(await BusinessLogic.Instance.ValidateLoginInput(email, password))
+            if (await BusinessLogic.Instance.ValidateLoginInput(email, password))
             {
-                //ADD LOGIN FUNCTIONALITY HERE
-                await Navigation.PushAsync(new HomeScreen());
-            } else
+                // Save credentials securely
+                SecureStorage.SetAsync("UserEmail", email);
+                SecureStorage.SetAsync("UserPassword", password);
+
+                // Navigate to the Home Screen
+                Application.Current.MainPage = new NavigationPage(new HomeScreen());
+            }
+            else
             {
                 await DisplayAlert("Error", "Invalid email or password. Please try again.", "OK");
             }
-            
         }
     }
+
 
     private async void OnCreateAccountClicked(object sender, EventArgs e)
     {
