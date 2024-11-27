@@ -62,6 +62,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="DefaultImages\piece_30curve.png" />
+	  <None Remove="DefaultImages\piece_45curve.png" />
+	  <None Remove="DefaultImages\piece_60curve.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="DefaultImages\piece_30curve.png" />
+	  <EmbeddedResource Include="DefaultImages\piece_45curve.png" />
+	  <EmbeddedResource Include="DefaultImages\piece_60curve.png" />
 	  <EmbeddedResource Include="DefaultImages\piece_90curve.png" />
 	  <EmbeddedResource Include="DefaultImages\piece_straight.png" />
 	</ItemGroup>
