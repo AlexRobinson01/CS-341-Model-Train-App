@@ -49,7 +49,6 @@
         </Grid>
         
         <!-- Piece catalog -->
-        <!-- TODO: try to make draggable in later iteration -->
         <Grid
             Grid.Row="1"
             Grid.Column="0"

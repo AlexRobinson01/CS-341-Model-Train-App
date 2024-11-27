@@ -18,6 +18,8 @@ namespace ModelTrain.Model.Track
         public float Y { get; set; }
         // This segment's rotation in degrees
         public int Rotation { get; set; }
+        // This segment's rotation in radians (derived from degrees), readonly
+        public float RotationRads => MathF.PI * Rotation / 180f;
 
         // The Segments this one is snapped to, or null if nothing is snapped to a side
         public Segment? SnappedStartSegment { get; set; }

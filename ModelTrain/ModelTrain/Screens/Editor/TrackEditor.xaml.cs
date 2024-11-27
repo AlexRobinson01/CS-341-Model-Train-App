@@ -37,6 +37,9 @@ public partial class TrackEditor : ContentPage
 	// The list of currently placed TrackObjects
 	private readonly List<TrackObject> objects = new();
 
+	// The currently saved track string to compare against for an unsaved track indicator
+	private string savedTrack;
+
 	// TODO: generalize project to allow both PersonalProjects and SharedProjects
 	public TrackEditor(PersonalProject? project = null)
 	{
@@ -124,9 +127,18 @@ public partial class TrackEditor : ContentPage
         base.OnAppearing();
         // Force Landscape mode when opening page
         DeviceOrientation.SetLandscape();
+		// Begin autosave loop
+		BeginAutosave();
     }
 
-	// Keeping track of various object states to determine how a user is interacting with a TrackObject
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+		// Disable autosave loop for the current track
+		autosaveIndex++;
+    }
+
+    // Keeping track of various object states to determine how a user is interacting with a TrackObject
     private TrackObject? draggingObject;
 	private TrackObject? selectedObject;
 	private TrackObject? snappedObject;
@@ -186,28 +198,26 @@ public partial class TrackEditor : ContentPage
 	/// or null if no valid snap points exist</returns>
 	private static Vector2? GetSnapLocation(TrackObject toSnap, TrackObject snapTo, out bool isSnapToStartCloser, out bool isToSnapStartCloser)
 	{
-		// Lots of vectors and math to determine where the snap points are on a piece and whether they can be snapped to
-		Vector2 snapToStartOffset = snapTo.BoundSegment.StartSnapOffset;
-		Vector2 snapToEndOffset = snapTo.BoundSegment.EndSnapOffset;
+		// Lots of vectors and matrices to determine where the snap points are on a piece and whether they can be snapped to
+		Matrix3x2 snapToRotation = Matrix3x2.CreateRotation(-snapTo.BoundSegment.RotationRads);
+		Vector2 snapToStartOffset = Vector2.Transform(snapTo.BoundSegment.StartSnapOffset, snapToRotation);
+		Vector2 snapToEndOffset = Vector2.Transform(snapTo.BoundSegment.EndSnapOffset, snapToRotation);
 
-        Vector2 snapToPos = new(snapTo.BoundSegment.X, snapTo.BoundSegment.Y);
-        Vector2 snapToStart = snapToStartOffset + snapToPos;
-        Vector2 snapToEnd = snapToEndOffset + snapToPos;
-        Vector2 snapToRotation = snapTo.BoundSegment.SnapRotationOffset;
-		snapToRotation += Vector2.One * snapTo.BoundSegment.Rotation;
+		Vector2 snapToPos = new(snapTo.BoundSegment.X, snapTo.BoundSegment.Y);
+		Vector2 snapToStart = snapToPos + snapToStartOffset;
+		Vector2 snapToEnd = snapToPos + snapToEndOffset;
+
+		Matrix3x2 toSnapRotation = Matrix3x2.CreateRotation(-toSnap.BoundSegment.RotationRads);
+		Vector2 toSnapStartOffset = Vector2.Transform(toSnap.BoundSegment.StartSnapOffset, toSnapRotation);
+		Vector2 toSnapEndOffset = Vector2.Transform(toSnap.BoundSegment.EndSnapOffset, toSnapRotation);
 
 		Vector2 toSnapPos = new(toSnap.BoundSegment.X, toSnap.BoundSegment.Y);
-        Vector2 toSnapRotation = toSnap.BoundSegment.SnapRotationOffset;
-		toSnapRotation += Vector2.One * toSnap.BoundSegment.Rotation;
+		Vector2 toSnapStart = toSnapPos + toSnapStartOffset;
+		Vector2 toSnapEnd = toSnapPos + toSnapEndOffset;
 
         isSnapToStartCloser = (toSnapPos - snapToEnd).Length() > (toSnapPos - snapToStart).Length();
         Vector2 snapLocation = isSnapToStartCloser ? snapToStart + snapToStartOffset : snapToEnd + snapToEndOffset;
-
-        float rotationOffset = isSnapToStartCloser ? snapToRotation.X : snapToRotation.Y;
-        float startRotation = (rotationOffset - toSnapRotation.X) % 360;
-        float endRotation = (rotationOffset - toSnapRotation.Y) % 360;
-
-        isToSnapStartCloser = Math.Abs(endRotation) > Math.Abs(startRotation);
+		isToSnapStartCloser = (snapLocation - toSnapEnd).Length() > (snapLocation - toSnapStart).Length();
 
 		// Ensuring there isn't already something snapped to the nearest snap point
 		if (isSnapToStartCloser && snapTo.BoundSegment.SnappedStartSegment != null)
@@ -232,25 +242,27 @@ public partial class TrackEditor : ContentPage
         TrackObject? minDistObject = null;
         double minDist = double.MaxValue;
 
-        foreach (TrackObject obj in objects)
-        {
-			if (obj == exclude)
-				continue;
+		// Iterating in reverse so objects placed later have greater priority
+		for (int i = objects.Count; i > 0; i--)
+		{
+			TrackObject obj = objects[i - 1];
+            if (obj == exclude)
+                continue;
 
-			// Ensure this object can be snapped to if an object to exclude was given
-			if (exclude != null)
-			{
-				Segment? snappedStart = obj.BoundSegment.SnappedStartSegment;
-				Segment? snappedEnd = obj.BoundSegment.SnappedEndSegment;
+            // Ensure this object can be snapped to if an object to exclude was given
+            if (exclude != null)
+            {
+                Segment? snappedStart = obj.BoundSegment.SnappedStartSegment;
+                Segment? snappedEnd = obj.BoundSegment.SnappedEndSegment;
 
-				if (snappedStart != null && snappedEnd != null)
-					continue;
-			}
+                if (snappedStart != null && snappedEnd != null)
+                    continue;
+            }
 
             SKPoint objectPos = new(obj.BoundSegment.X, obj.BoundSegment.Y);
             double distance = (objectPos - pos).Length;
 
-			// Checking the distance against the width of the segment as a sort of hitbox
+            // Checking the distance against the width of the segment as a sort of hitbox
             if (distance < obj.BoundSegment.Size.X && distance < minDist)
             {
                 minDistObject = obj;
@@ -318,15 +330,15 @@ public partial class TrackEditor : ContentPage
 						Vector2 snapRotationOffset = snappedObject.BoundSegment.SnapRotationOffset;
 						Vector2 dragRotationOffset = draggingObject.BoundSegment.SnapRotationOffset;
 						// TODO: fix rotation math
-						float rotation = snappedObject.BoundSegment.Rotation + snapRotationOffset.Y + dragRotationOffset.X;
-
-						if (!isDragStartCloser)
-							rotation += dragRotationOffset.Y - dragRotationOffset.X;
+						float snapRotation = isStartCloser ? snapRotationOffset.X : snapRotationOffset.Y;
+						float rotation = snappedObject.BoundSegment.Rotation - snapRotation;
+						rotation -= isDragStartCloser ? dragRotationOffset.X : dragRotationOffset.Y;
 						rotation %= 360;
 
 						// Snap the dragged object by position/rotation to the snap location
 						draggingObject.MoveTo(snapLocation?.X ?? 0, snapLocation?.Y ?? 0);
-						draggingObject.Rotate((int)rotation);
+						// Rotation not yet working
+						//draggingObject.Rotate((int)rotation);
 
 						// Snap the snapped object to the dragged one on whichever end is applicable
 						if (isStartCloser)
@@ -395,7 +407,8 @@ public partial class TrackEditor : ContentPage
 				// Align the canvas's center point where this piece should be rendered and draw the image
 				SKRect dest = new(pos.X, pos.Y, pos.X + size.X, pos.Y + size.Y);
 				canvas.Translate(obj.BoundSegment.X, obj.BoundSegment.Y);
-				canvas.RotateDegrees(obj.BoundSegment.Rotation);
+				// canvas.RotateDegrees applies clockwise, while trig functions apply counterclockwise
+				canvas.RotateDegrees(-obj.BoundSegment.Rotation);
                 canvas.DrawBitmap(bmp, dest);
 
 				// Additional circles should be rendered if an object is being dragged
@@ -441,4 +454,25 @@ public partial class TrackEditor : ContentPage
 		// Just in case some residual changes in the canvas's matrix could carry over to another draw
 		canvas.ResetMatrix();
     }
+
+	private int autosaveIndex = 0;
+
+	/// <summary>
+	/// Begins a 5 minute autosave loop running on a separate thread
+	/// </summary>
+	private void BeginAutosave()
+	{
+		int index = ++autosaveIndex;
+
+		Task.Run(() =>
+		{
+			while (index == autosaveIndex)
+			{
+				// 5 minutes in milliseconds
+				Thread.Sleep(5 * 60000);
+				if (index == autosaveIndex)
+					businessLogic.SaveProject(loadedProject);
+			}
+		});
+	}
 }
