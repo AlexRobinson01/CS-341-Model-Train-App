@@ -7,6 +7,26 @@ Proposal:
 
 We plan to communicate via Discord, and meet in-person after each class (Tuesday and Thursday, around 4:30 until whenever the meeting concludes).
 
+Existing account details: userid - "admin", pwd - "1234"
+
+Sprint 4 promised tasks (with a checkmark by those that are completed):
+
+- Implement personalized account screen so account info reflects user ✅
+- Populate personal projects from database for specific user ✅
+- Test all functionality ✅
+- Write comments ✅
+- Add delete project functionality for PersonalProjects ✅
+- Use bcrypt to add more secure authentication
+- Implement rendering track pieces to the editor canvas ✅
+- Implement snapping track pieces together by position ✅
+- Add functionality for the Piece Catalog screen ✅
+- Add functionality for the Piece Editor screen
+- Finish functionality for dragging pieces around the editor canvas ✅
+- Finish creating images for basic track pieces
+- Implement saving/loading of a local settings file with user preferences ✅
+- Add consistent autosave functionality to the track editor (async) ✅
+- Implement camera functionality for track editor background
+
 Sprint 3 Changes
 - Implemented credential validation for login/create account screens :)
 - Created drag/drop functionality for pieces on the track editor (currently not rendered, will be finished next sprint following the addition of piece images) :) :)
