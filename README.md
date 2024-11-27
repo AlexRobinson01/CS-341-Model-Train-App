@@ -22,7 +22,7 @@ Sprint 4 promised tasks (with a checkmark by those that are completed):
 - Add functionality for the Piece Catalog screen ✅
 - Add functionality for the Piece Editor screen
 - Finish functionality for dragging pieces around the editor canvas ✅
-- Finish creating images for basic track pieces
+- Finish creating images for basic track pieces ✅
 - Implement saving/loading of a local settings file with user preferences ✅
 - Add consistent autosave functionality to the track editor (async) ✅
 - Implement camera functionality for track editor background
