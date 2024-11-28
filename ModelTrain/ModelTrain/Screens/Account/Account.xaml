@@ -50,6 +50,18 @@
                                 TextColor="Black"
                                 BorderWidth="1"
                                 Clicked="OnChangePasswordButtonClicked"/>
+                        <!-- Dark Mode Toggle -->
+                        <StackLayout Orientation="Horizontal"
+                                        HorizontalOptions="Center"
+                                        Spacing="10">
+                                <Label
+                                        Text="Dark Mode"
+                                        VerticalOptions="Center"
+                                        FontSize="16"/>
+                                <Switch
+                                        x:Name="DarkModeSwitch"
+                                        Toggled="OnDarkModeSwitchToggled"/>
+                        </StackLayout>
                         <Button
                                 Text="Log Out"
                                 HorizontalOptions="FillAndExpand"

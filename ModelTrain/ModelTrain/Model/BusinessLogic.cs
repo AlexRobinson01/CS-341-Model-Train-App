@@ -1,18 +1,46 @@
-﻿namespace ModelTrain.Model
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+namespace ModelTrain.Model
 {
     public class BusinessLogic : IBusinessLogic
     {
         private IDatabase Database { get; set; }
+        // Static instance of BusinessLogic
+        private static BusinessLogic _instance;
+        // Lock object for thread safety
+        private static readonly object _lock = new object();
+        private String email = "";
 
         public BusinessLogic()
         {
             Database = new Database();
         }
 
-        // Get user with email
-        public User GetUserFromEmail(String email)
+        // Public method to get the single instance of BusinessLogic
+        public static BusinessLogic Instance
         {
-            User userToGet = Database.GetUser(email);
+            get
+            {
+                // Use double-checked locking to ensure thread safety
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new BusinessLogic();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        // Get user with email
+        public User GetUserFromEmail()
+        {
+            User userToGet = Database.GetUser(this.email);
             if (userToGet != null)
             {
                 return userToGet;
@@ -40,6 +68,7 @@
             {
                 return false;
             }
+            this.email = email;
             return true;
         }
 
@@ -53,6 +82,29 @@
             }
             return false;
             
+        }
+
+        public async Task<bool> DeleteProjectById(String projectId)
+        {
+            if (await Database.DeletePersonalProject(projectId) && await Database.RemoveProjectFromUsersAsync(projectId))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<List<Guid>> GetUserProjects()
+        {
+            List<Guid> userProjects = new List<Guid>();
+            userProjects = await Database.GetUserProjectIdsAsync(this.email);
+            return userProjects;
+        }
+
+        public async Task<List<PersonalProject>> GetProjectsByIds(List<Guid> projectIds)
+        {
+            List<PersonalProject> userProjects = new List<PersonalProject>();
+            userProjects = await Database.GetProjectsByIdsAsync(projectIds);
+            return userProjects;
         }
 
     }

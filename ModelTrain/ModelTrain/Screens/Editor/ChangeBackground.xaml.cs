@@ -20,7 +20,7 @@ public partial class ChangeBackground : ContentPage
         //Logic
         if (MediaPicker.Default.IsCaptureSupported)
         {
-            FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
+            FileResult? photo = await MediaPicker.Default.CapturePhotoAsync();
 
             if (photo != null)
             {
@@ -39,7 +39,7 @@ public partial class ChangeBackground : ContentPage
     private async void OnGalleryButtonClicked(object sender, EventArgs e)
     {
         //Logic
-        FileResult photo = await MediaPicker.Default.PickPhotoAsync();
+        FileResult? photo = await MediaPicker.Default.PickPhotoAsync();
 
         if (photo != null)
         {
@@ -58,11 +58,5 @@ public partial class ChangeBackground : ContentPage
     {
         base.OnAppearing();
         DeviceOrientation.SetLandscape();
-    }
-
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-        DeviceOrientation.SetPortrait();
     }
 }

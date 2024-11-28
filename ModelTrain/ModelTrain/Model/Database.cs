@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Data;
+using System.Text.Json;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace ModelTrain.Model
 {
@@ -158,6 +160,157 @@ namespace ModelTrain.Model
 
             // Return false if email not found or password doesn't match
             return false;
+        }
+
+        public async Task<bool> DeletePersonalProject(string projectId)
+        {
+            const string query = "DELETE FROM projects WHERE projectid = @ProjectId;";
+
+            try
+            {
+                await using (var connection = new NpgsqlConnection(connString))
+                {
+                    await connection.OpenAsync();
+
+                    await using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        // Set the parameter type to DbType.Guid for UUID compatibility
+                        command.Parameters.Add(new NpgsqlParameter("@ProjectId", DbType.Guid)
+                        {
+                            Value = Guid.Parse(projectId) // Convert the string to a Guid
+                        });
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                        return rowsAffected > 0; // True if a row was deleted
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting the project: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<bool> RemoveProjectFromUsersAsync(string projectId)
+        {
+            const string query = @"
+        UPDATE users
+        SET projects = array_remove(projects, @ProjectId)
+        WHERE @ProjectId = ANY(projects);";
+
+            try
+            {
+                await using (var connection = new NpgsqlConnection(connString))
+                {
+                    await connection.OpenAsync();
+
+                    await using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        // Set the parameter type to DbType.Guid for UUID compatibility
+                        command.Parameters.Add(new NpgsqlParameter("@ProjectId", DbType.Guid)
+                        {
+                            Value = Guid.Parse(projectId) // Convert the string to a Guid
+                        });
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                        return rowsAffected > 0; // Returns true if any rows were updated
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while removing the project from users: {ex.Message}");
+                throw;
+            }
+        }
+
+        // Method to get the user's list of project IDs from the users table
+        public async Task<List<Guid>> GetUserProjectIdsAsync(string email)
+        {
+            const string query = "SELECT projects FROM users WHERE email = @Email;";
+
+            try
+            {
+                using (var connection = new NpgsqlConnection(connString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.Add(new NpgsqlParameter("@Email", NpgsqlTypes.NpgsqlDbType.Varchar) { Value = email });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                var projects = reader["projects"] as Guid[];
+                                return projects?.ToList() ?? new List<Guid>();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while fetching the user's projects: {ex.Message}");
+                throw;
+            }
+
+            return new List<Guid>();
+        }
+
+        // Method to get project details based on the list of project IDs
+        public async Task<List<PersonalProject>> GetProjectsByIdsAsync(List<Guid> projectIds)
+        {
+            var projects = new List<PersonalProject>();
+
+            if (projectIds.Count == 0)
+                return projects;
+
+            var query = "SELECT projectid, projectname, datecreated FROM projects WHERE projectid = ANY(@ProjectIds);";
+
+            try
+            {
+                using (var connection = new NpgsqlConnection(connString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        // Use NpgsqlDbType.Array for PostgreSQL arrays
+                        command.Parameters.Add(new NpgsqlParameter("@ProjectIds", NpgsqlDbType.Uuid | NpgsqlDbType.Array)
+                        {
+                            Value = projectIds.ToArray()
+                        });
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                var project = new PersonalProject
+                                {
+                                    ProjectID = reader.GetGuid(reader.GetOrdinal("projectid")).ToString(),
+                                    ProjectName = reader.GetString(reader.GetOrdinal("projectname")),
+                                    DateCreated = reader.GetDateTime(reader.GetOrdinal("datecreated")).ToString("MM/dd/yyyy"),
+                                    Track = new Model.Track.TrackBase() // Fetch track data if necessary
+                                };
+
+                                projects.Add(project);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while fetching the projects: {ex.Message}");
+                throw;
+            }
+
+            return projects;
         }
     }
 }

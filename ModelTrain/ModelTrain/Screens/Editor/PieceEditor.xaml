@@ -4,12 +4,12 @@
              x:Class="ModelTrain.Screens.PieceEditor"
              NavigationPage.HasNavigationBar="False"
              Title="">
-    
+
     <!-- Vertical alignment - main and misc buttons rows -->
     <Grid
         RowDefinitions="3*,*"
         ColumnDefinitions="*">
-        
+
         <!-- Piece image and rotation buttons -->
         <Frame
             Grid.Row="0"
@@ -17,7 +17,7 @@
             Padding="0"
             BorderColor="Gray"
             CornerRadius="0">
-            
+
             <!-- Grid for alignment -->
             <Grid
                 RowDefinitions="*"
@@ -27,7 +27,7 @@
                     Grid.Column="1"
                     RowDefinitions="*"
                     ColumnDefinitions="*,4*,*">
-                    
+
                     <!-- Rotate counterclockwise button -->
                     <Button
                         x:Name="RotateCCW"
@@ -39,24 +39,24 @@
                         Style="{x:StaticResource GoogleFont}"
                         FontSize="16"
                         HeightRequest="60">
-                        
+
                     </Button>
-                    
+
                     <!-- Piece image label -->
                     <!-- TODO: make draggable and zoomable in later iteration -->
-                    <Label
+                    <!-- Piece image with rotation functionality -->
+                    <Image
+                        x:Name="PieceImage"
                         Grid.Row="0"
                         Grid.Column="1"
                         Margin="10"
-                        Padding="0"
-                        FontSize="16"
-                        HorizontalTextAlignment="Center"
-                        VerticalTextAlignment="Center"
+                        Aspect="AspectFit"
                         BackgroundColor="DarkCyan"
-                        TextColor="White">
-                        Piece Image; Can pan/zoom
-                    </Label>
-                    
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+
+
+
                     <!-- Rotate clockwise button -->
                     <Button
                         x:Name="RotateCW"
@@ -73,14 +73,14 @@
                 </Grid>
             </Grid>
         </Frame>
-        
+
         <!-- Horizontal alignment - misc buttons -->
         <Grid
             Grid.Row="1"
             Grid.Column="0"
             RowDefinitions="*"
             ColumnDefinitions="2*,3*,2*">
-            
+
             <!-- Confirm button with frame as padding and border -->
             <Frame
                 Grid.Row="0"
@@ -97,7 +97,7 @@
 
                 </Button>
             </Frame>
-            
+
             <!-- Change image button with frame as padding and border -->
             <Frame
                 Grid.Row="0"
@@ -113,7 +113,7 @@
 
                 </Button>
             </Frame>
-            
+
             <!-- Cancel button with frame as padding and border -->
             <Frame
                 Grid.Row="0"

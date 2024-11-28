@@ -1,3 +1,4 @@
+using ModelTrain.Model;
 namespace ModelTrain.Screens;
 
 /*
@@ -10,18 +11,39 @@ public partial class PersonalProjects : ContentPage
     public PersonalProjects()
     {
         InitializeComponent();
+        FetchPersonalProjects();
 
-        collectionView.ItemsSource = new List<PersonalProject>
-        {
-        new PersonalProject { ProjectName = "Project 1", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0001", Track = new Model.Track.TrackBase()},
-        new PersonalProject { ProjectName = "Project 2", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0002", Track = new Model.Track.TrackBase()},
-        new PersonalProject { ProjectName = "Project 3", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0003", Track = new Model.Track.TrackBase()},
-        new PersonalProject { ProjectName = "Project 4", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0004", Track = new Model.Track.TrackBase()}
-        };
+        //collectionView.ItemsSource = new List<PersonalProject>
+        //{
+        //new PersonalProject { ProjectName = "Project 1", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0001", Track = new Model.Track.TrackBase()},
+        //new PersonalProject { ProjectName = "Project 2", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0002", Track = new Model.Track.TrackBase()},
+        //new PersonalProject { ProjectName = "Project 3", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0003", Track = new Model.Track.TrackBase()},
+        //new PersonalProject { ProjectName = "Project 4", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0004", Track = new Model.Track.TrackBase()}
+        //};
     }
 
     private PersonalProject _selectedProject;
     private Frame _selectedFrame;
+
+    private async void FetchPersonalProjects()
+    {
+        // Get the list of project IDs from the user's record in the users table
+        var projectIds = await BusinessLogic.Instance.GetUserProjects();
+
+        if (projectIds.Any())
+        {
+            // Fetch project details from the projects table based on the project IDs
+            var projects = await BusinessLogic.Instance.GetProjectsByIds(projectIds);
+
+            // Set the projects as the ItemsSource of the CollectionView
+            collectionView.ItemsSource = projects;
+        }
+        else
+        {
+            // If the user has no projects, show a message or handle as necessary
+            await DisplayAlert("No Projects", "You have no projects to display.", "OK");
+        }
+    }
 
     private async void OnProjectTapped(object sender, EventArgs e)
     {
@@ -71,4 +93,30 @@ public partial class PersonalProjects : ContentPage
         Application.Current.MainPage = new NavigationPage(new HomeScreen());
     }
 
+    private async void OnDeleteIconTapped(object sender, EventArgs e)
+    {
+        // Confirm deletion
+        var confirmed = await DisplayAlert("Delete Project", "Are you sure you want to delete this project?", "Yes", "No");
+        if (!confirmed) return;
+
+        // Get the tapped icon's bound project
+        if (sender is Label label && label.BindingContext is PersonalProject projectToDelete)
+        {
+            // Call business logic to delete the project
+            if (await BusinessLogic.Instance.DeleteProjectById(projectToDelete.ProjectID))
+            {
+                // Remove the project from the UI
+                var items = (List<PersonalProject>)collectionView.ItemsSource;
+                items.Remove(projectToDelete);
+                collectionView.ItemsSource = null; // Refresh UI
+                collectionView.ItemsSource = items;
+
+                await DisplayAlert("Deleted", $"Project {projectToDelete.ProjectName} has been deleted.", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Error", "Failed to delete project", "Close");
+            }
+        }
+    }
 }

@@ -1,12 +1,15 @@
 ﻿using ModelTrain.Model.Pieces;
 using ModelTrain.Model.Settings;
-using ModelTrain.Model.Track;
-using System.Collections.ObjectModel;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace ModelTrain.Model
 {
+    /**
+     * Description: An implementation of ILocalDatabase with a settings file and default hotbar
+     * Author: Alex Robinson
+     * Last updated: 11/24/2024
+     */
     public class LocalDatabase : ILocalDatabase
     {
         private readonly Dictionary<string, SettingBase> userSettings = new();
@@ -20,17 +23,22 @@ namespace ModelTrain.Model
             // TODO: load settings, properly fill hotbar
         }
 
-        private static string EncodeEmail(string email)
+        /// <summary>
+        /// Used for separating different profiles based on user email
+        /// without putting the email in plain text into the file
+        /// (May switch to bcrypt or something if necessary, currently using SHA1 hash)
+        /// </summary>
+        /// <param name="email">The email to hash</param>
+        /// <returns>The SHA1 hash of the given email</returns>
+        private static string HashEmail(string email)
         {
-            // Used for separating different profiles based on user email
-            // without putting the email in plain text into the file
             byte[] hash = SHA1.HashData(Encoding.UTF8.GetBytes(email));
             return Convert.ToBase64String(hash);
         }
 
         public bool SaveToFile()
         {
-            // TODO: save data to file (toml?)
+            // TODO: save data to file (json)
 
             try
             {
@@ -45,7 +53,7 @@ namespace ModelTrain.Model
 
         public bool LoadFromFile()
         {
-            // TODO: load data from file (toml?)
+            // TODO: load data from file (json)
 
             try
             {
@@ -64,7 +72,7 @@ namespace ModelTrain.Model
 
             try
             {
-                string user = EncodeEmail(email);
+                string user = HashEmail(email);
 
                 return true;
             }
