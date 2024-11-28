@@ -16,16 +16,16 @@ Sprint 4 promised tasks (with a checkmark by those that are completed):
 - Test all functionality ✅
 - Write comments ✅
 - Add delete project functionality for PersonalProjects ✅
-- Use bcrypt to add more secure authentication
+- Use bcrypt to add more secure authentication - This will be done next sprint, a severe bit of life chaos cropped up in the middle of the sprint for the member this was assigned to so it was effectively put on hold while that gets sorted out
 - Implement rendering track pieces to the editor canvas ✅
 - Implement snapping track pieces together by position ✅
 - Add functionality for the Piece Catalog screen ✅
-- Add functionality for the Piece Editor screen
+- Add functionality for the Piece Editor screen - This will be finished early next sprint, it's almost done but requires a bit of coordination with other components that weren't done until close to the end of the sprint so it wasn't quite ready for this one
 - Finish functionality for dragging pieces around the editor canvas ✅
 - Finish creating images for basic track pieces ✅
 - Implement saving/loading of a local settings file with user preferences ✅
 - Add consistent autosave functionality to the track editor (async) ✅
-- Implement camera functionality for track editor background
+- Implement camera functionality for track editor background - Same reasoning as the task for bcrypt authentication, it will be done next sprint
 
 Sprint 3 Changes
 - Implemented credential validation for login/create account screens :)
