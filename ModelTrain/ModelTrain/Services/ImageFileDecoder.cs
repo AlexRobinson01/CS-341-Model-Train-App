@@ -10,13 +10,13 @@ namespace ModelTrain.Services
      */
     public static class ImageFileDecoder
     {
-        public static SKBitmap? GetBitmapFromFile(object sender, string path)
+        public static SKBitmap? GetBitmapFromFile(string path)
         {
-            Stream? stream;
+            Stream? stream = null;
 
             if (File.Exists(path))
                 stream = File.OpenRead(path);
-            else
+            else if (!string.IsNullOrWhiteSpace(path))
             {
                 // Retrieve an embedded file from the path
                 Assembly assembly = Assembly.GetExecutingAssembly();

@@ -12,7 +12,7 @@ namespace ModelTrain.Model.Pieces
     {
         public SegmentType SegmentType { get; private set; }
         public string Name { get; private set; }
-        public string Image { get; private set; }
+        public string Image { get; set; }
 
         // Image metrics that define how the image will be rendered on buttons and the track
         public float ImageRotation { get; private set; }

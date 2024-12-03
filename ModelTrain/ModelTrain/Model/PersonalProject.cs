@@ -11,6 +11,7 @@ namespace ModelTrain
         public string? LastEditor { get; set; }
         public string? Size { get; set; }
         public string[]? Collaborators { get; set; }
+        public string? BackgroundImage { get; set; }
 
         public TrackBase Track { get; set; }
     }

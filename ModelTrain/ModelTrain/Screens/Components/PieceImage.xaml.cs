@@ -1,5 +1,4 @@
 using SkiaSharp;
-using System.Reflection;
 using SkiaSharp.Views.Maui;
 using ModelTrain.Model.Track;
 using ModelTrain.Model.Pieces;
@@ -29,7 +28,7 @@ public partial class PieceImage : Grid
         // Uses the ClassId from earlier to determine image data
         Piece piece = new(segmentType);
         string resourceID = piece.Image;
-        SKBitmap? bmp = ImageFileDecoder.GetBitmapFromFile(this, resourceID);
+        SKBitmap? bmp = ImageFileDecoder.GetBitmapFromFile(resourceID);
 
         if (bmp != null)
         {

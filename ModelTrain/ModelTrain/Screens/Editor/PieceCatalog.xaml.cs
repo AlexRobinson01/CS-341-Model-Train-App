@@ -35,7 +35,7 @@ public partial class PieceCatalog : ContentPage
 	private async void OnEditButtonClicked(object sender, EventArgs e)
 	{
 		// Opens Piece Editor
-		await Navigation.PushAsync(new PieceEditor());
+		await Navigation.PushAsync(new PieceEditor(defaultPieces[2]));
 	}
 
 	private async void OnBackButtonClicked(object sender, EventArgs e)
@@ -67,13 +67,13 @@ public partial class PieceCatalog : ContentPage
 
 	private void OnRotateLeftButtonClicked(object sender, EventArgs e)
 	{
-		defaultPieces.RotateLeft();
+		defaultPieces.RotateRight();
         RedrawPieces();
 	}
 
 	private void OnRotateRightButtonClicked(object sender, EventArgs e)
 	{
-		defaultPieces.RotateRight();
+		defaultPieces.RotateLeft();
         RedrawPieces();
 	}
 

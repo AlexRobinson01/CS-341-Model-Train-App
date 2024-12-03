@@ -5,7 +5,6 @@ using ModelTrain.Services;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using System.Numerics;
-using System.Reflection;
 
 namespace ModelTrain.Screens;
 
@@ -92,7 +91,7 @@ public partial class TrackEditor : ContentPage
 	private async void OnBackButtonClicked(object sender, EventArgs e)
     {
 		bool isSaved = savedTrack == loadedProject.Track.GetSegmentsAsString();
-		if (isSaved || await DisplayPromptAsync("Unsaved Track", "Exit without saving?", "YES", "NO") == "YES")
+		if (isSaved || await DisplayAlert("Unsaved Track", "Exit without saving?", "YES", "NO"))
 		{
             // Revert to Portrait mode when closing page
             DeviceOrientation.SetPortrait();
@@ -345,15 +344,16 @@ public partial class TrackEditor : ContentPage
 						Vector2 snapRotationOffset = snappedObject.BoundSegment.SnapRotationOffset;
 						Vector2 dragRotationOffset = draggingObject.BoundSegment.SnapRotationOffset;
 						// TODO: fix rotation math
+						// Gets the degree of rotation to snap the dragged object to - took a *lot* of trial and error
 						float snapRotation = isStartCloser ? snapRotationOffset.X : snapRotationOffset.Y;
-						float rotation = snappedObject.BoundSegment.Rotation - snapRotation;
-						rotation -= isDragStartCloser ? dragRotationOffset.X : dragRotationOffset.Y;
-						rotation %= 360;
+						float rotation = snappedObject.BoundSegment.Rotation - snapRotation - dragRotationOffset.X;
+						if (isDragStartCloser) // not yet working
+							rotation += 2 * (180 - dragRotationOffset.Y) - dragRotationOffset.X;
+						rotation = rotation % 360;
 
 						// Snap the dragged object by position/rotation to the snap location
 						draggingObject.MoveTo(snapLocation?.X ?? 0, snapLocation?.Y ?? 0);
-						// Rotation not yet working
-						//draggingObject.Rotate((int)rotation);
+						draggingObject.Rotate((int)rotation);
 
 						// Snap the snapped object to the dragged one on whichever end is applicable
 						if (isStartCloser)
@@ -403,19 +403,23 @@ public partial class TrackEditor : ContentPage
     {
 		// This method fires when the canvas needs to be redrawn
 
-		// Will be used for retrieving embedded images for track objects
-        Assembly assembly = GetType().GetTypeInfo().Assembly;
         // Prepare the canvas to be drawn to
 		SKCanvas canvas = e.Surface.Canvas;
 		canvas.Clear();
 
-		
+		// Draw background on the canvas
+		SKRect canvasRect = new(0, 0, e.Info.Width, e.Info.Height);
+		SKBitmap? bkgd = ImageFileDecoder.GetBitmapFromFile(loadedProject.BackgroundImage ?? "");
 
+		if (bkgd != null)
+			canvas.DrawBitmap(bkgd, canvasRect);
+
+		// Draw each track piece on the canvas
 		foreach (TrackObject obj in objects)
 		{
 			// Get the image for this object as an embedded resource
 			string resourceID = obj.BoundPiece.Image;
-			SKBitmap? bmp = ImageFileDecoder.GetBitmapFromFile(this, resourceID);
+			SKBitmap? bmp = ImageFileDecoder.GetBitmapFromFile(resourceID);
 
             if (bmp != null)
             {
