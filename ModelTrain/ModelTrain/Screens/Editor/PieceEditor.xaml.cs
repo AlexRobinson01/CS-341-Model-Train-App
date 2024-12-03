@@ -2,6 +2,7 @@ using ModelTrain.Model;
 using ModelTrain.Services;
 using Microsoft.Maui.Storage;
 using Microsoft.Maui.Controls;
+using ModelTrain.Model.Pieces;
 
 namespace ModelTrain.Screens;
 
@@ -16,10 +17,11 @@ public partial class PieceEditor : ContentPage
 	// Store the path and rotation state
 	private string _selectedImagePath;
 	private double _currentRotation = 0;
-
-	public PieceEditor()
+	private readonly Piece _piece;
+	public PieceEditor(Piece piece)
 	{
 		InitializeComponent();
+		_piece = piece;
 
 		RotateCCW.Text = IconFont.Rotate_left + " CCW";
 		RotateCW.Text = IconFont.Rotate_right + " CW";
@@ -90,6 +92,8 @@ public partial class PieceEditor : ContentPage
 		if (!string.IsNullOrEmpty(_selectedImagePath))
 		{
 			await DisplayAlert("Success", "Track piece updated locally.", "OK");
+			Preferences.Set($"{_piece.Name}_rotation", _currentRotation);
+			Preferences.Set(_piece.Name, _selectedImagePath);
 		}
 		else
 		{
