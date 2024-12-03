@@ -31,7 +31,8 @@ namespace ModelTrain.Model.Pieces
                 _ => ""
             };
 
-            image = type switch
+            string? preference = Preferences.Get(name, null);
+            image = preference ?? type switch
             {
                 SegmentType.Straight => "piece_straight.png",
                 //SegmentType.Curve15 => "piece_15curve.png",
@@ -43,7 +44,8 @@ namespace ModelTrain.Model.Pieces
                 _ => ""
             };
 
-            image = $"ModelTrain.DefaultImages.{image}";
+            if (preference == null)
+                image = $"ModelTrain.DefaultImages.{image}";
         }
 
         /// <summary>
@@ -54,12 +56,15 @@ namespace ModelTrain.Model.Pieces
         /// <param name="rotation">A float reference to be set to this type's rotation</param>
         /// <param name="scale">A float reference to be set to this type's scale</param>
         /// <param name="offset">A Vector2 reference to be set to this type's offset</param>
-        public static void GetRSO(SegmentType type, out float rotation, out float scale, out Vector2 offset)
+        public static void GetRSO(string pieceName, out float rotation, out float scale, out Vector2 offset)
         {
-            // TODO: get defaults from saved settings
-            rotation = 0;
-            scale = 1;
-            offset = Vector2.Zero;
+            rotation = Preferences.Get($"{pieceName}_rotation", 0);
+            scale = Preferences.Get($"{pieceName}_scale", 1);
+
+            float offsetX = Preferences.Get($"{pieceName}_offsetX", 0);
+            float offsetY = Preferences.Get($"{pieceName}_offsetY", 0);
+
+            offset = new(offsetX, offsetY);
         }
 
         /// <summary>

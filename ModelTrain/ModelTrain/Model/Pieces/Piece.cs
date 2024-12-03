@@ -33,7 +33,7 @@ namespace ModelTrain.Model.Pieces
             Image = image;
 
             // Default rotation, scale, and offset for this image, also from PieceInfo
-            PieceInfo.GetRSO(type, out float rotation, out float scale, out Vector2 offset);
+            PieceInfo.GetRSO(name, out float rotation, out float scale, out Vector2 offset);
             UpdateImageRSO(rotation, scale, offset);
         }
 
