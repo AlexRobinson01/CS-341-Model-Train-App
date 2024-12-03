@@ -43,11 +43,11 @@ namespace ModelTrain.Model.Pieces
         /// <param name="rotation">The new rotation to apply to this piece's image</param>
         /// <param name="scale">The new scale to apply to this piece's image</param>
         /// <param name="offset">The new offset to apply to this piece's image</param>
-        public void UpdateImageRSO(float rotation, float scale, Vector2 offset)
+        public void UpdateImageRSO(float? rotation = null, float? scale = null, Vector2? offset = null)
         {
-            ImageRotation = rotation;
-            ImageScale = scale;
-            ImageOffset = offset;
+            ImageRotation = rotation ?? ImageRotation;
+            ImageScale = scale ?? ImageScale;
+            ImageOffset = offset ?? ImageOffset;
         }
     }
 }
