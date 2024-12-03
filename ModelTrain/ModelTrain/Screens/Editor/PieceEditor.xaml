@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ModelTrain.Screens.PieceEditor"
-             NavigationPage.HasNavigationBar="False"
-             Title="">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ModelTrain.Screens.PieceEditor"
+    NavigationPage.HasNavigationBar="False"
+    xmlns:local="clr-namespace:ModelTrain.Screens.Components"
+    Title="">
 
     <!-- Vertical alignment - main and misc buttons rows -->
     <Grid
@@ -35,7 +37,7 @@
                         Grid.Column="0"
                         Margin="0"
                         Padding="0"
-                        Text="CCW"
+                        Text="Rotate Left"
                         Style="{x:StaticResource GoogleFont}"
                         FontSize="16"
                         HeightRequest="60">
@@ -43,15 +45,12 @@
                     </Button>
 
                     <!-- Piece image label -->
-                    <!-- TODO: make draggable and zoomable in later iteration -->
                     <!-- Piece image with rotation functionality -->
-                    <Image
+                    <local:PieceImage
                         x:Name="PieceImage"
                         Grid.Row="0"
                         Grid.Column="1"
                         Margin="10"
-                        Aspect="AspectFit"
-                        BackgroundColor="DarkCyan"
                         VerticalOptions="Center"
                         HorizontalOptions="Center"/>
 
@@ -64,7 +63,7 @@
                         Grid.Column="2"
                         Margin="0"
                         Padding="0"
-                        Text="CW"
+                        Text="Rotate Right"
                         Style="{x:StaticResource GoogleFont}"
                         FontSize="16"
                         HeightRequest="60">

@@ -16,19 +16,20 @@ public partial class PieceEditor : ContentPage
 {
 	// Store the path and rotation state
 	private string _selectedImagePath;
-	private double _currentRotation = 0;
+	private float _currentRotation = 0;
 	private readonly Piece _piece;
 	public PieceEditor(Piece piece)
 	{
 		InitializeComponent();
 		_piece = piece;
-
-		RotateCCW.Text = IconFont.Rotate_left + " CCW";
-		RotateCW.Text = IconFont.Rotate_right + " CW";
+		PieceImage.PieceOverride = piece;
+		RotateCCW.Text = IconFont.Rotate_left + " Rotate Left";
+		RotateCW.Text = IconFont.Rotate_right + " Rotate Right";
 
 		Confirm.Text = IconFont.Check + " CONFIRM";
 		ChangeImage.Text = IconFont.Image + " CHANGE IMAGE";
 		Cancel.Text = IconFont.Cancel + " CANCEL";
+		PieceImage.Redraw();
 
 		// Assign click events
 		ChangeImage.Clicked += OnChangeImageButtonClicked;
@@ -41,7 +42,7 @@ public partial class PieceEditor : ContentPage
 		try
 		{
 			// Pick an image file
-			FileResult result = await FilePicker.PickAsync(new PickOptions
+			FileResult? result = await FilePicker.PickAsync(new PickOptions
 			{
 				PickerTitle = "Select an Image for the Track Piece",
 				FileTypes = FilePickerFileType.Images // Restrict to image files
@@ -53,8 +54,8 @@ public partial class PieceEditor : ContentPage
 				_selectedImagePath = result.FullPath;
 
 				// Open the stream once, load the image, and dispose of the stream immediately
-				using Stream stream = await result.OpenReadAsync();
-				PieceImage.Source = ImageSource.FromStream(() => new MemoryStream(ReadFully(stream)));
+				PieceImage.PieceOverride!.Image = _selectedImagePath;
+				PieceImage.Redraw();
 			}
 		}
 		catch (Exception ex)
@@ -77,6 +78,8 @@ public partial class PieceEditor : ContentPage
 		_currentRotation -= 90;
 		if (_currentRotation < 0) _currentRotation += 360; // Keep rotation in range [0, 360)
 		PieceImage.Rotation = _currentRotation;
+		PieceImage.Redraw();
+
 	}
 
 	private void OnRotateCWButtonClicked(object sender, EventArgs e)
@@ -84,7 +87,9 @@ public partial class PieceEditor : ContentPage
 		// Rotate clockwise
 		_currentRotation += 90;
 		if (_currentRotation >= 360) _currentRotation -= 360; // Keep rotation in range [0, 360)
-		PieceImage.Rotation = _currentRotation;
+		_piece.UpdateImageRSO(_currentRotation);
+		PieceImage.Redraw();
+
 	}
 
 	private async void OnConfirmButtonClicked(object sender, EventArgs e)
