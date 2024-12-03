@@ -8,12 +8,11 @@ namespace ModelTrain.Screens.Components;
 
 public partial class PieceImage : Grid
 {
-    public Piece? CurrentPiece { get; private set; }
+    public Piece? PieceOverride = null;
 
 	public PieceImage()
 	{
 		InitializeComponent();
-        Redraw();
 	}
 
     private void OnPaintPieceImage(object sender, SKPaintSurfaceEventArgs e)
@@ -29,8 +28,8 @@ public partial class PieceImage : Grid
         canvas.Clear();
 
         // Uses the ClassId from earlier to determine image data
-        CurrentPiece ??= new(segmentType);
-        string resourceID = CurrentPiece.Image;
+        Piece piece = PieceOverride ?? new(segmentType);
+        string resourceID = piece.Image;
         SKBitmap? bmp = ImageFileDecoder.GetBitmapFromFile(resourceID);
 
         if (bmp != null)
@@ -38,9 +37,9 @@ public partial class PieceImage : Grid
             SKRect dest = new(0, 0, e.Info.Width, e.Info.Height);
 
             // Adjust the canvas with the piece's image info
-            canvas.RotateDegrees(CurrentPiece.ImageRotation);
-            canvas.Scale(CurrentPiece.ImageScale);
-            canvas.Translate(CurrentPiece.ImageOffset.X, CurrentPiece.ImageOffset.Y);
+            canvas.RotateDegrees(piece.ImageRotation);
+            canvas.Scale(piece.ImageScale);
+            canvas.Translate(piece.ImageOffset.X, piece.ImageOffset.Y);
             // Draw the bitmap on the canvas
             canvas.DrawBitmap(bmp, dest);
         }
