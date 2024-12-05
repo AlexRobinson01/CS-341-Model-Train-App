@@ -19,20 +19,20 @@ public partial class ChangeBackground : ContentPage
     {
         //Logic
         if (MediaPicker.Default.IsCaptureSupported)
-        {
-            FileResult? photo = await MediaPicker.Default.CapturePhotoAsync();
-
-            if (photo != null)
             {
-                // save the file into local storage
-                string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+                FileResult? photo = await MediaPicker.Default.CapturePhotoAsync();
 
-                using Stream sourceStream = await photo.OpenReadAsync();
-                using FileStream localFileStream = File.OpenWrite(localFilePath);
+                if (photo != null)
+                {
+                    // save the file into local storage
+                    string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
 
-                await sourceStream.CopyToAsync(localFileStream);
+                    using Stream sourceStream = await photo.OpenReadAsync();
+                    using FileStream localFileStream = File.OpenWrite(localFilePath);
+
+                    await sourceStream.CopyToAsync(localFileStream);
+                }
             }
-        }
         await Navigation.PopAsync();
     }
 
