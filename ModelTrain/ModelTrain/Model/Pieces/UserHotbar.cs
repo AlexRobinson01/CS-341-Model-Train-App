@@ -10,17 +10,13 @@ namespace ModelTrain.Model.Pieces
     public static class UserHotbar
     {
         public static PieceList Pieces { get; private set; }
-        // Used for fetching the default list of pieces this hotbar should have
-        // and will be used to save changes to the hotbar later
-        private static readonly ILocalDatabase localDatabase;
 
         /// <summary>
         /// Static UserHotbar constructor - initializes localDatabase and Pieces
         /// </summary>
         static UserHotbar()
         {
-            localDatabase = new LocalDatabase();
-            Pieces = localDatabase.Hotbar;
+            Pieces = PieceInfo.GetDefaultPieces();
         }
         
         /// <summary>

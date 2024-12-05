@@ -10,7 +10,7 @@ using ModelTrain.Services;
  * Description: Allows the user to change which pieces they see in the list to the right
  * of the track editor page, in case they don't like their current list's order.
  * Author: Alex Robinson
- * Date: 10/30/2024
+ * Last updated: 12/5/2024
  */
 public partial class PieceCatalog : ContentPage
 {
@@ -59,8 +59,11 @@ public partial class PieceCatalog : ContentPage
 		for (int i = 0; i < pieceImages.Length; i++)
 		{
 			PieceImage image = pieceImages[i];
+			// Wrap around defaultPieces if less than 5 pieces exist in the application
+			int pieceIndex = i % defaultPieces.Count;
 
-			image.ClassId = defaultPieces[i].Name;
+			// Update the path this 
+			image.ClassId = defaultPieces[pieceIndex].Name;
 			image.Redraw();
 		}
 	}

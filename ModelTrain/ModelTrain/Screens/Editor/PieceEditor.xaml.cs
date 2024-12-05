@@ -30,11 +30,6 @@ public partial class PieceEditor : ContentPage
 
 		PieceImage.ClassId = piece.Name;
 		PieceImage.Redraw();
-
-		// Assign click events
-		ChangeImage.Clicked += OnChangeImageButtonClicked;
-		RotateCCW.Clicked += OnRotateCCWButtonClicked;
-		RotateCW.Clicked += OnRotateCWButtonClicked;
 	}
 
 	private async void OnChangeImageButtonClicked(object sender, EventArgs e)
@@ -64,38 +59,31 @@ public partial class PieceEditor : ContentPage
 		}
 	}
 
-
-	private static byte[] ReadFully(Stream input)
-	{
-		using MemoryStream ms = new MemoryStream();
-		input.CopyTo(ms);
-		return ms.ToArray();
-	}
-
 	private void OnRotateCCWButtonClicked(object sender, EventArgs e)
 	{
 		// Rotate counterclockwise
-		_currentRotation -= 90;
-		if (_currentRotation < 0) _currentRotation += 360; // Keep rotation in range [0, 360)
+		_currentRotation = (_currentRotation - 90) % 360; // Keep rotation in range [0, 360)
+        
+		// Show changes
 		PieceImage.Rotation = _currentRotation;
 		PieceImage.Redraw();
-
 	}
 
 	private void OnRotateCWButtonClicked(object sender, EventArgs e)
 	{
 		// Rotate clockwise
-		_currentRotation += 90;
-		if (_currentRotation >= 360) _currentRotation -= 360; // Keep rotation in range [0, 360)
+		_currentRotation = (_currentRotation + 90) % 360; // Keep rotation in range [0, 360)
+
+		// Show changes
 		_piece.UpdateImageRSO(_currentRotation);
 		PieceImage.Redraw();
-
 	}
 
 	private async void OnConfirmButtonClicked(object sender, EventArgs e)
 	{
 		if (!string.IsNullOrEmpty(_piece.Image))
         {
+			// Save changes in preferences
             Preferences.Set($"{_piece.Name}_rotation", _currentRotation);
             Preferences.Set(_piece.Name, _selectedImagePath);
             await DisplayAlert("Success", "Track piece updated locally.", "OK");

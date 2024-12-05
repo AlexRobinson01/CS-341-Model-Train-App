@@ -40,7 +40,8 @@
                         Text="Rotate Left"
                         Style="{x:StaticResource GoogleFont}"
                         FontSize="16"
-                        HeightRequest="60">
+                        HeightRequest="60"
+                        Clicked="OnRotateCCWButtonClicked">
 
                     </Button>
 
@@ -68,7 +69,8 @@
                         Text="Rotate Right"
                         Style="{x:StaticResource GoogleFont}"
                         FontSize="16"
-                        HeightRequest="60">
+                        HeightRequest="60"
+                        Clicked="OnRotateCWButtonClicked">
 
                     </Button>
                 </Grid>
@@ -110,7 +112,8 @@
                     Padding="0"
                     Style="{x:StaticResource GoogleFont}"
                     Text="CHANGE IMAGE"
-                    FontSize="16">
+                    FontSize="16"
+                    Clicked="OnChangeImageButtonClicked">
 
                 </Button>
             </Frame>

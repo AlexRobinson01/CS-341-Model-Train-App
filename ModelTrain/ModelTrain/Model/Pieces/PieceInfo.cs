@@ -6,7 +6,7 @@ namespace ModelTrain.Model.Pieces
     /**
      * Description: Static methods to get default image/name/etc. info for pieces
      * Author: Alex Robinson
-     * Last updated: 11/27/2024
+     * Last updated: 12/5/2024
      */
     public static class PieceInfo
     {
@@ -44,7 +44,8 @@ namespace ModelTrain.Model.Pieces
                 _ => ""
             };
 
-            if (preference == null)
+            // Default to the embedded resource
+            if (preference == null || !File.Exists(preference))
                 image = $"ModelTrain.DefaultImages.{image}";
         }
 
@@ -58,15 +59,18 @@ namespace ModelTrain.Model.Pieces
         /// <param name="offset">A Vector2 reference to be set to this type's offset</param>
         public static void GetRSO(string pieceName, out float rotation, out float scale, out Vector2 offset)
         {
+            // Default rotation, scale, and offset values
             rotation = 0;
             scale = 1;
             offset = Vector2.Zero;
 
             try
             {
+                // Get RSO from user preferences (changed in PieceEditor)
                 rotation = Preferences.Get($"{pieceName}_rotation", 0f);
                 scale = Preferences.Get($"{pieceName}_scale", 1f);
 
+                // Offset is a Vector2 which can't be saved in preferences, so two floats need to be used instead
                 float offsetX = Preferences.Get($"{pieceName}_offsetX", 0f);
                 float offsetY = Preferences.Get($"{pieceName}_offsetY", 0f);
 
@@ -86,6 +90,7 @@ namespace ModelTrain.Model.Pieces
         {
             PieceList pieces = new();
             
+            // Making a default piece for each option in the SegmentType enum
             foreach (SegmentType type in Enum.GetValues(typeof(SegmentType)))
                 pieces.Add(new(type));
 

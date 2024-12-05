@@ -11,7 +11,7 @@ namespace ModelTrain.Screens;
 /**
  * Description: The main track editor page, allows someone to modify the track they have opened
  * Author: Alex Robinson
- * Last updated: 11/27/2024
+ * Last updated: 12/5/2024
  */
 public partial class TrackEditor : ContentPage
 {
@@ -39,7 +39,11 @@ public partial class TrackEditor : ContentPage
 	// The currently saved track string to compare against for an unsaved track indicator
 	private string savedTrack;
 
-	// TODO: generalize project to allow both PersonalProjects and SharedProjects
+	/// <summary>
+	/// TrackEditor constructor - Loads an optional PersonalProject into the editor
+	/// along with the necessary helper classes
+	/// </summary>
+	/// <param name="project">The PersonalProject to load into the Track Editor</param>
 	public TrackEditor(PersonalProject? project = null)
 	{
 		InitializeComponent();
@@ -104,7 +108,7 @@ public partial class TrackEditor : ContentPage
 	private async void OnBackgroundButtonClicked(object sender, EventArgs e)
 	{
 		// Opens Change Background
-		await Navigation.PushAsync(new ChangeBackground());
+		await Navigation.PushAsync(new ChangeBackground(loadedProject));
 	}
 
 	private async void OnSaveButtonClicked(object sender, EventArgs e)
@@ -508,6 +512,7 @@ public partial class TrackEditor : ContentPage
 	{
 		int index = ++autosaveIndex;
 
+		// Running autosave loop on a separate thread
 		Task.Run(() =>
 		{
 			while (index == autosaveIndex)
