@@ -51,6 +51,8 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Margin="10"
+                        WidthRequest="200"
+                        HeightRequest="200"
                         VerticalOptions="Center"
                         HorizontalOptions="Center"/>
 

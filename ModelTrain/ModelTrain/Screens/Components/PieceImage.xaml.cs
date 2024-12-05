@@ -37,8 +37,11 @@ public partial class PieceImage : Grid
             SKRect dest = new(0, 0, e.Info.Width, e.Info.Height);
 
             // Adjust the canvas with the piece's image info
+            canvas.Translate(dest.Width / 2, dest.Height / 2);
             canvas.RotateDegrees(piece.ImageRotation);
             canvas.Scale(piece.ImageScale);
+            canvas.Translate(-dest.Width / 2, -dest.Height / 2);
+
             canvas.Translate(piece.ImageOffset.X, piece.ImageOffset.Y);
             // Draw the bitmap on the canvas
             canvas.DrawBitmap(bmp, dest);

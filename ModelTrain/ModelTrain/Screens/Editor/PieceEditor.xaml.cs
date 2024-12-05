@@ -1,7 +1,5 @@
 using ModelTrain.Model;
 using ModelTrain.Services;
-using Microsoft.Maui.Storage;
-using Microsoft.Maui.Controls;
 using ModelTrain.Model.Pieces;
 
 namespace ModelTrain.Screens;
@@ -29,6 +27,8 @@ public partial class PieceEditor : ContentPage
 		Confirm.Text = IconFont.Check + " CONFIRM";
 		ChangeImage.Text = IconFont.Image + " CHANGE IMAGE";
 		Cancel.Text = IconFont.Cancel + " CANCEL";
+
+		PieceImage.ClassId = piece.Name;
 		PieceImage.Redraw();
 
 		// Assign click events
@@ -53,7 +53,7 @@ public partial class PieceEditor : ContentPage
 				// Save the selected image path
 				_selectedImagePath = result.FullPath;
 
-				// Open the stream once, load the image, and dispose of the stream immediately
+				// Update the image in the preview
 				PieceImage.PieceOverride!.Image = _selectedImagePath;
 				PieceImage.Redraw();
 			}
@@ -94,11 +94,11 @@ public partial class PieceEditor : ContentPage
 
 	private async void OnConfirmButtonClicked(object sender, EventArgs e)
 	{
-		if (!string.IsNullOrEmpty(_selectedImagePath))
-		{
-			await DisplayAlert("Success", "Track piece updated locally.", "OK");
-			Preferences.Set($"{_piece.Name}_rotation", _currentRotation);
-			Preferences.Set(_piece.Name, _selectedImagePath);
+		if (!string.IsNullOrEmpty(_piece.Image))
+        {
+            Preferences.Set($"{_piece.Name}_rotation", _currentRotation);
+            Preferences.Set(_piece.Name, _selectedImagePath);
+            await DisplayAlert("Success", "Track piece updated locally.", "OK");
 		}
 		else
 		{

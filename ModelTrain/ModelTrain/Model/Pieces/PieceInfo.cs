@@ -58,21 +58,23 @@ namespace ModelTrain.Model.Pieces
         /// <param name="offset">A Vector2 reference to be set to this type's offset</param>
         public static void GetRSO(string pieceName, out float rotation, out float scale, out Vector2 offset)
         {
+            rotation = 0;
+            scale = 1;
+            offset = Vector2.Zero;
+
             try
             {
-                rotation = Preferences.Get($"{pieceName}_rotation", 0);
-                scale = Preferences.Get($"{pieceName}_scale", 1);
+                rotation = Preferences.Get($"{pieceName}_rotation", 0f);
+                scale = Preferences.Get($"{pieceName}_scale", 1f);
 
-                float offsetX = Preferences.Get($"{pieceName}_offsetX", 0);
-                float offsetY = Preferences.Get($"{pieceName}_offsetY", 0);
+                float offsetX = Preferences.Get($"{pieceName}_offsetX", 0f);
+                float offsetY = Preferences.Get($"{pieceName}_offsetY", 0f);
 
                 offset = new(offsetX, offsetY);
             }
-            catch
+            catch (Exception ex)
             {
-                rotation = 0;
-                scale = 1;
-                offset = Vector2.Zero;
+                Console.WriteLine(ex);
             }
         }
 

@@ -426,7 +426,7 @@ public partial class TrackEditor : ContentPage
 				// Prepare bitmap data for drawing bmp to the canvas
 				Vector2 size = obj.BoundSegment.Size;
 				Vector2 pos = -size / 2;
-                SKRect dest = new(pos.X, pos.Y, pos.X + size.X, pos.Y + size.Y);
+                SKRect dest = new(0, 0, size.X, size.Y);
 
                 // Align the canvas's center point where this piece should be rendered and draw the image
                 canvas.Translate(obj.BoundSegment.X, obj.BoundSegment.Y);
@@ -435,8 +435,11 @@ public partial class TrackEditor : ContentPage
 				SKMatrix curMatrix = canvas.TotalMatrix;
 
 				// Apply piece image rotation, scale, and offset then draw the bitmap
+				canvas.Translate(pos.X + dest.Width / 2, pos.Y + dest.Height / 2);
 				canvas.RotateDegrees(obj.BoundPiece.ImageRotation);
-				canvas.Scale(obj.BoundPiece.ImageScale);
+                canvas.Scale(obj.BoundPiece.ImageScale);
+                canvas.Translate(-dest.Width / 2, -dest.Height / 2);
+
 				canvas.Translate(obj.BoundPiece.ImageOffset.X, obj.BoundPiece.ImageOffset.Y);
 				canvas.DrawBitmap(bmp, dest);
 				
