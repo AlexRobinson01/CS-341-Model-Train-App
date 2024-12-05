@@ -44,7 +44,7 @@ public partial class HomeScreen : BasePage
                 // If error creating project, tell user
                 await DisplayAlert("Error", "Project could not be created.", "OK");
             }
-            
+
         };
 
         // Show the popup modally

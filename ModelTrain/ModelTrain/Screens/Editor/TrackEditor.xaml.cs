@@ -47,14 +47,14 @@ public partial class TrackEditor : ContentPage
 	public TrackEditor(PersonalProject? project = null)
 	{
 		InitializeComponent();
-		
+
 		// Adding icons to text
 		Back.Text = IconFont.Arrow_back + " BACK";
 		EditPieces.Text = IconFont.Settings;
 
 		Save.Text = IconFont.Save + " SAVE";
 		ChangeBackground.Text = IconFont.Image + " BACKGROUND";
-		
+
 		HotbarCollection.ItemsSource = UserHotbar.Pieces;
 
 		// For use in saving
@@ -85,7 +85,7 @@ public partial class TrackEditor : ContentPage
 		foreach (Segment segment in loadedProject.Track.Segments)
 			objects.Add(new(segment));
 	}
-	
+
 	private async void OnPieceEditButtonClicked(object sender, EventArgs e)
 	{
 		// Opens Piece Catalog
@@ -93,16 +93,16 @@ public partial class TrackEditor : ContentPage
 	}
 
 	private async void OnBackButtonClicked(object sender, EventArgs e)
-    {
+	{
 		bool isSaved = savedTrack == loadedProject.Track.GetSegmentsAsString();
 		if (isSaved || await DisplayAlert("Unsaved Track", "Exit without saving?", "YES", "NO"))
 		{
-            // Revert to Portrait mode when closing page
-            DeviceOrientation.SetPortrait();
+			// Revert to Portrait mode when closing page
+			DeviceOrientation.SetPortrait();
 
-            // Will return to either My Tracks or Shared Tracks depending on how the user got here
-            await Navigation.PopAsync();
-        }
+			// Will return to either My Tracks or Shared Tracks depending on how the user got here
+			await Navigation.PopAsync();
+		}
 	}
 
 	private async void OnBackgroundButtonClicked(object sender, EventArgs e)
@@ -117,8 +117,8 @@ public partial class TrackEditor : ContentPage
 		if (businessLogic.SaveProject(loadedProject))
 		{
 			savedTrack = loadedProject.Track.GetSegmentsAsString();
-            await DisplayAlert("Success", "Track saved successfully!", "OK");
-        }
+			await DisplayAlert("Success", "Track saved successfully!", "OK");
+		}
 		else
 			await DisplayAlert("Failure", "Track failed to save!", "OK");
 
@@ -137,26 +137,26 @@ public partial class TrackEditor : ContentPage
 		actionHandler.Redo();
 		RedrawCanvas();
 		UpdateSavedIndicator();
-    }
+	}
 
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-        // Force Landscape mode when opening page
-        DeviceOrientation.SetLandscape();
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
+		// Force Landscape mode when opening page
+		DeviceOrientation.SetLandscape();
 		// Begin autosave loop
 		BeginAutosave();
-    }
+	}
 
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
+	protected override void OnDisappearing()
+	{
+		base.OnDisappearing();
 		// Disable autosave loop for the current track
 		autosaveIndex++;
-    }
+	}
 
-    // Keeping track of various object states to determine how a user is interacting with a TrackObject
-    private TrackObject? draggingObject;
+	// Keeping track of various object states to determine how a user is interacting with a TrackObject
+	private TrackObject? draggingObject;
 	private TrackObject? selectedObject;
 	private TrackObject? snappedObject;
 
@@ -170,9 +170,9 @@ public partial class TrackEditor : ContentPage
 		if (type is not SegmentType segmentType)
 			return;
 
-        Piece piece = new(segmentType);
-        TrackObject trackObject = new(loadedProject.Track, piece);
-		
+		Piece piece = new(segmentType);
+		TrackObject trackObject = new(loadedProject.Track, piece);
+
 		// Attempting to place the piece in the center of the screen
 		// This seems to be completely different depending on the device so I'm not sure if this is possible,
 		// but at least it's not in a corner somewhere
@@ -180,13 +180,13 @@ public partial class TrackEditor : ContentPage
 		double y = EditorFrame.Height - trackObject.BoundSegment.Size.Y / 4;
 
 		trackObject.MoveTo(x, y);
-        objects.Add(trackObject);
+		objects.Add(trackObject);
 
 		// Marking this in the edit history so it can be returned to later
-        actionHandler.AddWaypoint();
-        RedrawCanvas();
+		actionHandler.AddWaypoint();
+		RedrawCanvas();
 		UpdateSavedIndicator();
-    }
+	}
 
 	/// <summary>
 	/// Returns whether the given x and y coordinates are within the editor's canvas
@@ -233,8 +233,8 @@ public partial class TrackEditor : ContentPage
 		Vector2 toSnapStart = toSnapPos + toSnapStartOffset;
 		Vector2 toSnapEnd = toSnapPos + toSnapEndOffset;
 
-        isSnapToStartCloser = (toSnapPos - snapToEnd).Length() > (toSnapPos - snapToStart).Length();
-        Vector2 snapLocation = isSnapToStartCloser ? snapToStart + snapToStartOffset : snapToEnd + snapToEndOffset;
+		isSnapToStartCloser = (toSnapPos - snapToEnd).Length() > (toSnapPos - snapToStart).Length();
+		Vector2 snapLocation = isSnapToStartCloser ? snapToStart + snapToStartOffset : snapToEnd + snapToEndOffset;
 		isToSnapStartCloser = (snapLocation - toSnapEnd).Length() > (snapLocation - toSnapStart).Length();
 
 		// Ensuring there isn't already something snapped to the nearest snap point
@@ -243,7 +243,7 @@ public partial class TrackEditor : ContentPage
 		else if (!isSnapToStartCloser && snapTo.BoundSegment.SnappedEndSegment != null)
 			return null;
 		return snapLocation;
-    }
+	}
 
 	/// <summary>
 	/// Finds and returns the closest TrackObject to a given position,
@@ -257,39 +257,39 @@ public partial class TrackEditor : ContentPage
 	/// if none were close enough</returns>
 	private TrackObject? GetClosestTrackObject(SKPoint pos, TrackObject? exclude = null)
 	{
-        TrackObject? minDistObject = null;
-        double minDist = double.MaxValue;
+		TrackObject? minDistObject = null;
+		double minDist = double.MaxValue;
 
 		// Iterating in reverse so objects placed later have greater priority
 		for (int i = objects.Count; i > 0; i--)
 		{
 			TrackObject obj = objects[i - 1];
-            if (obj == exclude)
-                continue;
+			if (obj == exclude)
+				continue;
 
-            // Ensure this object can be snapped to if an object to exclude was given
-            if (exclude != null)
-            {
-                Segment? snappedStart = obj.BoundSegment.SnappedStartSegment;
-                Segment? snappedEnd = obj.BoundSegment.SnappedEndSegment;
+			// Ensure this object can be snapped to if an object to exclude was given
+			if (exclude != null)
+			{
+				Segment? snappedStart = obj.BoundSegment.SnappedStartSegment;
+				Segment? snappedEnd = obj.BoundSegment.SnappedEndSegment;
 
-                if (snappedStart != null && snappedEnd != null)
-                    continue;
-            }
+				if (snappedStart != null && snappedEnd != null)
+					continue;
+			}
 
-            SKPoint objectPos = new(obj.BoundSegment.X, obj.BoundSegment.Y);
-            double distance = (objectPos - pos).Length;
+			SKPoint objectPos = new(obj.BoundSegment.X, obj.BoundSegment.Y);
+			double distance = (objectPos - pos).Length;
 
-            // Checking the distance against the width of the segment as a sort of hitbox
-            if (distance < obj.BoundSegment.Size.X && distance < minDist)
-            {
-                minDistObject = obj;
-                minDist = distance;
-            }
-        }
+			// Checking the distance against the width of the segment as a sort of hitbox
+			if (distance < obj.BoundSegment.Size.X && distance < minDist)
+			{
+				minDistObject = obj;
+				minDist = distance;
+			}
+		}
 
 		return minDistObject;
-    }
+	}
 
 	private void OnEditorPanelTouched(object sender, SKTouchEventArgs e)
 	{
@@ -330,8 +330,8 @@ public partial class TrackEditor : ContentPage
 				break;
 			// The canvas has been released in some manner, stop dragging and attempt to snap the object
 			case SKTouchAction.Released:
-            case SKTouchAction.Exited:
-            case SKTouchAction.Cancelled:
+			case SKTouchAction.Exited:
+			case SKTouchAction.Cancelled:
 				// Delete the object if it has left the canvas
 				if (draggingObject != null && !IsWithinEditorFrame(x, y))
 				{
@@ -342,7 +342,7 @@ public partial class TrackEditor : ContentPage
 				{
 					// Attempt to snap this piece to the closest object detected while dragging
 					Vector2? snapLocation = GetSnapLocation(draggingObject, snappedObject, out bool isStartCloser, out bool isDragStartCloser);
-					
+
 					if (snapLocation != null)
 					{
 						Vector2 snapRotationOffset = snappedObject.BoundSegment.SnapRotationOffset;
@@ -371,7 +371,7 @@ public partial class TrackEditor : ContentPage
 						else
 							draggingObject.SnapToEnd(snappedObject.BoundSegment);
 					}
-                }
+				}
 
 				// Stop dragging the current object and update the edit history
 				draggingObject = null;
@@ -380,9 +380,9 @@ public partial class TrackEditor : ContentPage
 
 				// Update track and save button with current data
 				RedrawCanvas();
-                UpdateSavedIndicator();
-                break;
-        }
+				UpdateSavedIndicator();
+				break;
+		}
 
 		// Tell the OS that we would like to receive more touch events (move, release)
 		e.Handled = true;
@@ -403,11 +403,11 @@ public partial class TrackEditor : ContentPage
 		Console.WriteLine(e.Scale);
 	}
 
-    private void OnPaintEditorCanvas(object sender, SKPaintSurfaceEventArgs e)
-    {
+	private void OnPaintEditorCanvas(object sender, SKPaintSurfaceEventArgs e)
+	{
 		// This method fires when the canvas needs to be redrawn
 
-        // Prepare the canvas to be drawn to
+		// Prepare the canvas to be drawn to
 		SKCanvas canvas = e.Surface.Canvas;
 		canvas.Clear();
 
@@ -425,15 +425,15 @@ public partial class TrackEditor : ContentPage
 			string resourceID = obj.BoundPiece.Image;
 			SKBitmap? bmp = ImageFileDecoder.GetBitmapFromFile(resourceID);
 
-            if (bmp != null)
-            {
+			if (bmp != null)
+			{
 				// Prepare bitmap data for drawing bmp to the canvas
 				Vector2 size = obj.BoundSegment.Size;
 				Vector2 pos = -size / 2;
-                SKRect dest = new(0, 0, size.X, size.Y);
+				SKRect dest = new(0, 0, size.X, size.Y);
 
-                // Align the canvas's center point where this piece should be rendered and draw the image
-                canvas.Translate(obj.BoundSegment.X, obj.BoundSegment.Y);
+				// Align the canvas's center point where this piece should be rendered and draw the image
+				canvas.Translate(obj.BoundSegment.X, obj.BoundSegment.Y);
 				// canvas.RotateDegrees applies clockwise, while trig functions apply counterclockwise
 				canvas.RotateDegrees(-obj.BoundSegment.Rotation);
 				SKMatrix curMatrix = canvas.TotalMatrix;
@@ -441,58 +441,58 @@ public partial class TrackEditor : ContentPage
 				// Apply piece image rotation, scale, and offset then draw the bitmap
 				canvas.Translate(pos.X + dest.Width / 2, pos.Y + dest.Height / 2);
 				canvas.RotateDegrees(obj.BoundPiece.ImageRotation);
-                canvas.Scale(obj.BoundPiece.ImageScale);
-                canvas.Translate(-dest.Width / 2, -dest.Height / 2);
+				canvas.Scale(obj.BoundPiece.ImageScale);
+				canvas.Translate(-dest.Width / 2, -dest.Height / 2);
 
 				canvas.Translate(obj.BoundPiece.ImageOffset.X, obj.BoundPiece.ImageOffset.Y);
 				canvas.DrawBitmap(bmp, dest);
-				
+
 				// Reset canvas matrix to before image rotation, scale, and offset
 				canvas.SetMatrix(curMatrix);
 
 				// Additional circles should be rendered if an object is being dragged
 				if (draggingObject != null && draggingObject != obj)
 				{
-                    Vector2 startOffset = obj.BoundSegment.StartSnapOffset;
-                    Vector2 endOffset = obj.BoundSegment.EndSnapOffset;
+					Vector2 startOffset = obj.BoundSegment.StartSnapOffset;
+					Vector2 endOffset = obj.BoundSegment.EndSnapOffset;
 
 					// Draw a small snap shadow if the dragged piece is close enough to the current object
-                    if (snappedObject == obj)
-                    {
+					if (snappedObject == obj)
+					{
 						if (obj.BoundSegment.SnappedStartSegment == null)
 							canvas.DrawCircle(startOffset.X * 2, startOffset.Y * 2, 30, SelectShadow);
 						if (obj.BoundSegment.SnappedEndSegment == null)
 							canvas.DrawCircle(endOffset.X * 2, endOffset.Y * 2, 30, SelectShadow);
-                    }
+					}
 
 					// Draw green circles where open snap points are
 					if (obj.BoundSegment.SnappedStartSegment == null)
 						canvas.DrawCircle(startOffset.X, startOffset.Y, 10, SnapColor);
 					if (obj.BoundSegment.SnappedEndSegment == null)
-                        canvas.DrawCircle(endOffset.X, endOffset.Y, 10, SnapColor);
-                }
+						canvas.DrawCircle(endOffset.X, endOffset.Y, 10, SnapColor);
+				}
 
 				// Draw select shadow around the piece if it's selected
 				if (selectedObject == obj || draggingObject == obj)
 					canvas.DrawCircle(0, 0, obj.BoundSegment.Size.X / 2, SelectShadow);
-				
+
 				// Undoing previous translation/rotation
 				canvas.ResetMatrix();
-            }
-        }
+			}
+		}
 
-        if (snappedObject != null && draggingObject != null)
-        {
+		if (snappedObject != null && draggingObject != null)
+		{
 			// Draw a green circle where the dragging object may or may not want to snap to
-            Vector2? snapLocation = GetSnapLocation(draggingObject, snappedObject, out _, out _);
+			Vector2? snapLocation = GetSnapLocation(draggingObject, snappedObject, out _, out _);
 
-            if (snapLocation != null)
-                canvas.DrawCircle(snapLocation?.X ?? 0, snapLocation?.Y ?? 0, 25, SnapColor);
-        }
+			if (snapLocation != null)
+				canvas.DrawCircle(snapLocation?.X ?? 0, snapLocation?.Y ?? 0, 25, SnapColor);
+		}
 
 		// Just in case some residual changes in the canvas's matrix could carry over to another draw
 		canvas.ResetMatrix();
-    }
+	}
 
 	/// <summary>
 	/// Changes the background color of the Save button depending on whether the track is saved

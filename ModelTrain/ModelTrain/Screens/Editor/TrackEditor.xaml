@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
-             x:Class="ModelTrain.Screens.TrackEditor"
-             NavigationPage.HasNavigationBar="False"
-             xmlns:local="clr-namespace:ModelTrain.Screens.Components"
-             Title="">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+    x:Class="ModelTrain.Screens.TrackEditor"
+    NavigationPage.HasNavigationBar="False"
+    xmlns:local="clr-namespace:ModelTrain.Screens.Components"
+    Title="">
 
     <!-- A container spanning the whole window -->
     <Grid
         RowDefinitions="*"
         ColumnDefinitions="*">
-        
+
         <!-- Horizontal alignment - editor and piece selection columns -->
-        <Grid Grid.Row="0" Grid.Column="0"
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
             RowDefinitions="*"
             ColumnDefinitions="*,100">
 
@@ -25,7 +28,8 @@
                 ColumnDefinitions="*">
 
                 <!-- Main editor frame -->
-                <Frame x:Name="EditorFrame"
+                <Frame
+                    x:Name="EditorFrame"
                     Padding="0"
                     Grid.Row="0"
                     Grid.Column="0"
@@ -36,14 +40,18 @@
                         RowDefinitions="*"
                         ColumnDefinitions="*">
                         <!-- Editor goes here -->
-                        <Label Grid.Row="0" Grid.Column="0"
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
                             VerticalOptions="Center"
                             HorizontalOptions="Center">
-                            
+
                         </Label>
 
                         <!-- Captures touch events on the track space -->
-                        <skia:SKCanvasView Grid.Row="0" Grid.Column="0"
+                        <skia:SKCanvasView
+                            Grid.Row="0"
+                            Grid.Column="0"
                             x:Name="EditorCanvas"
                             EnableTouchEvents="True"
                             Touch="OnEditorPanelTouched"
@@ -55,7 +63,7 @@
                             </skia:SKCanvasView.GestureRecognizers>
                         </skia:SKCanvasView>
                     </Grid>
-                    
+
                 </Frame>
 
                 <!-- Back button -->
@@ -171,13 +179,16 @@
                                 <Grid
                                     RowDefinitions="*"
                                     ColumnDefinitions="*"
-                                    Margin="0" Padding="0"
+                                    Margin="0"
+                                    Padding="0"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="Center">
 
                                     <Button
-                                        Grid.Row="0" Grid.Column="0"
-                                        Padding="0" Margin="0,5,0,5"
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Padding="0"
+                                        Margin="0,5,0,5"
                                         HeightRequest="60"
                                         WidthRequest="60"
                                         ClassId="{Binding Name}"
@@ -189,7 +200,7 @@
                                         ClassId="{Binding Name}"
                                         HeightRequest="50"
                                         WidthRequest="50">
-                                        
+
                                     </local:PieceImage>
                                 </Grid>
                             </DataTemplate>

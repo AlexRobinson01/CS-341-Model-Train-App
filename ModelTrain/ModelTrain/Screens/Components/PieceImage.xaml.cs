@@ -10,10 +10,10 @@ public partial class PieceImage : Grid
 {
     public Piece? PieceOverride = null;
 
-	public PieceImage()
-	{
-		InitializeComponent();
-	}
+    public PieceImage()
+    {
+        InitializeComponent();
+    }
 
     private void OnPaintPieceImage(object sender, SKPaintSurfaceEventArgs e)
     {

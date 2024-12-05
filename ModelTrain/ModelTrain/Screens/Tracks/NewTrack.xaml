@@ -1,58 +1,59 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:ModelTrain.Screens"
-             x:Class="ModelTrain.Screens.NewTrack"
-             Title="New Track">
-       <ContentPage.Content>
-              <Grid>
-                     <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                     </Grid.RowDefinitions>
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:ModelTrain.Screens"
+	x:Class="ModelTrain.Screens.NewTrack"
+	Title="New Track">
+	<ContentPage.Content>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
 
-                     <!-- Content for screen -->
-                     <StackLayout
-                            Grid.Row="0"
-                            Padding="20"
-                            Spacing="30"
-                            VerticalOptions="Center">
-                            <Label
-                                   Text="Make a New Track?"
-                                   FontSize="Large"
-                                   HorizontalOptions="Center"/>
-                            <!-- Two buttons to either make a personal or shared track -->
-                            <StackLayout
-                                   Orientation="Horizontal"
-                                   HorizontalOptions="Center"
-                                   Spacing="20">
-                                   <Button
-                                          Text="Private"
-                                          WidthRequest="100"
-                                          HeightRequest="50"
-                                          BackgroundColor="LightGray"
-                                          CornerRadius="10"
-                                          Clicked="OnPrivateButtonClicked"/>
-                                   <Button
-                                          Text="Shared"
-                                          WidthRequest="100"
-                                          HeightRequest="50"
-                                          BackgroundColor="LightGray"
-                                          CornerRadius="10"
-                                          Clicked="OnSharedButtonClicked"/>
-                            </StackLayout>
-                     </StackLayout>
+			<!-- Content for screen -->
+			<StackLayout
+				Grid.Row="0"
+				Padding="20"
+				Spacing="30"
+				VerticalOptions="Center">
+				<Label
+					Text="Make a New Track?"
+					FontSize="Large"
+					HorizontalOptions="Center"/>
+				<!-- Two buttons to either make a personal or shared track -->
+				<StackLayout
+					Orientation="Horizontal"
+					HorizontalOptions="Center"
+					Spacing="20">
+					<Button
+						Text="Private"
+						WidthRequest="100"
+						HeightRequest="50"
+						BackgroundColor="LightGray"
+						CornerRadius="10"
+						Clicked="OnPrivateButtonClicked"/>
+					<Button
+						Text="Shared"
+						WidthRequest="100"
+						HeightRequest="50"
+						BackgroundColor="LightGray"
+						CornerRadius="10"
+						Clicked="OnSharedButtonClicked"/>
+				</StackLayout>
+			</StackLayout>
 
-                     <!-- Bottom Home button -->
-                     <ImageButton
-                            Source="home.png"
-                            Clicked="OnHomeButtonClicked"
-                            HorizontalOptions="Center"
-                            VerticalOptions="End"
-                            Grid.Row="1"
-                            WidthRequest="50"
-                            HeightRequest="50"
-                            Margin="20"/>
-              </Grid>
-       </ContentPage.Content>
+			<!-- Bottom Home button -->
+			<ImageButton
+				Source="home.png"
+				Clicked="OnHomeButtonClicked"
+				HorizontalOptions="Center"
+				VerticalOptions="End"
+				Grid.Row="1"
+				WidthRequest="50"
+				HeightRequest="50"
+				Margin="20"/>
+		</Grid>
+	</ContentPage.Content>
 </ContentPage>

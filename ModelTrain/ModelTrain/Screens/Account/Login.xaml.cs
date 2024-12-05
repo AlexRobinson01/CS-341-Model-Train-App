@@ -9,8 +9,8 @@ namespace ModelTrain.Screens;
 public partial class Login : ContentPage
 {
     public Login()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
     }
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)

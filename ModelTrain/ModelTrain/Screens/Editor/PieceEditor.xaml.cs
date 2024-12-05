@@ -6,7 +6,7 @@ namespace ModelTrain.Screens;
 
 /**
  * Description: Allows a user to change the image associated with their selected piece,
- * in case they don't like the appearane of the current piece(s).
+ * in case they don't like the appearance of the current piece(s).
  * Author: Alex Robinson & Taylor Showalter
  * Date: 11/27/2024
  */

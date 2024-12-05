@@ -47,7 +47,7 @@ namespace ModelTrain.Model
         /// Respective user
         /// </returns>
         public User GetUserFromEmail()
-        {   
+        {
             //Grab the user from their email
             User userToGet = Database.GetUser(this.email);
             // If user exists, return them
@@ -117,7 +117,7 @@ namespace ModelTrain.Model
                 return true;
             }
             return false;
-            
+
         }
 
         /// <summary>

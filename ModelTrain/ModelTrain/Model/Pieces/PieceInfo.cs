@@ -89,7 +89,7 @@ namespace ModelTrain.Model.Pieces
         public static PieceList GetDefaultPieces()
         {
             PieceList pieces = new();
-            
+
             // Making a default piece for each option in the SegmentType enum
             foreach (SegmentType type in Enum.GetValues(typeof(SegmentType)))
                 pieces.Add(new(type));

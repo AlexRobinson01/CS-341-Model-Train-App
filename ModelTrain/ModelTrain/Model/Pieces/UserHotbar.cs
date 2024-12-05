@@ -18,7 +18,7 @@ namespace ModelTrain.Model.Pieces
         {
             Pieces = PieceInfo.GetDefaultPieces();
         }
-        
+
         /// <summary>
         /// Moves a piece in the hotbar located at an old index to a new index
         /// </summary>

@@ -31,7 +31,6 @@
                 FontSize="16"
                 CornerRadius="0"
                 Clicked="OnEditButtonClicked">
-
             </Button>
 
             <!-- Back button -->
@@ -45,7 +44,6 @@
                 FontSize="16"
                 CornerRadius="0"
                 Clicked="OnBackButtonClicked">
-
             </Button>
         </Grid>
 
@@ -210,9 +208,9 @@
 
                                 <Button
                                     Grid.Row="0"
-                                        Grid.Column="0"
+                                    Grid.Column="0"
                                     Padding="0"
-                                        Margin="5,0,5,0"
+                                    Margin="5,0,5,0"
                                     HeightRequest="60"
                                     WidthRequest="60"
                                     ClassId="{Binding Name}"

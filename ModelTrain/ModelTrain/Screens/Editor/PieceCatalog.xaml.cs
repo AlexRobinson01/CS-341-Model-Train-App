@@ -42,14 +42,14 @@ public partial class PieceCatalog : ContentPage
 	{
 		// Should have gotten here from TrackEditor, pop to avoid memory leak
 		await Navigation.PopAsync();
-    }
+	}
 
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-        // Force Landscape mode when opening page
-        DeviceOrientation.SetLandscape();
-    }
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
+		// Force Landscape mode when opening page
+		DeviceOrientation.SetLandscape();
+	}
 
 	/// <summary>
 	/// Redraws all 5 piece images that can be clicked
@@ -71,61 +71,61 @@ public partial class PieceCatalog : ContentPage
 	private void OnRotateLeftButtonClicked(object sender, EventArgs e)
 	{
 		defaultPieces.RotateRight();
-        RedrawPieces();
+		RedrawPieces();
 	}
 
 	private void OnRotateRightButtonClicked(object sender, EventArgs e)
 	{
 		defaultPieces.RotateLeft();
-        RedrawPieces();
+		RedrawPieces();
 	}
 
 	private void OnLLButtonClicked(object sender, EventArgs e)
 	{
 		defaultPieces.RotateRight();
 		defaultPieces.RotateRight();
-        RedrawPieces();
+		RedrawPieces();
 	}
 
 	private void OnLButtonClicked(object sender, EventArgs e)
 	{
 		defaultPieces.RotateRight();
-        RedrawPieces();
+		RedrawPieces();
 	}
 
 	private void OnRButtonClicked(object sender, EventArgs e)
 	{
 		defaultPieces.RotateLeft();
-        RedrawPieces();
+		RedrawPieces();
 	}
 
 	private void OnRRButtonClicked(object sender, EventArgs e)
 	{
 		defaultPieces.RotateLeft();
 		defaultPieces.RotateLeft();
-        RedrawPieces();
-    }
+		RedrawPieces();
+	}
 
-    private void OnCButtonClicked(object sender, EventArgs e)
-    {
-        // The piece rendered on the center button is at index 2
-        UserHotbar.AddPiece(defaultPieces[2].SegmentType);
+	private void OnCButtonClicked(object sender, EventArgs e)
+	{
+		// The piece rendered on the center button is at index 2
+		UserHotbar.AddPiece(defaultPieces[2].SegmentType);
 
-        // TODO: save to user preferences
-    }
+		// TODO: save to user preferences
+	}
 
-    private void OnHotbarPieceClicked(object sender, EventArgs e)
-    {
-        // Ensuring parameters are valid so clicking a hotbar button properly removes the piece
-        if (sender is not Button button)
-            return;
-        if (!Enum.TryParse(typeof(SegmentType), button.ClassId, out object? type))
-            return;
-        if (type is not SegmentType segmentType)
-            return;
+	private void OnHotbarPieceClicked(object sender, EventArgs e)
+	{
+		// Ensuring parameters are valid so clicking a hotbar button properly removes the piece
+		if (sender is not Button button)
+			return;
+		if (!Enum.TryParse(typeof(SegmentType), button.ClassId, out object? type))
+			return;
+		if (type is not SegmentType segmentType)
+			return;
 
 		UserHotbar.RemovePiece(segmentType);
 
 		// TODO: save to user preferences
-    }
+	}
 }
