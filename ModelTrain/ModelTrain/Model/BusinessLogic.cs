@@ -107,9 +107,32 @@ namespace ModelTrain.Model
             return userProjects;
         }
 
-        public async Task<string> GetUniqueGuid()
+        public async Task<string> GetUniqueGuid(int maxRetries = 10)
         {
-            return Guid.NewGuid().ToString();
+            Guid newGuid = Guid.NewGuid();
+            int retryCount = 0;
+
+            while (!(await Database.IsGuidUnique(newGuid)))
+            {
+                retryCount++;
+                if (retryCount > maxRetries)
+                {
+                    throw new InvalidOperationException("Failed to generate a unique GUID after multiple attempts.");
+                }
+
+                newGuid = Guid.NewGuid();
+            }
+
+            return newGuid.ToString();
+        }
+
+        public async Task<bool> AddProjectToDB(PersonalProject newProject)
+        {
+            if (await Database.AddProjectToProjects(this.email, newProject) && await Database.AddProjectToUser(this.email, newProject.ProjectID))
+            {
+                return true;
+            }
+            return false;
         }
 
     }

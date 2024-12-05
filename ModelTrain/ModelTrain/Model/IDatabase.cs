@@ -16,5 +16,8 @@ namespace ModelTrain.Model
         public Task<bool> RemoveProjectFromUsersAsync(string projectId);
         public Task<List<Guid>> GetUserProjectIdsAsync(string email);
         public Task<List<PersonalProject>> GetProjectsByIdsAsync(List<Guid> projectIds);
+        public Task<bool> IsGuidUnique(Guid id);
+        public Task<bool> AddProjectToUser(string email, string projectId);
+        public Task<bool> AddProjectToProjects(string email, PersonalProject newProject);
     }
 }

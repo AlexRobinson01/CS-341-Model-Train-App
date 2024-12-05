@@ -312,5 +312,108 @@ namespace ModelTrain.Model
 
             return projects;
         }
+
+        public async Task<bool> IsGuidUnique(Guid id)
+        {
+            // SQL query to check if project id exists
+            string query = "SELECT COUNT(*) FROM projects WHERE projectid = @Id";
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    await conn.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+
+                        // Execute the command and check if any records were found
+                        var count = (long)await command.ExecuteScalarAsync();
+                        return count == 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> AddProjectToUser(string email, string projectId)
+        {
+            try
+            {
+                // Convert the projectId string to a Guid
+                Guid projectGuid = Guid.Parse(projectId);
+
+                using var connection = new Npgsql.NpgsqlConnection(connString);
+                await connection.OpenAsync();
+
+                // SQL query to append the project ID to the `projects` array
+                string query = @"
+                    UPDATE users
+                    SET projects = array_append(projects, @ProjectGuid)
+                    WHERE email = @Email
+                    RETURNING projects;
+                    ";
+
+                using var command = new Npgsql.NpgsqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ProjectGuid", projectGuid);
+                command.Parameters.AddWithValue("@Email", email);
+
+                // Execute the query and check if any rows were updated
+                var result = await command.ExecuteScalarAsync();
+
+                // If the result is not null, the project was successfully added
+                return result != null;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid projectId format. Ensure it is a valid GUID string.");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding project to user: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> AddProjectToProjects(string email, PersonalProject newProject)
+        {
+            try
+            {
+                using var connection = new Npgsql.NpgsqlConnection(connString);
+                await connection.OpenAsync();
+
+                // SQL query to insert a new project
+                string query = @"
+                    INSERT INTO public.projects (projectid, projectname, projectowner, datecreated, trackdata)
+                    VALUES (@ProjectID, @ProjectName, @ProjectOwner, @DateCreated, @TrackData);
+                    ";
+
+                using var command = new Npgsql.NpgsqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ProjectID", new Guid(newProject.ProjectID)); // Ensure project ID is a GUID
+                command.Parameters.AddWithValue("@ProjectName", newProject.ProjectName);
+                command.Parameters.AddWithValue("@ProjectOwner", email);
+                command.Parameters.AddWithValue("@DateCreated", newProject.DateCreated);
+                command.Parameters.AddWithValue("@TrackData", ""); // Set track data to an empty string
+
+                // Execute the query
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                // If rows were affected, the insertion was successful
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding project to projects table: {ex.Message}");
+                return false;
+            }
+        }
+
+
     }
 }

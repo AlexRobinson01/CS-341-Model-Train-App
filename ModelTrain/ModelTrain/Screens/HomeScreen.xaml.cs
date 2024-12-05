@@ -1,3 +1,5 @@
+using ModelTrain.Model;
+
 namespace ModelTrain.Screens;
 
 /*
@@ -32,8 +34,17 @@ public partial class HomeScreen : BasePage
                 Track = new Model.Track.TrackBase()
             };
 
-            // Navigate to the TrackEditor page with the newly created project
-            await Navigation.PushAsync(new TrackEditor(newProject));
+            if (await BusinessLogic.Instance.AddProjectToDB(newProject))
+            {
+                // Navigate to the TrackEditor page with the newly created project
+                await Navigation.PushAsync(new TrackEditor(newProject));
+            }
+            else
+            {
+                // If error creating project, tell user
+                await DisplayAlert("Error", "Project could not be created.", "OK");
+            }
+            
         };
 
         // Show the popup modally
