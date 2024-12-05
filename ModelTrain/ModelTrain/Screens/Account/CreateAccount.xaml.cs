@@ -11,8 +11,8 @@ public partial class CreateAccount : ContentPage
 {
     private IBusinessLogic BusinessLogic { get; set; }
     public CreateAccount()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         BusinessLogic = new BusinessLogic();
     }
 
@@ -29,11 +29,12 @@ public partial class CreateAccount : ContentPage
             string.IsNullOrEmpty(lastName) ||
             string.IsNullOrEmpty(email) ||
             string.IsNullOrEmpty(password))
-            {
+        {
             emptyInputs = true;
             await DisplayAlert("Error", "Failed to create account. " +
                 "All inputs must contain values. Please try again.", "OK");
-        } else
+        }
+        else
         {
             if (!emptyInputs && await BusinessLogic.CreateAccount(firstName, lastName, email, password))
             {

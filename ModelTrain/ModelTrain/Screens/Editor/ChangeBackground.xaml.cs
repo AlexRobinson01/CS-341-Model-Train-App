@@ -11,7 +11,7 @@ namespace ModelTrain.Screens;
 public partial class ChangeBackground : ContentPage
 {
     public ChangeBackground()
-	{
+    {
         InitializeComponent();
     }
 

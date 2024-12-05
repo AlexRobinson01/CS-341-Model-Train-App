@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ModelTrain.Screens.ChangeBackground"
-             xmlns:icon="clr-namespace:ModelTrain.Model"
-             Title="Change Background">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ModelTrain.Screens.ChangeBackground"
+    xmlns:icon="clr-namespace:ModelTrain.Model"
+    Title="Change Background">
 
     <!-- Buttons For Cameral or Gallery -->
-    <StackLayout Grid.Row="1" 
-                     Orientation="Horizontal"
-                     HorizontalOptions="Center"
-                     VerticalOptions="Center"
-                     Margin="0,0,0,2"
-                     Spacing="200">
-        <Button Text="Camera" 
-                    WidthRequest="200"
-                    HeightRequest="200"
-                    Clicked="OnCameraButtonClicked"/>
+    <StackLayout
+        Grid.Row="1"
+        Orientation="Horizontal"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        Margin="0,0,0,2"
+        Spacing="200">
+        <Button
+            Text="Camera"
+            WidthRequest="200"
+            HeightRequest="200"
+            Clicked="OnCameraButtonClicked"/>
         <!-- Handle the click event -->
-        <Button Text="Gallery" 
-                    WidthRequest="200" 
-                    Clicked="OnGalleryButtonClicked"/>
+        <Button
+            Text="Gallery"
+            WidthRequest="200"
+            Clicked="OnGalleryButtonClicked"/>
         <!-- Handle the click event -->
     </StackLayout>
-
-
 </ContentPage>

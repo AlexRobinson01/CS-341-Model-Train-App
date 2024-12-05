@@ -3,10 +3,10 @@ namespace ModelTrain.Screens;
 
 public partial class CreateNewProjectPopup : ContentPage
 {
-	public CreateNewProjectPopup()
-	{
-		InitializeComponent();
-	}
+    public CreateNewProjectPopup()
+    {
+        InitializeComponent();
+    }
 
     public event Action<string, string, string> ProjectCreated;
 
@@ -16,7 +16,7 @@ public partial class CreateNewProjectPopup : ContentPage
 
         if (!string.IsNullOrWhiteSpace(projectName))
         {
-            string projectId = await BusinessLogic.Instance.GetUniqueGuid(); 
+            string projectId = await BusinessLogic.Instance.GetUniqueGuid();
             string date = DateTime.Now.ToString("MM/dd/yyyy");
 
             // Unfocus the entry to close the keyboard
