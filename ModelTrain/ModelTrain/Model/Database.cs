@@ -46,6 +46,13 @@ namespace ModelTrain.Model
             return "teamf";
         }
 
+        /// <summary>
+        /// Gets the user based on the logged in email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns> 
+        /// Returns the users account 
+        /// </returns>
         public User GetUser(string email)
         {
             User userToGet = null;
@@ -67,6 +74,13 @@ namespace ModelTrain.Model
             return userToGet;
         }
 
+        /// <summary>
+        ///  Checks to is if the email given is unique (not in the db yet)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>
+        /// Returns true if unique, false otherwise
+        /// </returns>
         public async Task<bool> IsNewEmail(string email)
         {
             // SQL query to check if email exists
@@ -74,16 +88,19 @@ namespace ModelTrain.Model
 
             try
             {
+                // Connect to the db
                 using (var conn = new NpgsqlConnection(connString))
                 {
                     await conn.OpenAsync();
 
                     using (var command = new NpgsqlCommand(query, conn))
                     {
+                        // Grab all rows with given email
                         command.Parameters.AddWithValue("@Email", email);
 
                         // Execute the command and check if any records were found
                         var count = (long)await command.ExecuteScalarAsync();
+                        // Return true if no accounts with this email exist
                         return count == 0;
                     }
                 }
@@ -95,6 +112,15 @@ namespace ModelTrain.Model
             }
         }
 
+        /// <summary>
+        ///  Create a new account with the given parameters
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>
+        /// </returns>
         public async Task CreateAccount(string firstName, string lastName, string email, string password)
         {
             // SQL statement to insert a new user
@@ -102,6 +128,7 @@ namespace ModelTrain.Model
 
             try
             {
+                // Connect to the db
                 using (var connection = new NpgsqlConnection(connString))
                 {
                     await connection.OpenAsync();
@@ -114,7 +141,7 @@ namespace ModelTrain.Model
                         command.Parameters.AddWithValue("@Email", email);
                         command.Parameters.AddWithValue("@Password", password);
 
-                        // Execute the insert command
+                        // Insert the new account as a row in the users table
                         await command.ExecuteNonQueryAsync();
                     }
                 }
@@ -126,6 +153,14 @@ namespace ModelTrain.Model
             }
         }
 
+        /// <summary>
+        ///  Checks if the given password is correct
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>
+        /// Return true if correct password
+        /// </returns>
         public async Task<bool> IsCorrectPassword(string email, string password)
         {
             // SQL query to get the stored password for the provided email
@@ -162,6 +197,13 @@ namespace ModelTrain.Model
             return false;
         }
 
+        /// <summary>
+        /// Deletes a project with the given id
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns>
+        /// Returns true if deleted, false if an error occured
+        /// </returns>
         public async Task<bool> DeletePersonalProject(string projectId)
         {
             const string query = "DELETE FROM projects WHERE projectid = @ProjectId;";
@@ -193,12 +235,20 @@ namespace ModelTrain.Model
             }
         }
 
+        /// <summary>
+        /// Removes a project id from the users project array in db
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns>
+        /// True if deleted, false otherwise
+        /// </returns>
         public async Task<bool> RemoveProjectFromUsersAsync(string projectId)
         {
+            // Update the users to remove the given project id from their project array
             const string query = @"
-        UPDATE users
-        SET projects = array_remove(projects, @ProjectId)
-        WHERE @ProjectId = ANY(projects);";
+                UPDATE users
+                SET projects = array_remove(projects, @ProjectId)
+                WHERE @ProjectId = ANY(projects);";
 
             try
             {
@@ -227,7 +277,13 @@ namespace ModelTrain.Model
             }
         }
 
-        // Method to get the user's list of project IDs from the users table
+        /// <summary>
+        /// Method to get the user's list of project IDs from the users table
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>
+        /// List of users project ids
+        /// </returns>
         public async Task<List<Guid>> GetUserProjectIdsAsync(string email)
         {
             const string query = "SELECT projects FROM users WHERE email = @Email;";
@@ -262,7 +318,13 @@ namespace ModelTrain.Model
             return new List<Guid>();
         }
 
-        // Method to get project details based on the list of project IDs
+        /// <summary>
+        /// Method to get project details based on the list of project IDs
+        /// </summary>
+        /// <param name="projectIds"></param>
+        /// <returns>
+        /// List of users project objects
+        /// </returns>
         public async Task<List<PersonalProject>> GetProjectsByIdsAsync(List<Guid> projectIds)
         {
             var projects = new List<PersonalProject>();
@@ -313,6 +375,13 @@ namespace ModelTrain.Model
             return projects;
         }
 
+        /// <summary>
+        /// Checks if GUID for project primary key is unique
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// True if unique, false otherwise
+        /// </returns>
         public async Task<bool> IsGuidUnique(Guid id)
         {
             // SQL query to check if project id exists
@@ -341,6 +410,14 @@ namespace ModelTrain.Model
             }
         }
 
+        /// <summary>
+        /// Adds a project to the users projects array
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="projectId"></param>
+        /// <returns>
+        /// True if added, false otherwise
+        /// </returns>
         public async Task<bool> AddProjectToUser(string email, string projectId)
         {
             try
@@ -381,7 +458,14 @@ namespace ModelTrain.Model
             }
         }
 
-        // Add the newly created project to the projects table in the database
+        /// <summary>
+        /// Add the newly created project to the projects table in the database
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="newProject"></param>
+        /// <returns>
+        /// True if added, false otherwise
+        /// </returns>
         public async Task<bool> AddProjectToProjects(string email, PersonalProject newProject)
         {
             // Catch possible errors that may arrise
