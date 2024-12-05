@@ -15,7 +15,9 @@ public partial class HomeScreen : BasePage
     private async void OnCreateNewButtonClicked(object sender, EventArgs e)
     {
         // Navigation to New Track Screen
-        await Navigation.PushAsync(new NewTrack());
+        //await Navigation.PushAsync(new NewTrack());
+        PersonalProject newProject = new PersonalProject();
+        await Navigation.PushAsync(new TrackEditor());
     }
 
     private async void OnEditPreviousButtonClicked(object sender, EventArgs e)

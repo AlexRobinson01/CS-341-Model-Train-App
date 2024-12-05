@@ -102,7 +102,7 @@
                    Padding="10"
                    BackgroundColor="{DynamicResource Primary}"
                    HorizontalOptions="Center"
-                   WidthRequest="130"
+                   WidthRequest="160"
                    HeightRequest="60">
                 <StackLayout WidthRequest="100"
                              Orientation="Horizontal"
@@ -126,6 +126,7 @@
                 </StackLayout>
             </Frame>
 
+            <!--
             <ImageButton
                 Source="home.png"
                 Clicked="OnHomeButtonClicked"
@@ -135,8 +136,10 @@
                 WidthRequest="50"
                 HeightRequest="50"
                 Margin="5"/>
+            -->
 
             <!-- Handle the click event -->
+            <!--
             <Frame CornerRadius="10"
                    BorderColor="Gray"
                    Padding="10"
@@ -165,6 +168,7 @@
                            VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
+            -->
 
         </StackLayout>
     </Grid>
