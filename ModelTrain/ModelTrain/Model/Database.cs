@@ -381,14 +381,17 @@ namespace ModelTrain.Model
             }
         }
 
+        // Add the newly created project to the projects table in the database
         public async Task<bool> AddProjectToProjects(string email, PersonalProject newProject)
         {
+            // Catch possible errors that may arrise
             try
             {
+                // Establish a connection with the database
                 using var connection = new Npgsql.NpgsqlConnection(connString);
                 await connection.OpenAsync();
 
-                // SQL query to insert a new project
+                // SQL query to insert a new project id, name, owner, date, and empty track fields
                 string query = @"
                     INSERT INTO public.projects (projectid, projectname, projectowner, datecreated, trackdata)
                     VALUES (@ProjectID, @ProjectName, @ProjectOwner, @DateCreated, @TrackData);
@@ -396,18 +399,18 @@ namespace ModelTrain.Model
 
                 using var command = new Npgsql.NpgsqlCommand(query, connection);
                 command.Parameters.AddWithValue("@ProjectID", new Guid(newProject.ProjectID)); // Ensure project ID is a GUID
-                command.Parameters.AddWithValue("@ProjectName", newProject.ProjectName);
-                command.Parameters.AddWithValue("@ProjectOwner", email);
-                command.Parameters.AddWithValue("@DateCreated", newProject.DateCreated);
+                command.Parameters.AddWithValue("@ProjectName", newProject.ProjectName); // Take projectName from project and add to database row
+                command.Parameters.AddWithValue("@ProjectOwner", email);    // Take locally stored email and set as projectOwner
+                command.Parameters.AddWithValue("@DateCreated", newProject.DateCreated);    // This is set in a previous method as DateTime.Now()
                 command.Parameters.AddWithValue("@TrackData", ""); // Set track data to an empty string
 
                 // Execute the query
                 int rowsAffected = await command.ExecuteNonQueryAsync();
 
-                // If rows were affected, the insertion was successful
+                // Return true if rows were affected, this indicates the insertion was successful
                 return rowsAffected > 0;
             }
-            catch (Exception ex)
+            catch (Exception ex) // Throw an error otherwise
             {
                 Console.WriteLine($"Error adding project to projects table: {ex.Message}");
                 return false;
