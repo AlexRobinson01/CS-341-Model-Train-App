@@ -18,7 +18,9 @@ namespace ModelTrain.Model
             Database = new Database();
         }
 
-        // Public method to get the single instance of BusinessLogic (allows for locally stored email upon login)
+        /// <summary>
+        /// Public method to get the single instance of BusinessLogic (allows for locally stored email upon login)
+        /// </summary>
         public static BusinessLogic Instance
         {
             get
@@ -38,7 +40,12 @@ namespace ModelTrain.Model
             }
         }
 
-        // Get user with email
+        /// <summary>
+        /// Get user with email
+        /// </summary>
+        /// <returns>
+        /// Respective user
+        /// </returns>
         public User GetUserFromEmail()
         {   
             //Grab the user from their email
@@ -54,14 +61,27 @@ namespace ModelTrain.Model
             }
         }
 
-        // Save changes made to a project
+        /// <summary>
+        /// Save changes made to a project
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns>
+        /// True if saved, false otherwise
+        /// </returns>
         public bool SaveProject(PersonalProject project)
         {
             // TODO: save project to database; allow for shared projects too
             return new Random().Next() % 2 == 0;
         }
 
-        // Make sure login input exists in the database and is correct
+        /// <summary>
+        /// Make sure login input exists in the database and is correct
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>
+        /// True if login is valid, false otherwise
+        /// </returns>
         public async Task<bool> ValidateLoginInput(String email, String password)
         {
             // Check if email is not in database
@@ -78,7 +98,16 @@ namespace ModelTrain.Model
             return true;
         }
 
-        // Create a new user account
+        /// <summary>
+        /// Create a new user account
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>
+        /// True if account is created, false otherwise
+        /// </returns>
         public async Task<bool> CreateAccount(String firstName, String lastName, String email, String password)
         {
             bool uniqueEmail = await Database.IsNewEmail(email);        // Check if database doesn't have this email
@@ -91,7 +120,13 @@ namespace ModelTrain.Model
             
         }
 
-        // Takes a project Id and deletes the project from the users profile and the projects db table
+        /// <summary>
+        /// Takes a project Id and deletes the project from the users profile and the projects db table
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns>
+        /// True if deleted, false otherwise
+        /// </returns>
         public async Task<bool> DeleteProjectById(String projectId)
         {
             // If project is deleted from both tables, return true
@@ -102,7 +137,12 @@ namespace ModelTrain.Model
             return false;
         }
 
-        // Fetches a list of user projects ids
+        /// <summary>
+        /// Fetches a list of user projects ids
+        /// </summary>
+        /// <returns>
+        /// List of ids of users projects
+        /// </returns>
         public async Task<List<Guid>> GetUserProjects()
         {
             // Create a new list of Guids to hold the users project ids
@@ -112,7 +152,13 @@ namespace ModelTrain.Model
             return userProjects;
         }
 
-        // Fetches a list of user projects
+        /// <summary>
+        /// Fetches a list of user projects
+        /// </summary>
+        /// <param name="projectIds"></param>
+        /// <returns>
+        /// List of users projects
+        /// </returns>
         public async Task<List<PersonalProject>> GetProjectsByIds(List<Guid> projectIds)
         {
             // Create a new list of personal projects
@@ -122,7 +168,14 @@ namespace ModelTrain.Model
             return userProjects;
         }
 
-        // Creates a unique Guid for a new project
+        /// <summary>
+        /// Creates a unique Guid for a new project
+        /// </summary>
+        /// <param name="maxRetries"></param>
+        /// <returns>
+        /// String of new guid
+        /// </returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<string> GetUniqueGuid(int maxRetries = 10)
         {
             // Create new Guid
@@ -147,7 +200,13 @@ namespace ModelTrain.Model
             return newGuid.ToString();
         }
 
-        // Adds a new project to the users profile and the projects db table
+        /// <summary>
+        /// Adds a new project to the users profile and the projects db table
+        /// </summary>
+        /// <param name="newProject"></param>
+        /// <returns>
+        /// True if added to tables, false otherwise
+        /// </returns>
         public async Task<bool> AddProjectToDB(PersonalProject newProject)
         {
             // Add new project to both db tables, if no errors, return true
