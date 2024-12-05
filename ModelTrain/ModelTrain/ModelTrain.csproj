@@ -108,6 +108,9 @@
 	  <MauiXaml Update="Screens\ResetPassword.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Screens\Tracks\CreateNewProjectPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@ namespace ModelTrain.Screens;
 
 /*
  * This class is the background functionality/methods for the home page.
- * Author: Krystal Schneider & Taylor Showalter
+ * Author: Krystal Schneider, Taylor Showalter & Andrew Martin
  * Date: October 16, 2024
  */
 public partial class HomeScreen : BasePage
@@ -16,8 +16,28 @@ public partial class HomeScreen : BasePage
     {
         // Navigation to New Track Screen
         //await Navigation.PushAsync(new NewTrack());
-        PersonalProject newProject = new PersonalProject();
-        await Navigation.PushAsync(new TrackEditor());
+
+        // Instantiate the modal popup page for creating a new project
+        var createProjectPage = new CreateNewProjectPopup();
+
+        // Subscribe to the ProjectCreated event
+        createProjectPage.ProjectCreated += async (name, id, date) =>
+        {
+            // Create the new project object
+            PersonalProject newProject = new PersonalProject
+            {
+                ProjectName = name,
+                ProjectID = id,
+                DateCreated = date,
+                Track = new Model.Track.TrackBase()
+            };
+
+            // Navigate to the TrackEditor page with the newly created project
+            await Navigation.PushAsync(new TrackEditor(newProject));
+        };
+
+        // Show the popup modally
+        await Navigation.PushModalAsync(createProjectPage);
     }
 
     private async void OnEditPreviousButtonClicked(object sender, EventArgs e)

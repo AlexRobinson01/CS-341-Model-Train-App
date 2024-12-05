@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModelTrain.Screens.CreateNewProjectPopup"
+             Title="CreateNewProjectPopup"
+             BackgroundColor="#80000000">
+    <VerticalStackLayout Padding="20" BackgroundColor="White" VerticalOptions="Center">
+        <Label Text="Enter Project Name:" />
+        <Entry x:Name="ProjectNameEntry" Placeholder="Project Name" />
+        <HorizontalStackLayout Spacing="10">
+            <Button Text="Submit" Clicked="OnSubmitProjectClicked" />
+            <Button Text="Cancel" Clicked="OnCancelProjectClicked" />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

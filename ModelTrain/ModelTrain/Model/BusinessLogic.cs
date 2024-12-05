@@ -107,5 +107,10 @@ namespace ModelTrain.Model
             return userProjects;
         }
 
+        public async Task<string> GetUniqueGuid()
+        {
+            return Guid.NewGuid().ToString();
+        }
+
     }
 }
