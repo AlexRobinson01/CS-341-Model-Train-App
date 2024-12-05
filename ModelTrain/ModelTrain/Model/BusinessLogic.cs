@@ -40,7 +40,7 @@ namespace ModelTrain.Model
 
         // Get user with email
         public User GetUserFromEmail()
-        {   
+        {
             //Grab the user from their email
             User userToGet = Database.GetUser(this.email);
             // If user exists, return them
@@ -88,7 +88,7 @@ namespace ModelTrain.Model
                 return true;
             }
             return false;
-            
+
         }
 
         // Takes a project Id and deletes the project from the users profile and the projects db table

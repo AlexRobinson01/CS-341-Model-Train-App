@@ -75,7 +75,7 @@ namespace ModelTrain.Model.Track
             // Take in a Base64 representation of segment data and replace the current segments
             // with that data
             Segments.Clear();
-            
+
             try
             {
                 // Format:
