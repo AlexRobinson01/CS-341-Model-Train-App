@@ -158,64 +158,64 @@
                 </Frame>
             </Grid>
 
-            <!-- Scrolling piece select list -->
-            <Frame
-                Grid.Row="0"
-                Grid.Column="1"
-                BorderColor="Gray"
-                CornerRadius="0"
-                Padding="0">
-                <ScrollView
-                    Margin="0"
-                    Padding="20">
-
-                    <!-- All pieces are in this layout -->
-                    <CollectionView
-                        x:Name="HotbarCollection"
-                        ItemsSource="{Binding Items}"
-                        HorizontalOptions="FillAndExpand">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid
-                                    RowDefinitions="*"
-                                    ColumnDefinitions="*"
-                                    Margin="0"
-                                    Padding="0"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="Center">
-
-                                    <Button
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        Padding="0"
-                                        Margin="0,5,0,5"
-                                        HeightRequest="60"
-                                        WidthRequest="60"
-                                        ClassId="{Binding Name}"
-                                        Clicked="OnHotbarPieceClicked">
-
-                                    </Button>
-
-                                    <local:PieceImage
-                                        ClassId="{Binding Name}"
-                                        HeightRequest="50"
-                                        WidthRequest="50">
-
-                                    </local:PieceImage>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </ScrollView>
-            </Frame>
-
-            <!-- Piece catalog button, allows user to change which pieces they see -->
-            <!-- (Grid for alignment) -->
+            <!-- Vertical alignment - piece catalog and scrolling piece list -->
             <Grid
                 Grid.Row="0"
                 Grid.Column="1"
-                RowDefinitions="*,7*"
-                ColumnDefinitions="*,4*">
+                RowDefinitions="*,5*"
+                ColumnDefinitions="*">
+                <!-- Scrolling piece select list -->
+                <Frame
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    BorderColor="Gray"
+                    CornerRadius="0"
+                    Padding="0">
+                    <ScrollView
+                        Margin="0"
+                        Padding="20">
+
+                        <!-- All pieces are in this layout -->
+                        <CollectionView
+                            x:Name="HotbarCollection"
+                            ItemsSource="{Binding Items}"
+                            HorizontalOptions="FillAndExpand">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                        RowDefinitions="*"
+                                        ColumnDefinitions="*"
+                                        Margin="0"
+                                        Padding="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="Center">
+
+                                        <Button
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Padding="0"
+                                            Margin="0,5,0,5"
+                                            HeightRequest="60"
+                                            WidthRequest="60"
+                                            ClassId="{Binding Name}"
+                                            Clicked="OnHotbarPieceClicked">
+
+                                        </Button>
+
+                                        <local:PieceImage
+                                            ClassId="{Binding Name}"
+                                            HeightRequest="50"
+                                            WidthRequest="50">
+
+                                        </local:PieceImage>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </Frame>
+
+                <!-- Piece catalog button, allows user to change which pieces they see -->
                 <Button
                     x:Name="EditPieces"
                     Grid.Row="0"
@@ -223,7 +223,8 @@
                     Padding="0"
                     CornerRadius="0"
                     BackgroundColor="Gray"
-                    FontSize="8"
+                    FontSize="24"
+                    VerticalOptions="FillAndExpand"
                     Style="{x:StaticResource GoogleFont}"
                     Text="Edit"
                     Clicked="OnPieceEditButtonClicked">
