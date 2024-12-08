@@ -11,7 +11,7 @@ namespace ModelTrain.Screens;
 /**
  * Description: The main track editor page, allows someone to modify the track they have opened
  * Author: Alex Robinson
- * Last updated: 12/5/2024
+ * Last updated: 12/7/2024
  */
 public partial class TrackEditor : ContentPage
 {
@@ -216,25 +216,17 @@ public partial class TrackEditor : ContentPage
 	/// or null if no valid snap points exist</returns>
 	private static Vector2? GetSnapLocation(TrackObject toSnap, TrackObject snapTo, out bool isSnapToStartCloser, out bool isToSnapStartCloser)
 	{
-		// Lots of vectors and matrices to determine where the snap points are on a piece and whether they can be snapped to
-		Matrix3x2 snapToRotation = Matrix3x2.CreateRotation(-snapTo.BoundSegment.RotationRads);
-		Vector2 snapToStartOffset = Vector2.Transform(snapTo.BoundSegment.StartSnapOffset, snapToRotation);
-		Vector2 snapToEndOffset = Vector2.Transform(snapTo.BoundSegment.EndSnapOffset, snapToRotation);
+		// Lots of vectors to determine where the snap points are on a piece and whether they can be snapped to
+		Vector2 snapToStart = snapTo.BoundSegment.GetStartSnapPosition();
+		Vector2 snapToEnd = snapTo.BoundSegment.GetEndSnapPosition();
 
-		Vector2 snapToPos = new(snapTo.BoundSegment.X, snapTo.BoundSegment.Y);
-		Vector2 snapToStart = snapToPos + snapToStartOffset;
-		Vector2 snapToEnd = snapToPos + snapToEndOffset;
-
-		Matrix3x2 toSnapRotation = Matrix3x2.CreateRotation(-toSnap.BoundSegment.RotationRads);
-		Vector2 toSnapStartOffset = Vector2.Transform(toSnap.BoundSegment.StartSnapOffset, toSnapRotation);
-		Vector2 toSnapEndOffset = Vector2.Transform(toSnap.BoundSegment.EndSnapOffset, toSnapRotation);
-
-		Vector2 toSnapPos = new(toSnap.BoundSegment.X, toSnap.BoundSegment.Y);
-		Vector2 toSnapStart = toSnapPos + toSnapStartOffset;
-		Vector2 toSnapEnd = toSnapPos + toSnapEndOffset;
+        Vector2 toSnapPos = new(toSnap.BoundSegment.X, toSnap.BoundSegment.Y);
+        Vector2 toSnapStart = toSnap.BoundSegment.GetStartSnapPosition();
+		Vector2 toSnapEnd = toSnap.BoundSegment.GetEndSnapPosition();
 
 		isSnapToStartCloser = (toSnapPos - snapToEnd).Length() > (toSnapPos - snapToStart).Length();
-		Vector2 snapLocation = isSnapToStartCloser ? snapToStart + snapToStartOffset : snapToEnd + snapToEndOffset;
+		Vector2 snapLocation = isSnapToStartCloser ? snapTo.BoundSegment.GetExtendedStartSnapPosition()
+			: snapTo.BoundSegment.GetExtendedEndSnapPosition();
 		isToSnapStartCloser = (snapLocation - toSnapEnd).Length() > (snapLocation - toSnapStart).Length();
 
 		// Ensuring there isn't already something snapped to the nearest snap point
@@ -359,17 +351,83 @@ public partial class TrackEditor : ContentPage
 						draggingObject.MoveTo(snapLocation?.X ?? 0, snapLocation?.Y ?? 0);
 						draggingObject.Rotate((int)rotation);
 
-						// Snap the snapped object to the dragged one on whichever end is applicable
+						// Snap the snapped object to the dragged one
+						// on whichever end is applicable
 						if (isStartCloser)
 							snappedObject.SnapToStart(draggingObject.BoundSegment);
 						else
 							snappedObject.SnapToEnd(draggingObject.BoundSegment);
 
-						// Snap the dragged object to the snapped one on whichever end is applicable
+						// Snap the dragged object to the snapped one
+						// on whichever end is applicable
 						if (!isDragStartCloser)
 							draggingObject.SnapToStart(snappedObject.BoundSegment);
 						else
 							draggingObject.SnapToEnd(snappedObject.BoundSegment);
+
+						// Secondary snap check in case this object fills a gap between two existing objects
+
+						// Used to determine if any other objects are close enough to snap to
+						Vector2 toCheck = isDragStartCloser
+							? draggingObject.BoundSegment.GetStartSnapPosition()
+							: draggingObject.BoundSegment.GetEndSnapPosition();
+						float checkRotation = draggingObject.BoundSegment.Rotation
+							+ (isDragStartCloser ? dragRotationOffset.X : dragRotationOffset.Y);
+
+						TrackObject? toSnap = null;
+
+						// Finding nearby objects to attempt to snap 
+						foreach (TrackObject obj in objects)
+						{
+							if (obj != draggingObject)
+							{
+								if (obj.BoundSegment.SnappedStartSegment == null)
+								{
+									// Ensuring rotations and positions align before snapping
+									float objRotation = obj.BoundSegment.Rotation
+										+ obj.BoundSegment.SnapRotationOffset.X;
+									float rotationDiff = Math.Abs(checkRotation - (objRotation + 180)) % 360;
+
+									Vector2 snapPos = obj.BoundSegment.GetStartSnapPosition();
+
+									// Accounting for floating point errors in difference checks
+									if ((snapPos - toCheck).Length() < 0.01f && rotationDiff < 0.01f)
+									{
+										// Snap the dragging object to this object and exit the loop
+										toSnap = obj;
+										toSnap.SnapToStart(draggingObject.BoundSegment);
+										break;
+									}
+								}
+
+								if (obj.BoundSegment.SnappedEndSegment == null)
+								{
+									// Ensuring rotations and positions align before snapping
+									float objRotation = obj.BoundSegment.Rotation
+										+ obj.BoundSegment.SnapRotationOffset.Y;
+									float rotationDiff = Math.Abs(checkRotation - (objRotation + 180)) % 360;
+
+									Vector2 snapPos = obj.BoundSegment.GetEndSnapPosition();
+									// Accounting for floating point errors in difference checks
+									if ((snapPos - toCheck).Length() < 0.01f)
+									{
+										// Snap the dragging object to this object and exit the loop
+										toSnap = obj;
+										toSnap.SnapToEnd(draggingObject.BoundSegment);
+										break;
+									}
+								}
+							}
+						}
+
+						// Check if another object was snapped to the dragging one
+						if (toSnap != null)
+						{
+							if (isDragStartCloser)
+								draggingObject.SnapToStart(toSnap.BoundSegment);
+							else
+								draggingObject.SnapToEnd(toSnap.BoundSegment);
+						}
 					}
 				}
 
