@@ -40,6 +40,8 @@ public partial class TrackEditor : ContentPage
 		Color = SKColor.Parse("#FFD3D3D3")
 	};
 
+
+
 	// Will be used for saving the loaded track to the database
 	private readonly IBusinessLogic businessLogic;
 	// The loaded project to retrieve the track and an ActionHandler for edit history
@@ -51,12 +53,21 @@ public partial class TrackEditor : ContentPage
 	// The currently saved track string to compare against for an unsaved track indicator
 	private string savedTrack;
 
-	/// <summary>
-	/// TrackEditor constructor - Loads an optional PersonalProject into the editor
-	/// along with the necessary helper classes
-	/// </summary>
-	/// <param name="project">The PersonalProject to load into the Track Editor</param>
-	public TrackEditor(PersonalProject? project = null)
+    // Keeping track of various object states
+    // to determine how a user is interacting with a TrackObject
+    private TrackObject? draggingObject;
+    private TrackObject? selectedObject;
+    private TrackObject? snappedObject;
+    private TrackObject? rotatingObject;
+
+
+
+    /// <summary>
+    /// TrackEditor constructor - Loads an optional PersonalProject into the editor
+    /// along with the necessary helper classes
+    /// </summary>
+    /// <param name="project">The PersonalProject to load into the Track Editor</param>
+    public TrackEditor(PersonalProject? project = null)
 	{
 		InitializeComponent();
 
@@ -85,17 +96,6 @@ public partial class TrackEditor : ContentPage
 
 		savedTrack = project.Track.GetSegmentsAsString();
 		UpdateSavedIndicator();
-	}
-
-	/// <summary>
-	/// Resets the list of TrackObjects so it's up to date with the track
-	/// </summary>
-	private void ReloadObjects()
-	{
-		objects.Clear();
-
-		foreach (Segment segment in loadedProject.Track.Segments)
-			objects.Add(new(segment));
 	}
 
 	private async void OnPieceEditButtonClicked(object sender, EventArgs e)
@@ -171,11 +171,7 @@ public partial class TrackEditor : ContentPage
 		autosaveIndex++;
 	}
 
-	// Keeping track of various object states to determine how a user is interacting with a TrackObject
-	private TrackObject? draggingObject;
-	private TrackObject? selectedObject;
-	private TrackObject? snappedObject;
-	private TrackObject? rotatingObject;
+
 
 	private void OnHotbarPieceClicked(object sender, EventArgs e)
 	{
@@ -203,100 +199,7 @@ public partial class TrackEditor : ContentPage
 		UpdateSavedIndicator();
 	}
 
-	/// <summary>
-	/// Returns whether the given x and y coordinates are within the editor's canvas
-	/// </summary>
-	/// <param name="x">The x coordinate to check against the editor's canvas</param>
-	/// <param name="y">The y coordinate to check against the editor's canvas</param>
-	/// <returns>Whether the coordinates are within the editor's canvas</returns>
-	private bool IsWithinEditorFrame(double x, double y)
-	{
-		return x >= EditorCanvas.X && x <= EditorCanvas.X + EditorCanvas.CanvasSize.Width
-			&& y >= EditorCanvas.Y && y <= EditorCanvas.Y + EditorCanvas.CanvasSize.Height;
-	}
 
-	/// <summary>
-	/// Attempts to find a location where a track object can be snapped to another object,
-	/// returning that location if a valid one exists, otherwise null.
-	/// isSnapToStartCloser and isToSnapStartCloser are populated while determining whether
-	/// a valid snap location exists for the two given objects.
-	/// </summary>
-	/// <param name="toSnap">The TrackObject to snap to the snapTo object</param>
-	/// <param name="snapTo">The TrackObject to be snapped to</param>
-	/// <param name="isSnapToStartCloser">Whether the toSnap object is closest to snapTo's
-	/// start snap point</param>
-	/// <param name="isToSnapStartCloser">Whether the toSnap object's start snap point
-	/// is closest to the resulting snap location</param>
-	/// <returns>The location where the toSnap object would be moved to to snap it,
-	/// or null if no valid snap points exist</returns>
-	private static Vector2? GetSnapLocation(TrackObject toSnap, TrackObject snapTo, out bool isSnapToStartCloser, out bool isToSnapStartCloser)
-	{
-		// Lots of vectors to determine where the snap points are on a piece and whether they can be snapped to
-		Vector2 snapToStart = snapTo.BoundSegment.GetStartSnapPosition();
-		Vector2 snapToEnd = snapTo.BoundSegment.GetEndSnapPosition();
-
-        Vector2 toSnapPos = new(toSnap.BoundSegment.X, toSnap.BoundSegment.Y);
-        Vector2 toSnapStart = toSnap.BoundSegment.GetStartSnapPosition();
-		Vector2 toSnapEnd = toSnap.BoundSegment.GetEndSnapPosition();
-
-		isSnapToStartCloser = (toSnapPos - snapToEnd).Length() > (toSnapPos - snapToStart).Length();
-		Vector2 snapLocation = isSnapToStartCloser ? snapToStart : snapToEnd;
-		isToSnapStartCloser = (snapLocation - toSnapEnd).Length() > (snapLocation - toSnapStart).Length();
-
-		// Ensuring there isn't already something snapped to the nearest snap point
-		if (isSnapToStartCloser && snapTo.BoundSegment.SnappedStartSegment != null)
-			return null;
-		else if (!isSnapToStartCloser && snapTo.BoundSegment.SnappedEndSegment != null)
-			return null;
-		return isSnapToStartCloser ? snapTo.BoundSegment.GetExtendedStartSnapPosition()
-            : snapTo.BoundSegment.GetExtendedEndSnapPosition();
-	}
-
-	/// <summary>
-	/// Finds and returns the closest TrackObject to a given position,
-	/// or null if none were close enough to be detected
-	/// </summary>
-	/// <param name="pos">The position to check the existing TrackObjects against</param>
-	/// <param name="exclude">An optional TrackObject to be excluded from detection,
-	/// setting this to an object also excludes fully snapped pieces from being checked
-	/// (both start and end snap points are populated)</param>
-	/// <returns>The closest TrackObject to the given position, or null
-	/// if none were close enough</returns>
-	private TrackObject? GetClosestTrackObject(SKPoint pos, TrackObject? exclude = null)
-	{
-		TrackObject? minDistObject = null;
-		double minDist = double.MaxValue;
-
-		// Iterating in reverse so objects placed later have greater priority
-		for (int i = objects.Count; i > 0; i--)
-		{
-			TrackObject obj = objects[i - 1];
-			if (obj == exclude)
-				continue;
-
-			// Ensure this object can be snapped to if an object to exclude was given
-			if (exclude != null)
-			{
-				Segment? snappedStart = obj.BoundSegment.SnappedStartSegment;
-				Segment? snappedEnd = obj.BoundSegment.SnappedEndSegment;
-
-				if (snappedStart != null && snappedEnd != null)
-					continue;
-			}
-
-			SKPoint objectPos = new(obj.BoundSegment.X, obj.BoundSegment.Y);
-			double distance = (objectPos - pos).Length;
-
-			// Checking the distance against the width of the segment as a sort of hitbox
-			if (distance < obj.BoundSegment.Size.X && distance < minDist)
-			{
-				minDistObject = obj;
-				minDist = distance;
-			}
-		}
-
-		return minDistObject;
-	}
 
 	private void OnEditorPanelTouched(object sender, SKTouchEventArgs e)
     {
@@ -310,8 +213,8 @@ public partial class TrackEditor : ContentPage
 
 		switch (e.ActionType)
 		{
-			// The canvas was tapped, try to select a track object if one is close enough or clear selection
-			// unless piece rotation was attempted
+			// The canvas was tapped, try to select a track object if one is close enough,
+			// or try to start rotating a selected object, or clear selection otherwise
 			case SKTouchAction.Pressed:
 				TrackObject? closestObject = GetClosestTrackObject(pos);
 
@@ -327,11 +230,13 @@ public partial class TrackEditor : ContentPage
 
 				RedrawCanvas();
 				break;
-			// The canvas is being dragged, move an object if one is currently being dragged to this location
+			// The canvas is being dragged, move an object
+			// if one is currently being dragged to this location
 			case SKTouchAction.Moved:
 				if (draggingObject != null)
 				{
-					// If an object is within range of the dragged one, mark it as one to snap to later if applicable
+					// If an object is within range of the dragged one,
+					// mark it as one to snap to later if applicable
 					snappedObject = GetClosestTrackObject(pos, draggingObject);
 					draggingObject.MoveTo(x, y);
 					// Unsnap the current object on both ends to pull it away
@@ -349,7 +254,7 @@ public partial class TrackEditor : ContentPage
                         // Getting a unit vector of the position relative to the rotation dial
                         Vector2 rotation = new(x - rotationDialPos.X, y - rotationDialPos.Y);
                         rotation /= rotation.Length();
-                        // That unit vector can now give the angle the user is rotating the piece to
+                        // The unit vector can now give the angle the user is rotating the piece to
                         // (with some more trig of course)
                         float angle = -MathF.Atan2(rotation.Y, rotation.X);
 
@@ -360,7 +265,8 @@ public partial class TrackEditor : ContentPage
 
 				RedrawCanvas();
 				break;
-			// The canvas has been released in some manner, stop dragging and attempt to snap the object
+			// The canvas has been released in some manner,
+			// stop dragging and attempt to snap the object
 			case SKTouchAction.Released:
 			case SKTouchAction.Exited:
 			case SKTouchAction.Cancelled:
@@ -375,15 +281,21 @@ public partial class TrackEditor : ContentPage
 				else if (draggingObject != null && snappedObject != null)
 				{
 					// Attempt to snap this piece to the closest object detected while dragging
-					Vector2? snapLocation = GetSnapLocation(draggingObject, snappedObject, out bool isStartCloser, out bool isDragStartCloser);
+					Vector2? snapLocation = GetSnapLocation(draggingObject, snappedObject,
+						out bool isStartCloser, out bool isDragStartCloser);
 
 					if (snapLocation != null)
 					{
-						Vector2 snapRotationOffset = snappedObject.BoundSegment.SnapRotationOffset;
-						Vector2 dragRotationOffset = draggingObject.BoundSegment.SnapRotationOffset;
-						// Gets the degree of rotation to snap the dragged object to - took a *lot* of trial and error
-						float snapRotation = isStartCloser ? snapRotationOffset.X : snapRotationOffset.Y;
-						float rotation = snappedObject.BoundSegment.Rotation - snapRotation - dragRotationOffset.X;
+						Vector2 snapRotationOffset
+							= snappedObject.BoundSegment.SnapRotationOffset;
+						Vector2 dragRotationOffset
+							= draggingObject.BoundSegment.SnapRotationOffset;
+						// Gets the degree of rotation to snap the dragged object to
+						// - took a *lot* of trial and error
+						float snapRotation = isStartCloser
+							? snapRotationOffset.X : snapRotationOffset.Y;
+						float rotation = snappedObject.BoundSegment.Rotation
+							- snapRotation - dragRotationOffset.X;
 						if (isDragStartCloser) // it works now!
 							rotation += 360 - dragRotationOffset.X + dragRotationOffset.Y;
 						rotation %= 360;
@@ -406,7 +318,8 @@ public partial class TrackEditor : ContentPage
 						else
 							draggingObject.SnapToEnd(snappedObject.BoundSegment);
 
-						// Secondary snap check in case this object fills a gap between two existing objects
+						// Secondary snap check in case this object fills a gap
+						// between two existing objects
 
 						// Used to determine if any other objects are close enough to snap to
 						Vector2 toCheck = isDragStartCloser
@@ -420,43 +333,45 @@ public partial class TrackEditor : ContentPage
 						// Finding nearby objects to attempt to snap 
 						foreach (TrackObject obj in objects)
 						{
-							if (obj != draggingObject)
+							if (obj == draggingObject)
+								continue;
+
+							if (obj.BoundSegment.SnappedStartSegment == null)
 							{
-								if (obj.BoundSegment.SnappedStartSegment == null)
+								// Ensuring rotations and positions align before snapping
+								float objRotation = obj.BoundSegment.Rotation
+									+ obj.BoundSegment.SnapRotationOffset.X;
+								float rotationDiff = Math.Abs(checkRotation
+									- (objRotation + 180)) % 360;
+
+								Vector2 snapPos = obj.BoundSegment.GetStartSnapPosition();
+
+								// Accounting for floating point errors in difference checks
+								if ((snapPos - toCheck).Length() < 0.01f && rotationDiff < 0.01f)
 								{
-									// Ensuring rotations and positions align before snapping
-									float objRotation = obj.BoundSegment.Rotation
-										+ obj.BoundSegment.SnapRotationOffset.X;
-									float rotationDiff = Math.Abs(checkRotation - (objRotation + 180)) % 360;
-
-									Vector2 snapPos = obj.BoundSegment.GetStartSnapPosition();
-
-									// Accounting for floating point errors in difference checks
-									if ((snapPos - toCheck).Length() < 0.01f && rotationDiff < 0.01f)
-									{
-										// Snap the dragging object to this object and exit the loop
-										toSnap = obj;
-										toSnap.SnapToStart(draggingObject.BoundSegment);
-										break;
-									}
+									// Snap the dragging object to this object and exit the loop
+									toSnap = obj;
+									toSnap.SnapToStart(draggingObject.BoundSegment);
+									break;
 								}
+							}
 
-								if (obj.BoundSegment.SnappedEndSegment == null)
+							if (obj.BoundSegment.SnappedEndSegment == null)
+							{
+								// Ensuring rotations and positions align before snapping
+								float objRotation = obj.BoundSegment.Rotation
+									+ obj.BoundSegment.SnapRotationOffset.Y;
+								float rotationDiff = Math.Abs(checkRotation
+									- (objRotation + 180)) % 360;
+
+								Vector2 snapPos = obj.BoundSegment.GetEndSnapPosition();
+								// Accounting for floating point errors in difference checks
+								if ((snapPos - toCheck).Length() < 0.01f)
 								{
-									// Ensuring rotations and positions align before snapping
-									float objRotation = obj.BoundSegment.Rotation
-										+ obj.BoundSegment.SnapRotationOffset.Y;
-									float rotationDiff = Math.Abs(checkRotation - (objRotation + 180)) % 360;
-
-									Vector2 snapPos = obj.BoundSegment.GetEndSnapPosition();
-									// Accounting for floating point errors in difference checks
-									if ((snapPos - toCheck).Length() < 0.01f)
-									{
-										// Snap the dragging object to this object and exit the loop
-										toSnap = obj;
-										toSnap.SnapToEnd(draggingObject.BoundSegment);
-										break;
-									}
+									// Snap the dragging object to this object and exit the loop
+									toSnap = obj;
+									toSnap.SnapToEnd(draggingObject.BoundSegment);
+									break;
 								}
 							}
 						}
@@ -488,14 +403,7 @@ public partial class TrackEditor : ContentPage
 		e.Handled = true;
 	}
 
-	/// <summary>
-	/// Marks the editor canvas as needing to be redrawn; should be called after modifying the track
-	/// </summary>
-	private void RedrawCanvas()
-	{
-		// Marks EditorCanvas as needing to be redrawn
-		EditorCanvas.InvalidateSurface();
-	}
+
 
 	private void OnPaintEditorCanvas(object sender, SKPaintSurfaceEventArgs e)
 	{
@@ -523,7 +431,7 @@ public partial class TrackEditor : ContentPage
 			// Draw secondary dial for rotation
 			float rotationRads = -MathF.PI * selectedObject.BoundSegment.Rotation / 180;
 			Matrix3x2 dialRotation = Matrix3x2.CreateRotation(rotationRads);
-			Vector2 offset = Vector2.Transform(-Vector2.UnitY, dialRotation) * 49;
+			Vector2 offset = Vector2.Transform(-Vector2.UnitY, dialRotation) * 50;
 			
 			canvas.Translate(offset.X, offset.Y);
 			canvas.DrawCircle(0, 0, 15, RotationDialOuter);
@@ -546,9 +454,11 @@ public partial class TrackEditor : ContentPage
 				Vector2 pos = -size / 2;
 				SKRect dest = new(0, 0, size.X, size.Y);
 
-				// Align the canvas's center point where this piece should be rendered and draw the image
+				// Align the canvas's center point where this piece should be rendered
+				// and draw the image
 				canvas.Translate(obj.BoundSegment.X, obj.BoundSegment.Y);
-				// canvas.RotateDegrees applies clockwise, while trig functions apply counterclockwise
+				// canvas.RotateDegrees applies clockwise,
+				// while trig functions apply counterclockwise
 				canvas.RotateDegrees(-obj.BoundSegment.Rotation);
 				SKMatrix curMatrix = canvas.TotalMatrix;
 
@@ -570,13 +480,16 @@ public partial class TrackEditor : ContentPage
 					Vector2 startOffset = obj.BoundSegment.StartSnapOffset;
 					Vector2 endOffset = obj.BoundSegment.EndSnapOffset;
 
-					// Draw a small snap shadow if the dragged piece is close enough to the current object
+					// Draw a small snap shadow if the dragged piece is close enough
+					// to the current object
 					if (snappedObject == obj)
 					{
 						if (obj.BoundSegment.SnappedStartSegment == null)
-							canvas.DrawCircle(startOffset.X * 2, startOffset.Y * 2, 30, SelectShadow);
+							canvas.DrawCircle(startOffset.X * 2, startOffset.Y * 2,
+								30, SelectShadow);
 						if (obj.BoundSegment.SnappedEndSegment == null)
-							canvas.DrawCircle(endOffset.X * 2, endOffset.Y * 2, 30, SelectShadow);
+							canvas.DrawCircle(endOffset.X * 2, endOffset.Y * 2,
+								30, SelectShadow);
 					}
 
 					// Draw green circles where open snap points are
@@ -604,14 +517,146 @@ public partial class TrackEditor : ContentPage
 				canvas.DrawCircle(snapLocation?.X ?? 0, snapLocation?.Y ?? 0, 25, SnapColor);
 		}
 
-		// Just in case some residual changes in the canvas's matrix could carry over to another draw
+		// Some residual changes in the canvas's matrix could otherwise carry over to another draw
 		canvas.ResetMatrix();
-	}
+    }
 
-	/// <summary>
-	/// Changes the background color of the Save button depending on whether the track is saved
-	/// </summary>
-	private void UpdateSavedIndicator()
+
+
+
+
+    /// <summary>
+    /// Resets the list of TrackObjects so it's up to date with the track
+    /// </summary>
+    private void ReloadObjects()
+    {
+        objects.Clear();
+
+        foreach (Segment segment in loadedProject.Track.Segments)
+            objects.Add(new(segment));
+    }
+
+    /// <summary>
+    /// Marks the editor canvas as needing to be redrawn;
+    /// should be called after modifying the track
+    /// </summary>
+    private void RedrawCanvas()
+    {
+        // Marks EditorCanvas as needing to be redrawn
+        EditorCanvas.InvalidateSurface();
+    }
+
+    /// <summary>
+    /// Returns whether the given x and y coordinates are within the editor's canvas
+    /// </summary>
+    /// <param name="x">The x coordinate to check against the editor's canvas</param>
+    /// <param name="y">The y coordinate to check against the editor's canvas</param>
+    /// <returns>Whether the coordinates are within the editor's canvas</returns>
+    private bool IsWithinEditorFrame(double x, double y)
+    {
+        return x >= EditorCanvas.X && x <= EditorCanvas.X + EditorCanvas.CanvasSize.Width
+            && y >= EditorCanvas.Y && y <= EditorCanvas.Y + EditorCanvas.CanvasSize.Height;
+    }
+
+
+
+    /// <summary>
+    /// Attempts to find a location where a track object can be snapped to another object,
+    /// returning that location if a valid one exists, otherwise null.
+    /// isSnapToStartCloser and isToSnapStartCloser are populated while determining whether
+    /// a valid snap location exists for the two given objects.
+    /// </summary>
+    /// <param name="toSnap">The TrackObject to snap to the snapTo object</param>
+    /// <param name="snapTo">The TrackObject to be snapped to</param>
+    /// <param name="isSnapToStartCloser">Whether the toSnap object is closest to snapTo's
+    /// start snap point</param>
+    /// <param name="isToSnapStartCloser">Whether the toSnap object's start snap point
+    /// is closest to the resulting snap location</param>
+    /// <returns>The location where the toSnap object would be moved to to snap it,
+    /// or null if no valid snap points exist</returns>
+    private static Vector2? GetSnapLocation(TrackObject toSnap, TrackObject snapTo,
+        out bool isSnapToStartCloser, out bool isToSnapStartCloser)
+    {
+        // Lots of vectors to determine where the snap points are on a piece
+        // and whether they can be snapped to
+        Vector2 snapToStart = snapTo.BoundSegment.GetStartSnapPosition();
+        Vector2 snapToEnd = snapTo.BoundSegment.GetEndSnapPosition();
+
+        Vector2 toSnapPos = new(toSnap.BoundSegment.X, toSnap.BoundSegment.Y);
+        Vector2 toSnapStart = toSnap.BoundSegment.GetStartSnapPosition();
+        Vector2 toSnapEnd = toSnap.BoundSegment.GetEndSnapPosition();
+
+        isSnapToStartCloser = (toSnapPos - snapToEnd).Length()
+            > (toSnapPos - snapToStart).Length();
+        Vector2 snapLocation = isSnapToStartCloser ? snapToStart : snapToEnd;
+        isToSnapStartCloser = (snapLocation - toSnapEnd).Length()
+            > (snapLocation - toSnapStart).Length();
+
+        // Ensuring there isn't already something snapped to the nearest snap point
+        if (isSnapToStartCloser && snapTo.BoundSegment.SnappedStartSegment != null)
+            return null;
+        else if (!isSnapToStartCloser && snapTo.BoundSegment.SnappedEndSegment != null)
+            return null;
+        return isSnapToStartCloser ? snapTo.BoundSegment.GetExtendedStartSnapPosition()
+            : snapTo.BoundSegment.GetExtendedEndSnapPosition();
+    }
+
+
+
+    /// <summary>
+    /// Finds and returns the closest TrackObject to a given position,
+    /// or null if none were close enough to be detected
+    /// </summary>
+    /// <param name="pos">The position to check the existing TrackObjects against</param>
+    /// <param name="exclude">An optional TrackObject to be excluded from detection,
+    /// setting this to an object also excludes fully snapped pieces from being checked
+    /// (both start and end snap points are populated)</param>
+    /// <returns>The closest TrackObject to the given position, or null
+    /// if none were close enough</returns>
+    private TrackObject? GetClosestTrackObject(SKPoint pos, TrackObject? exclude = null)
+    {
+        TrackObject? minDistObject = null;
+        double minDist = double.MaxValue;
+
+        // Iterating in reverse so objects placed later have greater priority
+        for (int i = objects.Count; i > 0; i--)
+        {
+            TrackObject obj = objects[i - 1];
+            if (obj == exclude)
+                continue;
+
+            // Ensure this object can be snapped to if an object to exclude was given
+            if (exclude != null)
+            {
+                Segment? snappedStart = obj.BoundSegment.SnappedStartSegment;
+                Segment? snappedEnd = obj.BoundSegment.SnappedEndSegment;
+
+                if (snappedStart != null && snappedEnd != null)
+                    continue;
+            }
+
+            SKPoint objectPos = new(obj.BoundSegment.X, obj.BoundSegment.Y);
+            double distance = (objectPos - pos).Length;
+
+            // Checking the distance against the width of the segment as a sort of hitbox
+            if (distance < obj.BoundSegment.Size.X && distance < minDist)
+            {
+                minDistObject = obj;
+                minDist = distance;
+            }
+        }
+
+        return minDistObject;
+    }
+
+
+
+
+
+    /// <summary>
+    /// Changes the background color of the Save button depending on whether the track is saved
+    /// </summary>
+    private void UpdateSavedIndicator()
 	{
 		bool isSaved = savedTrack == loadedProject.Track.GetSegmentsAsString();
 		Save.BackgroundColor = isSaved ? Colors.Green : Colors.Orange;

@@ -3,9 +3,10 @@
 namespace ModelTrain.Model.Track
 {
     /**
-     * Description: A static method to get the default size, snap length, and angle metrics for a Segment
+     * Description: A static method to get the default size, snap length, and angle metrics
+     * for a Segment
      * Author: Alex Robinson
-     * Last updated: 11/27/2024
+     * Last updated: 12/8/2024
      */
     public static class SegmentInfo
     {
@@ -16,7 +17,8 @@ namespace ModelTrain.Model.Track
         /// <param name="size"></param>
         /// <param name="snapLengths"></param>
         /// <param name="angles"></param>
-        public static void GetMetrics(SegmentType type, out Vector2 size, out Vector2 snapLengths, out Vector2 angles)
+        public static void GetMetrics(SegmentType type,
+            out Vector2 size, out Vector2 snapLengths, out Vector2 angles)
         {
             // May change later depending on curve, but for now this is fine
             size = Vector2.One * 100;

@@ -33,7 +33,8 @@ namespace ModelTrain.Model.Track
         public readonly Vector2 SnapRotationOffset;
 
         /// <summary>
-        /// Segment constructor - Assigns a SegmentType for this Segment which defines default values
+        /// Segment constructor - Assigns a SegmentType for this Segment
+        /// which defines default values
         /// </summary>
         /// <param name="type">The SegmentType to assign to this Segment</param>
         public Segment(SegmentType type)
@@ -41,20 +42,24 @@ namespace ModelTrain.Model.Track
             SegmentType = type;
 
             // Default metrics for the snap lengths and angles for snap positions
-            SegmentInfo.GetMetrics(type, out Vector2 size, out Vector2 snapLengths, out Vector2 angles);
+            SegmentInfo.GetMetrics(type,
+                out Vector2 size, out Vector2 snapLengths, out Vector2 angles);
             // Radians are easier to use in trig methods
             float radX = MathF.PI * angles.X / 180f;
             float radY = MathF.PI * angles.Y / 180f;
 
             Size = size;
             // The unit circle shows up again! (cos(r), sin(r)) * length = snap offset
-            StartSnapOffset = new Vector2((float)Math.Cos(radX), (float)Math.Sin(radX)) * snapLengths.X;
-            EndSnapOffset = new Vector2((float)Math.Cos(radY), (float)Math.Sin(radY)) * snapLengths.Y;
+            StartSnapOffset = new Vector2((float)Math.Cos(radX),
+                (float)Math.Sin(radX)) * snapLengths.X;
+            EndSnapOffset = new Vector2((float)Math.Cos(radY),
+                (float)Math.Sin(radY)) * snapLengths.Y;
             SnapRotationOffset = angles;
         }
 
         /// <summary>
-        /// Gets the position of the start snap point relative to the canvas rather than the segment
+        /// Gets the position of the start snap point relative to the canvas
+        /// rather than the segment
         /// </summary>
         /// <returns>A Vector2 position of this segment's start snap point</returns>
         public Vector2 GetStartSnapPosition()
@@ -64,9 +69,11 @@ namespace ModelTrain.Model.Track
         }
 
         /// <summary>
-        /// Gets the position where a segment should be placed to snap to this segment's start snap point
+        /// Gets the position where a segment should be placed
+        /// to snap to this segment's start snap point
         /// </summary>
-        /// <returns>A Vector2 position for placing a segment to this segment's start snap point</returns>
+        /// <returns>A Vector2 position for placing a segment
+        /// at this segment's start snap point</returns>
         public Vector2 GetExtendedStartSnapPosition()
         {
             Matrix3x2 rotationMatrix = Matrix3x2.CreateRotation(-MathF.PI * Rotation / 180);
@@ -84,9 +91,11 @@ namespace ModelTrain.Model.Track
         }
 
         /// <summary>
-        /// Gets the position where a segment should be placed to snap to this segment's end snap point
+        /// Gets the position where a segment should be placed
+        /// to snap to this segment's end snap point
         /// </summary>
-        /// <returns>A Vector2 position for placing a segment to this segment's end snap point</returns>
+        /// <returns>A Vector2 position for placing a segment
+        /// at this segment's end snap point</returns>
         public Vector2 GetExtendedEndSnapPosition()
         {
             Matrix3x2 rotationMatrix = Matrix3x2.CreateRotation(-MathF.PI * Rotation / 180);

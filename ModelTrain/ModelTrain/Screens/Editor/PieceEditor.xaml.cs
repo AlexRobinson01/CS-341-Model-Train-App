@@ -13,14 +13,14 @@ namespace ModelTrain.Screens;
 public partial class PieceEditor : ContentPage
 {
 	// Store the path and rotation state
-	private string _selectedImagePath;
-	private float _currentRotation;
-	private readonly Piece _piece;
+	private string selectedImagePath = "";
+	private float currentRotation;
+	private readonly Piece piece;
 
 	public PieceEditor(Piece piece)
 	{
 		InitializeComponent();
-		_piece = piece;
+		this.piece = piece;
 		PieceImage.PieceOverride = piece;
 		RotateCCW.Text = IconFont.Rotate_left + " Rotate Left";
 		RotateCW.Text = IconFont.Rotate_right + " Rotate Right";
@@ -32,7 +32,7 @@ public partial class PieceEditor : ContentPage
 		PieceImage.ClassId = piece.Name;
 		PieceImage.Redraw();
 
-		_currentRotation = piece.ImageRotation;
+		currentRotation = piece.ImageRotation;
 	}
 
 	private async void OnChangeImageButtonClicked(object sender, EventArgs e)
@@ -49,10 +49,10 @@ public partial class PieceEditor : ContentPage
 			if (result != null)
 			{
 				// Save the selected image path
-				_selectedImagePath = result.FullPath;
+				selectedImagePath = result.FullPath;
 
 				// Update the image in the preview
-				PieceImage.PieceOverride!.Image = _selectedImagePath;
+				PieceImage.PieceOverride!.Image = selectedImagePath;
 				PieceImage.Redraw();
 			}
 		}
@@ -65,35 +65,36 @@ public partial class PieceEditor : ContentPage
 	private void OnRotateCCWButtonClicked(object sender, EventArgs e)
 	{
 		// Rotate counterclockwise
-		_currentRotation = (_currentRotation - 90) % 360; // Keep rotation in range [0, 360)
+		currentRotation = (currentRotation - 90) % 360; // Keep rotation in range [0, 360)
 
 		// Show changes
-		_piece.UpdateImageRSO(_currentRotation);
+		piece.UpdateImageRSO(currentRotation);
 		PieceImage.Redraw();
 	}
 
 	private void OnRotateCWButtonClicked(object sender, EventArgs e)
 	{
 		// Rotate clockwise
-		_currentRotation = (_currentRotation + 90) % 360; // Keep rotation in range [0, 360)
+		currentRotation = (currentRotation + 90) % 360; // Keep rotation in range [0, 360)
 
 		// Show changes
-		_piece.UpdateImageRSO(_currentRotation);
+		piece.UpdateImageRSO(currentRotation);
 		PieceImage.Redraw();
 	}
 
 	private async void OnConfirmButtonClicked(object sender, EventArgs e)
 	{
-		if (!string.IsNullOrEmpty(_piece.Image))
+		if (!string.IsNullOrEmpty(piece.Image))
         {
 			// Save changes in preferences
-            Preferences.Set($"{_piece.Name}_rotation", _currentRotation);
-            Preferences.Set(_piece.Name, _selectedImagePath);
+            Preferences.Set($"{piece.Name}_rotation", currentRotation);
+            Preferences.Set(piece.Name, selectedImagePath);
             await DisplayAlert("Success", "Track piece updated locally.", "OK");
 		}
 		else
 		{
-			await DisplayAlert("Error", "No image selected. Please select an image before confirming.", "OK");
+			await DisplayAlert("Error", "No image selected. " +
+				"Please select an image before confirming.", "OK");
 		}
 
 		// Return to the previous screen
