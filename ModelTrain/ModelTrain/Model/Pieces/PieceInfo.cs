@@ -53,7 +53,7 @@ namespace ModelTrain.Model.Pieces
         /// Takes in a SegmentType and populates three values with their relevant piece info
         /// associated with this type
         /// </summary>
-        /// <param name="type">The SegmentType to fetch piece RSO data for</param>
+        /// <param name="pieceName">The name of the piece type to fetch piece RSO data for</param>
         /// <param name="rotation">A float reference to be set to this type's rotation</param>
         /// <param name="scale">A float reference to be set to this type's scale</param>
         /// <param name="offset">A Vector2 reference to be set to this type's offset</param>

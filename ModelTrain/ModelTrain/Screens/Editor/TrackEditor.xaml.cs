@@ -11,7 +11,7 @@ namespace ModelTrain.Screens;
 /**
  * Description: The main track editor page, allows someone to modify the track they have opened
  * Author: Alex Robinson
- * Last updated: 12/7/2024
+ * Last updated: 12/8/2024
  */
 public partial class TrackEditor : ContentPage
 {
@@ -28,13 +28,25 @@ public partial class TrackEditor : ContentPage
 		Color = SKColor.Parse("#5F7F7F7F")
 	};
 
+	// A gray color showing the outline of the rotation dial
+	private static readonly SKPaint RotationDialOuter = new()
+	{
+		Color = SKColor.Parse("#FF7F7F7F")
+	};
+
+	// A light gray-ish color inside the rotation dial
+	private static readonly SKPaint RotationDialInner = new()
+	{
+		Color = SKColor.Parse("#FFD3D3D3")
+	};
+
 	// Will be used for saving the loaded track to the database
 	private readonly IBusinessLogic businessLogic;
 	// The loaded project to retrieve the track and an ActionHandler for edit history
 	private readonly PersonalProject loadedProject;
 	private readonly ActionHandler actionHandler;
 	// The list of currently placed TrackObjects
-	private readonly List<TrackObject> objects = new();
+	private readonly List<TrackObject> objects = [];
 
 	// The currently saved track string to compare against for an unsaved track indicator
 	private string savedTrack;
@@ -159,6 +171,7 @@ public partial class TrackEditor : ContentPage
 	private TrackObject? draggingObject;
 	private TrackObject? selectedObject;
 	private TrackObject? snappedObject;
+	private TrackObject? rotatingObject;
 
 	private void OnHotbarPieceClicked(object sender, EventArgs e)
 	{
@@ -173,11 +186,9 @@ public partial class TrackEditor : ContentPage
 		Piece piece = new(segmentType);
 		TrackObject trackObject = new(loadedProject.Track, piece);
 
-		// Attempting to place the piece in the center of the screen
-		// This seems to be completely different depending on the device so I'm not sure if this is possible,
-		// but at least it's not in a corner somewhere
-		double x = EditorFrame.Width - trackObject.BoundSegment.Size.X / 4;
-		double y = EditorFrame.Height - trackObject.BoundSegment.Size.Y / 4;
+		// Placing the piece in the center of the screen
+		double x = EditorCanvas.CanvasSize.Width / 2;
+		double y = EditorCanvas.CanvasSize.Height / 2;
 
 		trackObject.MoveTo(x, y);
 		objects.Add(trackObject);
@@ -196,8 +207,8 @@ public partial class TrackEditor : ContentPage
 	/// <returns>Whether the coordinates are within the editor's canvas</returns>
 	private bool IsWithinEditorFrame(double x, double y)
 	{
-		return x >= EditorFrame.X && x <= EditorFrame.X + EditorCanvas.CanvasSize.Width
-			&& y >= EditorFrame.Y && y <= EditorFrame.Y + EditorCanvas.CanvasSize.Height;
+		return x >= EditorCanvas.X && x <= EditorCanvas.X + EditorCanvas.CanvasSize.Width
+			&& y >= EditorCanvas.Y && y <= EditorCanvas.Y + EditorCanvas.CanvasSize.Height;
 	}
 
 	/// <summary>
@@ -225,8 +236,7 @@ public partial class TrackEditor : ContentPage
 		Vector2 toSnapEnd = toSnap.BoundSegment.GetEndSnapPosition();
 
 		isSnapToStartCloser = (toSnapPos - snapToEnd).Length() > (toSnapPos - snapToStart).Length();
-		Vector2 snapLocation = isSnapToStartCloser ? snapTo.BoundSegment.GetExtendedStartSnapPosition()
-			: snapTo.BoundSegment.GetExtendedEndSnapPosition();
+		Vector2 snapLocation = isSnapToStartCloser ? snapToStart : snapToEnd;
 		isToSnapStartCloser = (snapLocation - toSnapEnd).Length() > (snapLocation - toSnapStart).Length();
 
 		// Ensuring there isn't already something snapped to the nearest snap point
@@ -234,7 +244,8 @@ public partial class TrackEditor : ContentPage
 			return null;
 		else if (!isSnapToStartCloser && snapTo.BoundSegment.SnappedEndSegment != null)
 			return null;
-		return snapLocation;
+		return isSnapToStartCloser ? snapTo.BoundSegment.GetExtendedStartSnapPosition()
+            : snapTo.BoundSegment.GetExtendedEndSnapPosition();
 	}
 
 	/// <summary>
@@ -284,15 +295,19 @@ public partial class TrackEditor : ContentPage
 	}
 
 	private void OnEditorPanelTouched(object sender, SKTouchEventArgs e)
-	{
-		// Fetching coordinates from this touch event
-		SKPoint pos = e.Location;
-		double x = pos.X;
-		double y = pos.Y;
+    {
+		// Used for checking if the user is trying to rotate a piece
+        SKPoint rotationDialPos = EditorCanvas.CanvasSize.ToPoint() - new SKPoint(85, 85);
+
+        // Fetching coordinates from this touch event
+        SKPoint pos = e.Location;
+		float x = pos.X;
+		float y = pos.Y;
 
 		switch (e.ActionType)
 		{
 			// The canvas was tapped, try to select a track object if one is close enough or clear selection
+			// unless piece rotation was attempted
 			case SKTouchAction.Pressed:
 				TrackObject? closestObject = GetClosestTrackObject(pos);
 
@@ -301,6 +316,8 @@ public partial class TrackEditor : ContentPage
 					draggingObject = closestObject;
 					selectedObject = closestObject;
 				}
+				else if ((rotationDialPos - pos).Length < 100)
+					rotatingObject = selectedObject;
 				else
 					selectedObject = null;
 
@@ -316,6 +333,25 @@ public partial class TrackEditor : ContentPage
 					// Unsnap the current object on both ends to pull it away
 					draggingObject.UnsnapStart();
 					draggingObject.UnsnapEnd();
+				}
+				else if (rotatingObject != null)
+				{
+					Segment? inSnap = rotatingObject.BoundSegment.SnappedStartSegment;
+					Segment? outSnap = rotatingObject.BoundSegment.SnappedEndSegment;
+
+					// Making sure this piece isn't snapped before trying to rotate it
+					if (inSnap == null && outSnap == null)
+					{
+                        // Getting a unit vector of the position relative to the rotation dial
+                        Vector2 rotation = new(x - rotationDialPos.X, y - rotationDialPos.Y);
+                        rotation /= rotation.Length();
+                        // That unit vector can now give the angle the user is rotating the piece to
+                        // (with some more trig of course)
+                        float angle = -MathF.Atan2(rotation.Y, rotation.X);
+
+                        // Converting to degrees and adjusting it before applying it to this piece
+                        rotatingObject.Rotate((int)(angle * 180 / MathF.PI - 90) % 360);
+                    }
 				}
 
 				RedrawCanvas();
@@ -339,13 +375,12 @@ public partial class TrackEditor : ContentPage
 					{
 						Vector2 snapRotationOffset = snappedObject.BoundSegment.SnapRotationOffset;
 						Vector2 dragRotationOffset = draggingObject.BoundSegment.SnapRotationOffset;
-						// TODO: fix rotation math
 						// Gets the degree of rotation to snap the dragged object to - took a *lot* of trial and error
 						float snapRotation = isStartCloser ? snapRotationOffset.X : snapRotationOffset.Y;
 						float rotation = snappedObject.BoundSegment.Rotation - snapRotation - dragRotationOffset.X;
-						if (isDragStartCloser) // not yet working
-							rotation += 2 * (180 - dragRotationOffset.Y) - dragRotationOffset.X;
-						rotation = rotation % 360;
+						if (isDragStartCloser) // it works now!
+							rotation += 360 - dragRotationOffset.X + dragRotationOffset.Y;
+						rotation %= 360;
 
 						// Snap the dragged object by position/rotation to the snap location
 						draggingObject.MoveTo(snapLocation?.X ?? 0, snapLocation?.Y ?? 0);
@@ -431,9 +466,10 @@ public partial class TrackEditor : ContentPage
 					}
 				}
 
-				// Stop dragging the current object and update the edit history
+				// Stop interacting with the current object and update the edit history
 				draggingObject = null;
 				snappedObject = null;
+				rotatingObject = null;
 				actionHandler.AddWaypoint();
 
 				// Update track and save button with current data
@@ -455,12 +491,6 @@ public partial class TrackEditor : ContentPage
 		EditorCanvas.InvalidateSurface();
 	}
 
-	private void OnEditorPinchUpdated(object sender, PinchGestureUpdatedEventArgs e)
-	{
-		// This doesn't appear to print when emulated so this'll be something to look into
-		Console.WriteLine(e.Scale);
-	}
-
 	private void OnPaintEditorCanvas(object sender, SKPaintSurfaceEventArgs e)
 	{
 		// This method fires when the canvas needs to be redrawn
@@ -475,6 +505,26 @@ public partial class TrackEditor : ContentPage
 
 		if (bkgd != null)
 			canvas.DrawBitmap(bkgd, canvasRect);
+
+		// Show rotation dial
+		if (selectedObject != null && draggingObject == null)
+		{
+			// Draw main dial
+			canvas.Translate(e.Info.Width - 85, e.Info.Height - 85);
+			canvas.DrawCircle(0, 0, 50, RotationDialOuter);
+			canvas.DrawCircle(0, 0, 48, RotationDialInner);
+
+			// Draw secondary dial for rotation
+			float rotationRads = -MathF.PI * selectedObject.BoundSegment.Rotation / 180;
+			Matrix3x2 dialRotation = Matrix3x2.CreateRotation(rotationRads);
+			Vector2 offset = Vector2.Transform(-Vector2.UnitY, dialRotation) * 49;
+			
+			canvas.Translate(offset.X, offset.Y);
+			canvas.DrawCircle(0, 0, 15, RotationDialOuter);
+			canvas.DrawCircle(0, 0, 13, RotationDialInner);
+
+			canvas.ResetMatrix();
+		}
 
 		// Draw each track piece on the canvas
 		foreach (TrackObject obj in objects)

@@ -10,6 +10,7 @@
 
     <!-- A container spanning the whole window -->
     <Grid
+        x:Name="Window"
         RowDefinitions="*"
         ColumnDefinitions="*">
 
@@ -57,10 +58,7 @@
                             Touch="OnEditorPanelTouched"
                             Background="Transparent"
                             PaintSurface="OnPaintEditorCanvas">
-                            <skia:SKCanvasView.GestureRecognizers>
-                                <PinchGestureRecognizer
-                                    PinchUpdated="OnEditorPinchUpdated"/>
-                            </skia:SKCanvasView.GestureRecognizers>
+                            
                         </skia:SKCanvasView>
                     </Grid>
 
