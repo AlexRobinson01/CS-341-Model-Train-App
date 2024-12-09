@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Npgsql;
 using NpgsqlTypes;
+using BCrypt.Net;
 
 namespace ModelTrain.Model
 {
@@ -112,7 +113,7 @@ namespace ModelTrain.Model
                         command.Parameters.AddWithValue("@FirstName", firstName);
                         command.Parameters.AddWithValue("@LastName", lastName);
                         command.Parameters.AddWithValue("@Email", email);
-                        command.Parameters.AddWithValue("@Password", password);
+                        command.Parameters.AddWithValue("@Password", BCrypt.Net.BCrypt.HashPassword(password));
 
                         // Execute the insert command
                         await command.ExecuteNonQueryAsync();
@@ -143,12 +144,10 @@ namespace ModelTrain.Model
                         command.Parameters.AddWithValue("@Email", email);
 
                         // Execute query and retrieve the stored password
-                        var result = await command.ExecuteScalarAsync();
-                        if (result != null)
+                        var storedPassword = await command.ExecuteScalarAsync();
+                        if (storedPassword != null)
                         {
-                            string storedPassword = (string)result;
-                            // Check if the stored password matches the provided password
-                            return storedPassword == password;
+                            return BCrypt.Net.BCrypt.Verify(password, (string)storedPassword);
                         }
                     }
                 }
