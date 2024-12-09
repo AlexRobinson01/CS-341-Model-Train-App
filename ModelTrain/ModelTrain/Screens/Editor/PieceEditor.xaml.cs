@@ -8,14 +8,15 @@ namespace ModelTrain.Screens;
  * Description: Allows a user to change the image associated with their selected piece,
  * in case they don't like the appearance of the current piece(s).
  * Author: Alex Robinson & Taylor Showalter
- * Date: 11/27/2024
+ * Date: 12/8/2024
  */
 public partial class PieceEditor : ContentPage
 {
 	// Store the path and rotation state
 	private string _selectedImagePath;
-	private float _currentRotation = 0;
+	private float _currentRotation;
 	private readonly Piece _piece;
+
 	public PieceEditor(Piece piece)
 	{
 		InitializeComponent();
@@ -30,6 +31,8 @@ public partial class PieceEditor : ContentPage
 
 		PieceImage.ClassId = piece.Name;
 		PieceImage.Redraw();
+
+		_currentRotation = piece.ImageRotation;
 	}
 
 	private async void OnChangeImageButtonClicked(object sender, EventArgs e)
@@ -63,9 +66,9 @@ public partial class PieceEditor : ContentPage
 	{
 		// Rotate counterclockwise
 		_currentRotation = (_currentRotation - 90) % 360; // Keep rotation in range [0, 360)
-        
+
 		// Show changes
-		PieceImage.Rotation = _currentRotation;
+		_piece.UpdateImageRSO(_currentRotation);
 		PieceImage.Redraw();
 	}
 

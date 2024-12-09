@@ -158,6 +158,10 @@ public partial class TrackEditor : ContentPage
 		DeviceOrientation.SetLandscape();
 		// Begin autosave loop
 		BeginAutosave();
+
+		// In case any piece RSO preferences were modified in a previous screen
+		ReloadObjects();
+		RedrawCanvas();
 	}
 
 	protected override void OnDisappearing()
@@ -365,6 +369,8 @@ public partial class TrackEditor : ContentPage
 				{
 					draggingObject.RemoveFrom(loadedProject.Track);
 					objects.Remove(draggingObject);
+
+					selectedObject = null;
 				}
 				else if (draggingObject != null && snappedObject != null)
 				{

@@ -10,7 +10,6 @@
 
     <!-- A container spanning the whole window -->
     <Grid
-        x:Name="Window"
         RowDefinitions="*"
         ColumnDefinitions="*">
 
