@@ -499,6 +499,54 @@ namespace ModelTrain.Model
                 return false;
             }
         }
+        /// <summary>
+        /// Updates an existing project in the database with the provided details.
+        /// The project is identified by its unique ProjectID.
+        /// </summary>
+        /// <param name="project">The project object containing updated details.</param>
+        /// <returns>True if the project is successfully updated; false otherwise.</returns>
+        /// <summary>
+        /// Updates the track data and creation date of a project in the database.
+        /// </summary>
+        /// <param name="project">The project to update.</param>
+        /// <returns>True if the project is successfully updated; false otherwise.</returns>
+        public async Task<bool> UpdateProject(PersonalProject project)
+        {
+            const string query = @"
+        UPDATE projects
+        SET trackdata = @TrackData,
+            datecreated = @DateCreated
+        WHERE projectid = @ProjectID;
+    ";
+
+            try
+            {
+                using var connection = new NpgsqlConnection(connString);
+                await connection.OpenAsync();
+
+                using var command = new NpgsqlCommand(query, connection);
+
+                // Parameters for updating the track data and date created
+                command.Parameters.AddWithValue("@TrackData", project.Track != null
+                    ? JsonSerializer.Serialize(project.Track, options)
+                    : string.Empty); // Default to an empty string if no track data
+                command.Parameters.AddWithValue("@DateCreated", DateTime.UtcNow); // Set the current UTC timestamp
+                command.Parameters.AddWithValue("@ProjectID", Guid.Parse(project.ProjectID)); // Ensure ProjectID is a valid GUID
+
+                Console.WriteLine($"Executing SQL: {query}");
+                Console.WriteLine($"Parameters: ProjectID={project.ProjectID}, TrackData={JsonSerializer.Serialize(project.Track, options)}, DateCreated={DateTime.UtcNow}");
+
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                Console.WriteLine($"Rows affected: {rowsAffected}");
+                return rowsAffected > 0; // True if a row was updated
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating project: {ex.Message}");
+                throw;
+            }
+        }
 
 
     }

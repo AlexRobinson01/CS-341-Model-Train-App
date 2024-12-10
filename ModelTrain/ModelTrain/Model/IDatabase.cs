@@ -19,5 +19,7 @@ namespace ModelTrain.Model
         public Task<bool> IsGuidUnique(Guid id);
         public Task<bool> AddProjectToUser(string email, string projectId);
         public Task<bool> AddProjectToProjects(string email, PersonalProject newProject);
+
+        Task<bool> UpdateProject(PersonalProject project);
     }
 }

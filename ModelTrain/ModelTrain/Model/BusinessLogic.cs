@@ -62,16 +62,41 @@ namespace ModelTrain.Model
         }
 
         /// <summary>
-        /// Save changes made to a project
+        /// Saves a project by updating the existing record in the database
+        /// with the same ProjectID.
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="project">The project to save, identified by its ProjectID.</param>
         /// <returns>
-        /// True if saved, false otherwise
+        /// True if the project is successfully saved; false otherwise.
         /// </returns>
-        public bool SaveProject(PersonalProject project)
+        /// <exception cref="ArgumentException">Thrown when the project does not have a valid ProjectID.</exception>
+        /// <summary>
+        /// Saves a project by updating the existing record in the database with the same ProjectID.
+        /// </summary>
+        /// <param name="project">The project to save.</param>
+        /// <returns>True if the project is successfully saved; false otherwise.</returns>
+        public async Task<bool> SaveProject(PersonalProject project)
         {
-            // TODO: save project to database; allow for shared projects too
-            return new Random().Next() % 2 == 0;
+            if (string.IsNullOrEmpty(project.ProjectID))
+                throw new ArgumentException("ProjectID is required to save the project.");
+
+            try
+            {
+                Console.WriteLine($"Saving project with ProjectID={project.ProjectID}");
+                bool updated = await Database.UpdateProject(project);
+
+                if (!updated)
+                {
+                    Console.WriteLine("Failed to update project. Project may not exist.");
+                }
+
+                return updated;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving project: {ex.Message}");
+                return false;
+            }
         }
 
         /// <summary>

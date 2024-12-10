@@ -120,22 +120,30 @@ public partial class TrackEditor : ContentPage
 	private async void OnBackgroundButtonClicked(object sender, EventArgs e)
 	{
 		// Opens Change Background
-		await Navigation.PushAsync(new ChangeBackground(loadedProject));
+	//	await Navigation.PushAsync(new ChangeBackground(loadedProject));
 	}
 
 	private async void OnSaveButtonClicked(object sender, EventArgs e)
 	{
-		// TODO: descriptive error messages, functional saving
-		if (businessLogic.SaveProject(loadedProject))
+		// Save the project asynchronously
+		bool isSaved = await businessLogic.SaveProject(loadedProject);
+
+		if (isSaved)
 		{
+			// Update saved track state and notify user of success
 			savedTrack = loadedProject.Track.GetSegmentsAsString();
 			await DisplayAlert("Success", "Track saved successfully!", "OK");
 		}
 		else
-			await DisplayAlert("Failure", "Track failed to save!", "OK");
+		{
+			// Notify the user of failure
+			await DisplayAlert("Error", "Failed to save track.", "OK");
+		}
 
+		// Update the save indicator to reflect the save state
 		UpdateSavedIndicator();
 	}
+
 
 	private void OnUndoButtonClicked(object sender, EventArgs e)
 	{
@@ -665,29 +673,52 @@ public partial class TrackEditor : ContentPage
 	private int autosaveIndex = 0;
 
 	/// <summary>
-	/// Begins a 5 minute autosave loop running on a separate thread
+	/// Begins a 5-minute autosave loop running on a separate thread.
 	/// </summary>
 	private void BeginAutosave()
 	{
 		int index = ++autosaveIndex;
 
 		// Running autosave loop on a separate thread
-		Task.Run(() =>
+		Task.Run(async () =>
 		{
 			while (index == autosaveIndex)
 			{
-				// 5 minutes in milliseconds
-				Thread.Sleep(5 * 60000);
-
-				if (index == autosaveIndex)
+				try
 				{
-					// Save the track
-					bool success = businessLogic.SaveProject(loadedProject);
-					if (success)
-						savedTrack = loadedProject.Track.GetSegmentsAsString();
-					UpdateSavedIndicator();
+					// Wait for 5 minutes before attempting to save
+					await Task.Delay(5 * 60000); // 5 minutes in milliseconds
+
+					if (index == autosaveIndex)
+					{
+						// Save the track asynchronously
+						bool success = await businessLogic.SaveProject(loadedProject);
+
+						// Update saved track if save is successful
+						if (success)
+						{
+							savedTrack = loadedProject.Track.GetSegmentsAsString();
+							Console.WriteLine("Autosave succeeded.");
+						}
+						else
+						{
+							Console.WriteLine("Autosave failed.");
+						}
+
+						// Update the saved indicator on the UI thread
+						MainThread.BeginInvokeOnMainThread(() =>
+						{
+							UpdateSavedIndicator();
+						});
+					}
+				}
+				catch (Exception ex)
+				{
+					// Log any errors during autosave
+					Console.WriteLine($"Autosave error: {ex.Message}");
 				}
 			}
 		});
 	}
+
 }
