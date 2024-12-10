@@ -580,5 +580,35 @@ namespace ModelTrain.Model
         }
 
 
+        /// <summary>
+        /// Changes the email to new email
+        /// </summary>
+        /// <param name="currentEmail"></param>
+        /// <param name="newEmail"></param>
+        /// <returns>True if email updated, false otherwise</returns>
+        public async Task<bool> ChangeEmail(string currentEmail, string newEmail)
+        {
+            const string query = "UPDATE users SET email = @NewEmail WHERE email = @CurrentEmail";
+
+            try
+            {
+                await using var connection = new NpgsqlConnection(connString);
+                await connection.OpenAsync();
+
+                await using var command = new NpgsqlCommand(query, connection);
+                command.Parameters.AddWithValue("@NewEmail", newEmail);
+                command.Parameters.AddWithValue("@CurrentEmail", currentEmail);
+
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                return rowsAffected > 0; // Returns true if at least user account was updated.
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (use a logging library or mechanism as needed)
+                Console.WriteLine($"Error changing email: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

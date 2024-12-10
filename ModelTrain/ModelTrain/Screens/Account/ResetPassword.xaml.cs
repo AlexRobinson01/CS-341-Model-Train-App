@@ -16,7 +16,6 @@ public partial class ResetPassword : ContentPage
     private async void OnChangePasswordClicked(object sender, EventArgs e)
     {
         bool passwordsMatch = false;
-        bool oldPassCorrect = false;
         bool correctPass = false;
         string oldPass = OldPasswordEntry.Text;
         string newPass = NewPasswordEntry.Text;
@@ -31,6 +30,7 @@ public partial class ResetPassword : ContentPage
         }
         else
         {
+            ConfirmNewPasswordEntry.Unfocus();     // Close keyboard
             if (newPass == confirmNewPass)
             {
                 passwordsMatch = true;
@@ -44,6 +44,7 @@ public partial class ResetPassword : ContentPage
             if (passwordsMatch && correctPass && await BusinessLogic.Instance.ChangePassword(newPass))
             {
                 await DisplayAlert("Success", "Password changed successfully!", "OK");
+                await Navigation.PopAsync();        // Go back to account screen
 
             }
             else

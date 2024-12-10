@@ -88,6 +88,9 @@
 	  <MauiXaml Update="Screens\Account.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Screens\Account\ResetEmail.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Screens\CollaborativeStorage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

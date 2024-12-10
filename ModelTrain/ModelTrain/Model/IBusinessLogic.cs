@@ -12,5 +12,7 @@
         public Task<bool> AddProjectToDB(PersonalProject newProject);
         public Task<bool> IsCorrectPassword(String password);
         public Task<bool> ChangePassword(String password);
+        public Task<bool> IsUniqueEmail(String email);
+        public Task<bool> ChangeEmail(String email);
     }
 }
