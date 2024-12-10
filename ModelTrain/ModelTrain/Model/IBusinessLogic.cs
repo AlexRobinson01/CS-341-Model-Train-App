@@ -10,5 +10,7 @@
         public Task<List<Guid>> GetUserProjects();
         public Task<string> GetUniqueGuid(int maxRetries = 10);
         public Task<bool> AddProjectToDB(PersonalProject newProject);
+        public Task<bool> IsCorrectPassword(String password);
+        public Task<bool> ChangePassword(String password);
     }
 }

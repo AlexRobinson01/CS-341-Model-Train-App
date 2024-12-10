@@ -242,5 +242,33 @@ namespace ModelTrain.Model
             return false;
         }
 
+        /// <summary>
+        /// Check if password is correct
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns>True if correct password, false otherwise</returns>
+        public async Task<bool> IsCorrectPassword(String password)
+        {
+            // Check if password is correct
+            bool correctPassword = await Database.IsCorrectPassword(this.email, password);
+
+            if (!correctPassword)  // If incorrect password return false
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
+        /// <summary>
+        /// Change Password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns>True if password changed, false otherwise</returns>
+        public async Task<bool> ChangePassword(String password)
+        {
+             return await Database.ChangePassword(this.email, password);
+
+        }
     }
 }
