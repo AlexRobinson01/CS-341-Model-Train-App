@@ -331,7 +331,7 @@ namespace ModelTrain.Model
             if (projectIds.Count == 0)
                 return projects;
 
-            var query = "SELECT projectid, projectname, datecreated FROM projects WHERE projectid = ANY(@ProjectIds);";
+            var query = "SELECT projectid, projectname, datecreated, trackdata FROM projects WHERE projectid = ANY(@ProjectIds);";
 
             try
             {
@@ -514,7 +514,7 @@ namespace ModelTrain.Model
         {
             const string query = @"
             UPDATE public.projects
-            SET trackdata = @TrackData,
+            SET trackdata = @TrackData
             WHERE projectid = @ProjectID;
             ";
 
