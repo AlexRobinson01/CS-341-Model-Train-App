@@ -358,7 +358,7 @@ namespace ModelTrain.Model
                                     DateCreated = reader.GetDateTime(reader.GetOrdinal("datecreated")).ToString("MM/dd/yyyy"),
                                     Track = new Model.Track.TrackBase() // Fetch track data if necessary
                                 };
-
+                                project.Track.LoadSegmentsFromString(reader.GetString(reader.GetOrdinal("trackdata")));
                                 projects.Add(project);
                             }
                         }
@@ -513,11 +513,10 @@ namespace ModelTrain.Model
         public async Task<bool> UpdateProject(PersonalProject project)
         {
             const string query = @"
-        UPDATE public.projects
-        SET trackdata = @TrackData,
-            datecreated = @DateCreated
-        WHERE projectid = @ProjectID;
-    ";
+            UPDATE public.projects
+            SET trackdata = @TrackData,
+            WHERE projectid = @ProjectID;
+            ";
 
             try
             {
@@ -525,14 +524,12 @@ namespace ModelTrain.Model
                 await connection.OpenAsync();
 
                 using var command = new NpgsqlCommand(query, connection);
-
-                // Set parameters for SQL query
-                command.Parameters.AddWithValue("@TrackData", project.Track.GetSegmentsAsString()); // Default to empty string if no track data
-                command.Parameters.AddWithValue("@DateCreated", project.DateCreated); // Overwrite the date
                 command.Parameters.AddWithValue("@ProjectID", Guid.Parse(project.ProjectID));
+                command.Parameters.AddWithValue("@TrackData", project.Track.GetSegmentsAsString()); // Overwrite the track data
+
 
                 Console.WriteLine($"Executing SQL: {query}");
-                Console.WriteLine($"Parameters: ProjectID={project.ProjectID}, TrackData={project.Track.GetSegmentsAsString()}, DateCreated={project.DateCreated}");
+                Console.WriteLine($"Parameters: ProjectID={project.ProjectID}, TrackData={project.Track.GetSegmentsAsString()}");
 
                 int rowsAffected = await command.ExecuteNonQueryAsync();
 

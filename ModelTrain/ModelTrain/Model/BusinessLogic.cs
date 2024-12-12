@@ -83,24 +83,11 @@ namespace ModelTrain.Model
             try
             {
                 Console.WriteLine($"Saving project with ProjectID={project.ProjectID}");
-
-                // Format the current date in "MM/dd/yyyy"
-                string currentDate = DateTime.Now.ToString("MM/dd/yyyy");
-
-                // Update the DateCreated field to the current date
-                project.DateCreated = currentDate;
-
                 // Convert the track data to a string using TrackBase
                 string trackData = project.Track.GetSegmentsAsString();
 
                 // Call database method to update the project
-                bool updated = await Database.UpdateProject(new PersonalProject
-                {
-                    ProjectID = project.ProjectID,
-                    ProjectName = project.ProjectName,
-                    DateCreated = currentDate, // Use formatted date here
-                    Track = project.Track
-                });
+                bool updated = await Database.UpdateProject(project);
 
                 if (!updated)
                 {
@@ -277,7 +264,7 @@ namespace ModelTrain.Model
 
             return true;
         }
-        
+
         /// <summary>
         /// Change Password
         /// </summary>
@@ -285,7 +272,7 @@ namespace ModelTrain.Model
         /// <returns>True if password changed, false otherwise</returns>
         public async Task<bool> ChangePassword(String password)
         {
-             return await Database.ChangePassword(this.email, password);
+            return await Database.ChangePassword(this.email, password);
         }
 
         /// <summary>
