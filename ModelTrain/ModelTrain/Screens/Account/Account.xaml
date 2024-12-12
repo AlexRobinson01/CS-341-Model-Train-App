@@ -41,7 +41,8 @@
 				BackgroundColor="White"
 				BorderColor="Black"
 				TextColor="Black"
-				BorderWidth="1"/>
+				BorderWidth="1"
+                Clicked="OnChangeEmailButtonClicked"/>
 			<Button
 				Text="Change Password"
 				HorizontalOptions="FillAndExpand"

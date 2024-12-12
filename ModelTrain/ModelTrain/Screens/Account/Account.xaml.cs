@@ -14,10 +14,24 @@ public partial class Account : ContentPage
         LoadUserData();
         DarkModeSwitch.IsToggled = Application.Current.UserAppTheme == AppTheme.Dark;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        // Reload user data whenever the Account page appears (after email is changed, update it)
+        LoadUserData();
+    }
+
     private async void OnChangePasswordButtonClicked(object sender, EventArgs e)
     {
         // Navigation to Change Password page
         await Navigation.PushAsync(new ResetPassword());
+    }
+
+    private async void OnChangeEmailButtonClicked(object sender, EventArgs e)
+    {
+        // Navigation to Change Email page
+        await Navigation.PushAsync(new ResetEmail());
     }
 
     private async void OnLogOutButtonClicked(object sender, EventArgs e)
