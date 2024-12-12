@@ -84,11 +84,12 @@ public partial class PieceEditor : ContentPage
 
 	private async void OnConfirmButtonClicked(object sender, EventArgs e)
 	{
-		if (!string.IsNullOrEmpty(piece.Image))
+		if (!string.IsNullOrWhiteSpace(piece.Image))
         {
-			// Save changes in preferences
-            Preferences.Set($"{piece.Name}_rotation", currentRotation);
-            Preferences.Set(piece.Name, selectedImagePath);
+            // Save changes in preferences
+            UserPreferences.Set($"{piece.Name}_rotation", currentRotation);
+			if (!string.IsNullOrWhiteSpace(selectedImagePath))
+				UserPreferences.Set(piece.Name, selectedImagePath);
             await DisplayAlert("Success", "Track piece updated locally.", "OK");
 		}
 		else

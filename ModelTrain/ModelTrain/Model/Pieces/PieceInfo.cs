@@ -1,4 +1,5 @@
 ﻿using ModelTrain.Model.Track;
+using ModelTrain.Services;
 using System.Numerics;
 
 namespace ModelTrain.Model.Pieces
@@ -31,7 +32,7 @@ namespace ModelTrain.Model.Pieces
                 _ => ""
             };
 
-            string? preference = Preferences.Get(name, null);
+            string? preference = UserPreferences.Get(name, null);
             image = preference ?? type switch
             {
                 SegmentType.Straight => "piece_straight.png",
@@ -68,13 +69,13 @@ namespace ModelTrain.Model.Pieces
             try
             {
                 // Get RSO from user preferences (changed in PieceEditor)
-                rotation = Preferences.Get($"{pieceName}_rotation", 0f);
-                scale = Preferences.Get($"{pieceName}_scale", 1f);
+                rotation = UserPreferences.Get($"{pieceName}_rotation", 0f);
+                scale = UserPreferences.Get($"{pieceName}_scale", 1f);
 
                 // Offset is a Vector2 which can't be saved in preferences,
                 // so two floats need to be used instead
-                float offsetX = Preferences.Get($"{pieceName}_offsetX", 0f);
-                float offsetY = Preferences.Get($"{pieceName}_offsetY", 0f);
+                float offsetX = UserPreferences.Get($"{pieceName}_offsetX", 0f);
+                float offsetY = UserPreferences.Get($"{pieceName}_offsetY", 0f);
 
                 offset = new(offsetX, offsetY);
             }

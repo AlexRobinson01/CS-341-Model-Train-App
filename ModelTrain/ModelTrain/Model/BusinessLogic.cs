@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ModelTrain.Services;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace ModelTrain.Model
@@ -125,6 +126,8 @@ namespace ModelTrain.Model
             }
             // Locally store email of signed in user for other functionality
             this.email = email;
+            UserPreferences.UpdateUser(GetUserFromEmail());
+
             return true;
         }
 

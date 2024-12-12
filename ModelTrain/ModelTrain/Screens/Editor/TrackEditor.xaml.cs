@@ -428,7 +428,7 @@ public partial class TrackEditor : ContentPage
 			canvas.DrawBitmap(bkgd, canvasRect);
 
 		// Show rotation dial
-		if (selectedObject != null && draggingObject == null)
+		if (selectedObject != null && draggingObject == null && objects.Contains(selectedObject))
 		{
 			// Draw main dial
 			canvas.Translate(e.Info.Width - 85, e.Info.Height - 85);

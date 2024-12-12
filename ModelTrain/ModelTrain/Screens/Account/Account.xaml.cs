@@ -1,5 +1,6 @@
 using System.Xml;
 using ModelTrain.Model;
+using ModelTrain.Services;
 namespace ModelTrain.Screens;
 /*
  * This class is the background functionality/methods the Account page
@@ -40,9 +41,6 @@ public partial class Account : ContentPage
         SecureStorage.Remove("UserEmail");
         SecureStorage.Remove("UserPassword");
 
-        // Reset app preferences
-        Preferences.Clear(); // This clears all stored preferences
-
         // Reset the app theme to the default (e.g., Light)
         Application.Current.UserAppTheme = AppTheme.Light;
 
@@ -56,12 +54,12 @@ public partial class Account : ContentPage
         if (e.Value)
         {
             Application.Current.UserAppTheme = AppTheme.Dark;
-            Preferences.Set("UserTheme", "Dark");
+            UserPreferences.Set("UserTheme", "Dark");
         }
         else
         {
             Application.Current.UserAppTheme = AppTheme.Light;
-            Preferences.Set("UserTheme", "Light");
+            UserPreferences.Set("UserTheme", "Light");
         }
     }
     private async void LoadUserData()

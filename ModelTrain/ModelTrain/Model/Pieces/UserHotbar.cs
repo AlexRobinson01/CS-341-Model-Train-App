@@ -1,4 +1,5 @@
 ﻿using ModelTrain.Model.Track;
+using ModelTrain.Services;
 
 namespace ModelTrain.Model.Pieces
 {
@@ -29,11 +30,11 @@ namespace ModelTrain.Model.Pieces
                 string key = $"Hotbar_Piece{i}";
 
                 // If preferences are missing a piece, preference data is invalid
-                if (!Preferences.ContainsKey(key))
+                if (!UserPreferences.ContainsKey(key))
                     isValid = false;
                 else
                 {
-                    string value = Preferences.Get(key, "");
+                    string value = UserPreferences.Get(key, "");
 
                     // Add the piece from the preferences to the hotbar
                     if (!string.IsNullOrWhiteSpace(value))
@@ -125,9 +126,9 @@ namespace ModelTrain.Model.Pieces
 
                 // Ensure the piece is present in the hotbar
                 if (i < Pieces.Count)
-                    Preferences.Set(key, Pieces[i].SegmentType.ToString());
+                    UserPreferences.Set(key, Pieces[i].SegmentType.ToString());
                 else // Default to an empty piece in preferences
-                    Preferences.Set(key, "");
+                    UserPreferences.Set(key, "");
             }
         }
     }
