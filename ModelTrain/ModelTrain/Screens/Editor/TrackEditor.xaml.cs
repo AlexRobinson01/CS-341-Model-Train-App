@@ -119,8 +119,7 @@ public partial class TrackEditor : ContentPage
 
 	private async void OnBackgroundButtonClicked(object sender, EventArgs e)
 	{
-		// Opens Change Background
-	//	await Navigation.PushAsync(new ChangeBackground(loadedProject));
+		await Navigation.PushAsync(new ChangeBackground(loadedProject));
 	}
 
 	private async void OnSaveButtonClicked(object sender, EventArgs e)
