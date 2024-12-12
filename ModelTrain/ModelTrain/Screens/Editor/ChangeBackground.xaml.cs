@@ -28,10 +28,8 @@ public partial class ChangeBackground : ContentPage
 
             if (photo != null)
             {
-                // save the file into local storage
-                string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
-
-                tempProject.BackgroundImage = localFilePath;
+                // Save the selected image path
+                tempProject.BackgroundImage = photo.FullPath;
             }
         }
 
