@@ -513,7 +513,7 @@ namespace ModelTrain.Model
         public async Task<bool> UpdateProject(PersonalProject project)
         {
             const string query = @"
-        UPDATE projects
+        UPDATE public.projects
         SET trackdata = @TrackData,
             datecreated = @DateCreated
         WHERE projectid = @ProjectID;
@@ -526,20 +526,18 @@ namespace ModelTrain.Model
 
                 using var command = new NpgsqlCommand(query, connection);
 
-                // Parameters for updating the track data and date created
-                command.Parameters.AddWithValue("@TrackData", project.Track != null
-                    ? JsonSerializer.Serialize(project.Track, options)
-                    : string.Empty); // Default to an empty string if no track data
-                command.Parameters.AddWithValue("@DateCreated", DateTime.UtcNow); // Set the current UTC timestamp
-                command.Parameters.AddWithValue("@ProjectID", Guid.Parse(project.ProjectID)); // Ensure ProjectID is a valid GUID
+                // Set parameters for SQL query
+                command.Parameters.AddWithValue("@TrackData", project.Track.GetSegmentsAsString()); // Default to empty string if no track data
+                command.Parameters.AddWithValue("@DateCreated", project.DateCreated); // Overwrite the date
+                command.Parameters.AddWithValue("@ProjectID", Guid.Parse(project.ProjectID));
 
                 Console.WriteLine($"Executing SQL: {query}");
-                Console.WriteLine($"Parameters: ProjectID={project.ProjectID}, TrackData={JsonSerializer.Serialize(project.Track, options)}, DateCreated={DateTime.UtcNow}");
+                Console.WriteLine($"Parameters: ProjectID={project.ProjectID}, TrackData={project.Track.GetSegmentsAsString()}, DateCreated={project.DateCreated}");
 
                 int rowsAffected = await command.ExecuteNonQueryAsync();
 
                 Console.WriteLine($"Rows affected: {rowsAffected}");
-                return rowsAffected > 0; // True if a row was updated
+                return rowsAffected > 0; // Return true if the update was successful
             }
             catch (Exception ex)
             {
@@ -547,7 +545,5 @@ namespace ModelTrain.Model
                 throw;
             }
         }
-
-
     }
 }

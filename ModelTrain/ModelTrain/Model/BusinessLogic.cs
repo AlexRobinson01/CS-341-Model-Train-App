@@ -83,7 +83,24 @@ namespace ModelTrain.Model
             try
             {
                 Console.WriteLine($"Saving project with ProjectID={project.ProjectID}");
-                bool updated = await Database.UpdateProject(project);
+
+                // Format the current date in "MM/dd/yyyy"
+                string currentDate = DateTime.Now.ToString("MM/dd/yyyy");
+
+                // Update the DateCreated field to the current date
+                project.DateCreated = currentDate;
+
+                // Convert the track data to a string using TrackBase
+                string trackData = project.Track.GetSegmentsAsString();
+
+                // Call database method to update the project
+                bool updated = await Database.UpdateProject(new PersonalProject
+                {
+                    ProjectID = project.ProjectID,
+                    ProjectName = project.ProjectName,
+                    DateCreated = currentDate, // Use formatted date here
+                    Track = project.Track
+                });
 
                 if (!updated)
                 {
@@ -98,6 +115,7 @@ namespace ModelTrain.Model
                 return false;
             }
         }
+
 
         /// <summary>
         /// Make sure login input exists in the database and is correct
