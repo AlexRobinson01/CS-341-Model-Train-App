@@ -16,8 +16,7 @@
     FontAttributes="Bold"
     HorizontalTextAlignment="Center"
     VerticalTextAlignment="Center"
-    HorizontalOptions="Center"
-    TextColor="Black"/>
+    HorizontalOptions="Center"/>
 
         <!-- New Email Entry -->
         <Frame

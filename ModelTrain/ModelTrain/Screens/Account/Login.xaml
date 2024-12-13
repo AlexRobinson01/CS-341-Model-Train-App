@@ -18,8 +18,7 @@
 				FontAttributes="Italic"
 				HorizontalTextAlignment="Center"
 				VerticalTextAlignment="Center"
-				HorizontalOptions="Center"
-				TextColor="Black"/>
+				HorizontalOptions="Center"/>
 
 
 

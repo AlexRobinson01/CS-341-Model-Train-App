@@ -17,8 +17,7 @@
                     FontSize="44"
                     HorizontalTextAlignment="Center"
                     VerticalTextAlignment="Center"
-                    HorizontalOptions="Center"
-                    TextColor="Black"/>
+                    HorizontalOptions="Center"/>
 
                 <!-- Create Button -->
                 <Button

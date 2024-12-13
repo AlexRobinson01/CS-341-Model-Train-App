@@ -17,8 +17,7 @@
             FontAttributes="Bold"
             HorizontalTextAlignment="Center"
             VerticalTextAlignment="Center"
-            HorizontalOptions="Center"
-            TextColor="Black"/>
+            HorizontalOptions="Center"/>
 
         <Label
             Text="Create an account to view and manage your projects."
@@ -26,8 +25,7 @@
             FontAttributes="Bold"
             HorizontalTextAlignment="Center"
             VerticalTextAlignment="Center"
-            HorizontalOptions="Center"
-            TextColor="Black"/>
+            HorizontalOptions="Center"/>
 
         <!-- First Name Entry -->
         <Frame

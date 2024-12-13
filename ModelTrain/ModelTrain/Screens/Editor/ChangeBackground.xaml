@@ -6,7 +6,7 @@
     xmlns:icon="clr-namespace:ModelTrain.Model"
     Title="Change Background">
 
-    <!-- Buttons For Cameral or Gallery -->
+    <!-- Buttons For Camera or Gallery -->
     <StackLayout
         Grid.Row="1"
         Orientation="Horizontal"
@@ -17,12 +17,17 @@
         <Button
             Text="Camera"
             WidthRequest="200"
-            HeightRequest="200"
+            HeightRequest="100"
+            FontSize="20"
+            ImageSource="camera.png"
             Clicked="OnCameraButtonClicked"/>
         <!-- Handle the click event -->
         <Button
             Text="Gallery"
             WidthRequest="200"
+            HeightRequest="100"
+            FontSize="20"
+            ImageSource="gallery.png"
             Clicked="OnGalleryButtonClicked"/>
         <!-- Handle the click event -->
     </StackLayout>

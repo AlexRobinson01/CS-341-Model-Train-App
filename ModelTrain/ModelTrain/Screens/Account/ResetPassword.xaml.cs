@@ -1,55 +1,57 @@
 using ModelTrain.Model;
-namespace ModelTrain.Screens;
 
-/*
- * This class is the background functionality/methods for the reset password page
- * Author: Andrew Martin
- * Date: October 6, 2024
- */
-public partial class ResetPassword : ContentPage
+namespace ModelTrain.Screens
 {
-	public ResetPassword()
-	{
-		InitializeComponent();
-	}
-
-    private async void OnChangePasswordClicked(object sender, EventArgs e)
+    /*
+     * This class is the background functionality/methods for the reset password page
+     * Author: Andrew Martin
+     * Date: October 6, 2024
+     */
+    public partial class ResetPassword : ContentPage
     {
-        bool passwordsMatch = false;
-        bool correctPass = false;
-        string oldPass = OldPasswordEntry.Text;
-        string newPass = NewPasswordEntry.Text;
-        string confirmNewPass = ConfirmNewPasswordEntry.Text;
-
-        if (string.IsNullOrEmpty(oldPass) ||
-            string.IsNullOrEmpty(newPass) ||
-            string.IsNullOrEmpty(confirmNewPass))
+        public ResetPassword()
         {
-            await DisplayAlert("Error", "Failed to change password. " +
-                "All inputs must contain values. Please try again.", "OK");
+            InitializeComponent();
         }
-        else
+
+        private async void OnChangePasswordClicked(object sender, EventArgs e)
         {
-            ConfirmNewPasswordEntry.Unfocus();     // Close keyboard
-            if (newPass == confirmNewPass)
-            {
-                passwordsMatch = true;
-            }
+            bool passwordsMatch = false;
+            bool correctPass = false;
+            string oldPass = OldPasswordEntry.Text;
+            string newPass = NewPasswordEntry.Text;
+            string confirmNewPass = ConfirmNewPasswordEntry.Text;
 
-            if (await BusinessLogic.Instance.IsCorrectPassword(oldPass))
+            if (string.IsNullOrEmpty(oldPass) ||
+                string.IsNullOrEmpty(newPass) ||
+                string.IsNullOrEmpty(confirmNewPass))
             {
-                correctPass = true;
-            }
-
-            if (passwordsMatch && correctPass && await BusinessLogic.Instance.ChangePassword(newPass))
-            {
-                await DisplayAlert("Success", "Password changed successfully!", "OK");
-                await Navigation.PopAsync();        // Go back to account screen
-
+                await DisplayAlert("Error", "Failed to change password. " +
+                    "All inputs must contain values. Please try again.", "OK");
             }
             else
             {
-                await DisplayAlert("Error", "Failed to change password. Incorrect current password or new passwords do not match", "OK");
+                ConfirmNewPasswordEntry.Unfocus();     // Close keyboard
+                if (newPass == confirmNewPass)
+                {
+                    passwordsMatch = true;
+                }
+
+                if (await BusinessLogic.Instance.IsCorrectPassword(oldPass))
+                {
+                    correctPass = true;
+                }
+
+                if (passwordsMatch && correctPass && await BusinessLogic.Instance.ChangePassword(newPass))
+                {
+                    await DisplayAlert("Success", "Password changed successfully!", "OK");
+                    await Navigation.PopAsync();        // Go back to account screen
+
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Failed to change password. Incorrect current password or new passwords do not match", "OK");
+                }
             }
         }
     }
