@@ -30,7 +30,8 @@ namespace ModelTrain.Screens
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 // Alert the user to fill all fields
-                await DisplayAlert("Error", "Must input values to login. Please try again.", "OK");
+                await DisplayAlert("Error", 
+                "Must input values to login. Please try again.", "OK");
             }
             else
             {
@@ -47,7 +48,8 @@ namespace ModelTrain.Screens
                 else
                 {
                     // Show an error if credentials are invalid
-                    await DisplayAlert("Error", "Invalid email or password. Please try again.", "OK");
+                    await DisplayAlert("Error", 
+                    "Invalid email or password. Please try again.", "OK");
                 }
             }
         }

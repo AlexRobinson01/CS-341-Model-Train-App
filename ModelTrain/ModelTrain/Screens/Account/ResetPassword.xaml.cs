@@ -28,11 +28,12 @@ namespace ModelTrain.Screens
 
             string oldPass = OldPasswordEntry.Text; // Retrieve current password
             string newPass = NewPasswordEntry.Text; // Retrieve new password
-            string confirmNewPass = ConfirmNewPasswordEntry.Text; // Retrieve confirmation password
+            // Retrieve confirmation password
+            string confirmNewPass = ConfirmNewPasswordEntry.Text;
 
             // Check if inputs are valid
-            if (string.IsNullOrEmpty(oldPass) || 
-                string.IsNullOrEmpty(newPass) || 
+            if (string.IsNullOrEmpty(oldPass) ||
+                string.IsNullOrEmpty(newPass) ||
                 string.IsNullOrEmpty(confirmNewPass))
             {
                 await DisplayAlert("Error", "Failed to change password. " +
@@ -54,17 +55,21 @@ namespace ModelTrain.Screens
                 }
 
                 // Change the password if all conditions are met
-                if (passwordsMatch && correctPass && await BusinessLogic.Instance.ChangePassword(newPass))
+                if (passwordsMatch && correctPass && 
+                await BusinessLogic.Instance.ChangePassword(newPass))
                 {
                     // Notify the user of success and navigate back
-                    await DisplayAlert("Success", "Password changed successfully!", "OK");
+                    await DisplayAlert("Success",
+                    "Password changed successfully!", "OK");
                     await Navigation.PopAsync(); // Go back to account screen
 
                 }
                 else
                 {
                     // Notify the user if the operation fails
-                    await DisplayAlert("Error", "Failed to change password. Incorrect current password or new passwords do not match.", "OK");
+                    await DisplayAlert("Error",
+                    "Failed to change password. Incorrect current password or new passwords do not match.",
+                    "OK");
                 }
             }
         }

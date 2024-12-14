@@ -59,7 +59,8 @@ namespace ModelTrain.Screens
                 }
                 else
                 {
-                    await DisplayAlert("Error", "Failed to create account. Email already in use.", "OK");
+                    await DisplayAlert("Error",
+                    "Failed to create account. Email already in use.", "OK");
                 }
             }
         }

@@ -27,19 +27,23 @@ namespace ModelTrain.Screens
             bool uniqueEmail = false; // Tracks if email is unique
 
             string newEmail = NewEmailEntry.Text; // Retrieve new email input
-            string confirmNewEmail = ConfirmNewEmailEntry.Text; // Retrieve confirmation email input
+            // Retrieve confirmation email input
+            string confirmNewEmail = ConfirmNewEmailEntry.Text; 
 
             // Check if inputs are valid
-            if (string.IsNullOrEmpty(newEmail) ||       // Don't accept if either entry is null or empty
+            // Don't accept if either entry is null or empty
+            if (string.IsNullOrEmpty(newEmail) ||       
                 string.IsNullOrEmpty(confirmNewEmail))
             {
                 // Alert the user to fill all fields
-                await DisplayAlert("Error", "Failed to change email. All inputs must contain values. Please try again.", "OK");
+                await DisplayAlert("Error", 
+                "Failed to change email. All inputs must contain values. Please try again.", "OK");
             }
             else
             {
                 ConfirmNewEmailEntry.Unfocus();     // Close keyboard
-                if (newEmail == confirmNewEmail)    // If emails are identical check if email is not associated with an account already
+                // If emails are identical check if email is not associated with an account already
+                if (newEmail == confirmNewEmail)    
                 {
                     emailsMatch = true;
 
@@ -52,25 +56,29 @@ namespace ModelTrain.Screens
                         if (await BusinessLogic.Instance.ChangeEmail(newEmail))
                         {
                             // Notify the user of success and navigate back
-                            await DisplayAlert("Success", "Email changed successfully!", "OK");
+                            await DisplayAlert("Success", 
+                            "Email changed successfully!", "OK");
                             await Navigation.PopAsync(); // Return to the Account page
                         }
                         else
                         {
                             // Notify the user of an error
-                            await DisplayAlert("Error", "Failed to change email. Something went wrong.", "OK");
+                            await DisplayAlert("Error", 
+                            "Failed to change email. Something went wrong.", "OK");
                         }
                     }
                     else
                     {
                         // Notify the user if the email is already in use
-                        await DisplayAlert("Error", "Failed to change email. An account with this email already exists.", "OK");
+                        await DisplayAlert("Error", 
+                        "Failed to change email. An account with this email already exists.", "OK");
                     }
                 }
                 else
                 {
                     // Notify the user if emails do not match
-                    await DisplayAlert("Error", "Failed to change email. New emails do not match.", "OK");
+                    await DisplayAlert("Error", 
+                    "Failed to change email. New emails do not match.", "OK");
                 }
             }
         }
