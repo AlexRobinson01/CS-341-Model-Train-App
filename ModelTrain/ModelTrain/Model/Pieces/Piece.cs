@@ -4,15 +4,16 @@ using System.Numerics;
 namespace ModelTrain.Model.Pieces
 {
     /**
-     * Description: A container for image data associated with whatever SegmentType is assigned to it
+     * Description: A container for image data
+     * associated with whatever SegmentType is assigned to it
      * Author: Alex Robinson
-     * Last updated: 11/27/2024
+     * Last updated: 12/8/2024
      */
     public class Piece
     {
         public SegmentType SegmentType { get; private set; }
         public string Name { get; private set; }
-        public string Image { get; private set; }
+        public string Image { get; set; }
 
         // Image metrics that define how the image will be rendered on buttons and the track
         public float ImageRotation { get; private set; }
@@ -27,13 +28,14 @@ namespace ModelTrain.Model.Pieces
         {
             SegmentType = type;
 
-            // Default name and image are dependent on the segment type, which are stored in PieceInfo
+            // Default name and image are dependent on the segment type,
+            // and are stored in PieceInfo
             PieceInfo.GetInfo(type, out string name, out string image);
             Name = name;
             Image = image;
 
             // Default rotation, scale, and offset for this image, also from PieceInfo
-            PieceInfo.GetRSO(type, out float rotation, out float scale, out Vector2 offset);
+            PieceInfo.GetRSO(name, out float rotation, out float scale, out Vector2 offset);
             UpdateImageRSO(rotation, scale, offset);
         }
 
@@ -43,11 +45,12 @@ namespace ModelTrain.Model.Pieces
         /// <param name="rotation">The new rotation to apply to this piece's image</param>
         /// <param name="scale">The new scale to apply to this piece's image</param>
         /// <param name="offset">The new offset to apply to this piece's image</param>
-        public void UpdateImageRSO(float rotation, float scale, Vector2 offset)
+        public void UpdateImageRSO(float? rotation = null,
+            float? scale = null, Vector2? offset = null)
         {
-            ImageRotation = rotation;
-            ImageScale = scale;
-            ImageOffset = offset;
+            ImageRotation = rotation ?? ImageRotation;
+            ImageScale = scale ?? ImageScale;
+            ImageOffset = offset ?? ImageOffset;
         }
     }
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ModelTrain.Screens.ResetEmail"
+             xmlns:icon="clr-namespace:ModelTrain.Model"
+             Title="ResetEmail">
+    <VerticalStackLayout
+        Padding="30,0"
+        Spacing="25"
+        VerticalOptions="Center">
+
+        <!-- Centered Title -->
+        <Label
+    Text="Reset Email"
+    FontSize="42"
+    FontAttributes="Bold"
+    HorizontalTextAlignment="Center"
+    VerticalTextAlignment="Center"
+    HorizontalOptions="Center"/>
+
+        <!-- New Email Entry -->
+        <Frame
+    BorderColor="Gray"
+    CornerRadius="5"
+    Padding="5"
+    Margin="10">
+            <StackLayout
+        Orientation="Horizontal"
+        VerticalOptions="Center">
+                <Label
+            Text="{x:Static icon:IconFont.Email}"
+            Style="{x:StaticResource GoogleFont}"></Label>
+                <Entry
+            x:Name="NewEmailEntry"
+            Placeholder="Enter New Email"
+            Margin="5,0,0,0"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- New Email Confirmation Entry -->
+        <Frame
+    BorderColor="Gray"
+    CornerRadius="5"
+    Padding="5"
+    Margin="10">
+            <StackLayout Orientation="Horizontal"
+                 VerticalOptions="Center">
+                <Label Text="{x:Static icon:IconFont.Email}"
+               Style="{x:StaticResource GoogleFont}"></Label>
+                <Entry x:Name="ConfirmNewEmailEntry"
+               Placeholder="Confirm New Email"
+               Margin="5,0,0,0"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- Reset Email Button -->
+        <Button
+    x:Name="ResetEmailBtn"
+    Text="Reset Email"
+    xmlns:icon="clr-namespace:ModelTrain"
+    WidthRequest="320"
+    HeightRequest="50"
+    Clicked="OnChangeEmailClicked"/>
+    </VerticalStackLayout>
+</ContentPage>

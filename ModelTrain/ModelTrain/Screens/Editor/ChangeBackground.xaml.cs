@@ -1,62 +1,69 @@
 using ModelTrain.Services;
 
-namespace ModelTrain.Screens;
-
-/*
- * This class is the background functionality/methods for the background changing page.
- * Note that this page is supposed to be in landscape only
- * Author: Krystal Schneider
- * Date: October 16, 2024
- */
-public partial class ChangeBackground : ContentPage
+namespace ModelTrain.Screens
 {
-    public ChangeBackground()
-	{
-        InitializeComponent();
-    }
-
-    private async void OnCameraButtonClicked(object sender, EventArgs e)
+    /*
+     * This class is the background functionality/methods for the background changing page.
+     * Note that this page is supposed to be in landscape only
+     * Author: Krystal Schneider
+     * Date: October 16, 2024
+     */
+    public partial class ChangeBackground : ContentPage
     {
-        //Logic
-        if (MediaPicker.Default.IsCaptureSupported)
+
+        private PersonalProject? tempProject;
+
+        public ChangeBackground(PersonalProject sentProject)
         {
-            FileResult? photo = await MediaPicker.Default.CapturePhotoAsync();
+            InitializeComponent();
+            tempProject = sentProject;
+        }
 
-            if (photo != null)
+        private async void OnCameraButtonClicked(object sender, EventArgs e)
+        {
+            //Logic
+            if (MediaPicker.Default.IsCaptureSupported)
             {
-                // save the file into local storage
-                string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+                FileResult? photo = await MediaPicker.Default.CapturePhotoAsync();
 
-                using Stream sourceStream = await photo.OpenReadAsync();
-                using FileStream localFileStream = File.OpenWrite(localFilePath);
+                if (photo != null)
+                {
+                    // Save the selected image path
+                    tempProject.BackgroundImage = photo.FullPath;
+                }
+            }
 
-                await sourceStream.CopyToAsync(localFileStream);
+            await Navigation.PopAsync();
+        }
+
+        private async void OnGalleryButtonClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                // Pick an image file
+                FileResult? result = await FilePicker.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Select an Image for the Background",
+                    FileTypes = FilePickerFileType.Images // Restrict to image files
+                });
+
+                if (result != null)
+                {
+                    // Save the selected image path
+                    tempProject.BackgroundImage = result.FullPath;
+                }
+                await Navigation.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to select image: {ex.Message}", "OK");
             }
         }
-        await Navigation.PopAsync();
-    }
 
-    private async void OnGalleryButtonClicked(object sender, EventArgs e)
-    {
-        //Logic
-        FileResult? photo = await MediaPicker.Default.PickPhotoAsync();
-
-        if (photo != null)
+        protected override void OnAppearing()
         {
-            // save the file into local storage
-            string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
-
-            using Stream sourceStream = await photo.OpenReadAsync();
-            using FileStream localFileStream = File.OpenWrite(localFilePath);
-
-            await sourceStream.CopyToAsync(localFileStream);
+            base.OnAppearing();
+            DeviceOrientation.SetLandscape();
         }
-        await Navigation.PopAsync();
-    }
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-        DeviceOrientation.SetLandscape();
     }
 }

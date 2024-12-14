@@ -17,8 +17,7 @@
                     FontSize="44"
                     HorizontalTextAlignment="Center"
                     VerticalTextAlignment="Center"
-                    HorizontalOptions="Center"
-                    TextColor="Black"/>
+                    HorizontalOptions="Center"/>
 
                 <!-- Create Button -->
                 <Button
@@ -37,12 +36,14 @@
                     Clicked="OnEditPreviousButtonClicked"/>
 
                 <!-- Collaborate Button -->
+                <!--
                 <Button
                     x:Name="CollabBtn"
                     Text="Collaborate"
                     WidthRequest="320"
                     HeightRequest="50"
                     Clicked="OnCollaborateButtonClicked"/>
+                -->
 
                 <Image
                     Source="logo.png"

@@ -6,7 +6,7 @@ namespace ModelTrain.Model.Track
      * Description: Holds a list of Segments and ways to convert between segments and strings
      * to allow for saving, loading, and edit history
      * Author: Alex Robinson
-     * Last updated: 11/24/2024
+     * Last updated: 12/8/2024
      */
     public class TrackBase
     {
@@ -48,8 +48,10 @@ namespace ModelTrain.Model.Track
                     writer.Write((short)segment.Rotation);
 
                     // -1: nothing is snapped to that side
-                    writer.Write(segment.SnappedStartSegment == null ? -1 : Segments.IndexOf(segment.SnappedStartSegment));
-                    writer.Write(segment.SnappedEndSegment == null ? -1 : Segments.IndexOf(segment.SnappedEndSegment));
+                    writer.Write(segment.SnappedStartSegment == null
+                        ? -1 : Segments.IndexOf(segment.SnappedStartSegment));
+                    writer.Write(segment.SnappedEndSegment == null
+                        ? -1 : Segments.IndexOf(segment.SnappedEndSegment));
                 }
 
                 byte[] bytes = stream.ToArray();
@@ -68,14 +70,15 @@ namespace ModelTrain.Model.Track
         /// <summary>
         /// Replaces the current list of Segments with the list represented by the given string
         /// </summary>
-        /// <param name="segmentsStr">The string representation of a list of Segments to load into the track</param>
+        /// <param name="segmentsStr">The string representation of a list of Segments
+        /// to load into the track</param>
         /// <returns>Whether the operation succeeded</returns>
         public bool LoadSegmentsFromString(string segmentsStr)
         {
             // Take in a Base64 representation of segment data and replace the current segments
             // with that data
             Segments.Clear();
-            
+
             try
             {
                 // Format:

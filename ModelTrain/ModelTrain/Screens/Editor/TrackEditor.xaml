@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
-             x:Class="ModelTrain.Screens.TrackEditor"
-             NavigationPage.HasNavigationBar="False"
-             xmlns:local="clr-namespace:ModelTrain.Screens.Components"
-             Title="">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+    x:Class="ModelTrain.Screens.TrackEditor"
+    NavigationPage.HasNavigationBar="False"
+    xmlns:local="clr-namespace:ModelTrain.Screens.Components"
+    Title="">
 
     <!-- A container spanning the whole window -->
     <Grid
         RowDefinitions="*"
         ColumnDefinitions="*">
-        
+
         <!-- Horizontal alignment - editor and piece selection columns -->
-        <Grid Grid.Row="0" Grid.Column="0"
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
             RowDefinitions="*"
             ColumnDefinitions="*,100">
 
@@ -25,7 +28,8 @@
                 ColumnDefinitions="*">
 
                 <!-- Main editor frame -->
-                <Frame x:Name="EditorFrame"
+                <Frame
+                    x:Name="EditorFrame"
                     Padding="0"
                     Grid.Row="0"
                     Grid.Column="0"
@@ -36,26 +40,27 @@
                         RowDefinitions="*"
                         ColumnDefinitions="*">
                         <!-- Editor goes here -->
-                        <Label Grid.Row="0" Grid.Column="0"
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
                             VerticalOptions="Center"
                             HorizontalOptions="Center">
-                            
+
                         </Label>
 
                         <!-- Captures touch events on the track space -->
-                        <skia:SKCanvasView Grid.Row="0" Grid.Column="0"
+                        <skia:SKCanvasView
+                            Grid.Row="0"
+                            Grid.Column="0"
                             x:Name="EditorCanvas"
                             EnableTouchEvents="True"
                             Touch="OnEditorPanelTouched"
                             Background="Transparent"
                             PaintSurface="OnPaintEditorCanvas">
-                            <skia:SKCanvasView.GestureRecognizers>
-                                <PinchGestureRecognizer
-                                    PinchUpdated="OnEditorPinchUpdated"/>
-                            </skia:SKCanvasView.GestureRecognizers>
+                            
                         </skia:SKCanvasView>
                     </Grid>
-                    
+
                 </Frame>
 
                 <!-- Back button -->
@@ -150,61 +155,64 @@
                 </Frame>
             </Grid>
 
-            <!-- Scrolling piece select list -->
-            <Frame
-                Grid.Row="0"
-                Grid.Column="1"
-                BorderColor="Gray"
-                CornerRadius="0"
-                Padding="0">
-                <ScrollView
-                    Margin="0"
-                    Padding="20">
-
-                    <!-- All pieces are in this layout -->
-                    <CollectionView
-                        x:Name="HotbarCollection"
-                        ItemsSource="{Binding Items}"
-                        HorizontalOptions="FillAndExpand">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid
-                                    RowDefinitions="*"
-                                    ColumnDefinitions="*"
-                                    Margin="0" Padding="0"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="Center">
-
-                                    <Button
-                                        Grid.Row="0" Grid.Column="0"
-                                        Padding="0" Margin="0,5,0,5"
-                                        HeightRequest="60"
-                                        WidthRequest="60"
-                                        ClassId="{Binding Name}"
-                                        Clicked="OnHotbarPieceClicked">
-
-                                    </Button>
-
-                                    <local:PieceImage
-                                        ClassId="{Binding Name}"
-                                        HeightRequest="50"
-                                        WidthRequest="50">
-                                        
-                                    </local:PieceImage>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </ScrollView>
-            </Frame>
-
-            <!-- Piece catalog button, allows user to change which pieces they see -->
-            <!-- (Grid for alignment) -->
+            <!-- Vertical alignment - piece catalog and scrolling piece list -->
             <Grid
                 Grid.Row="0"
                 Grid.Column="1"
-                RowDefinitions="*,7*"
-                ColumnDefinitions="*,4*">
+                RowDefinitions="*,5*"
+                ColumnDefinitions="*">
+                <!-- Scrolling piece select list -->
+                <Frame
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    BorderColor="Gray"
+                    CornerRadius="0"
+                    Padding="0">
+                    <ScrollView
+                        Margin="0"
+                        Padding="20">
+
+                        <!-- All pieces are in this layout -->
+                        <CollectionView
+                            x:Name="HotbarCollection"
+                            ItemsSource="{Binding Items}"
+                            HorizontalOptions="FillAndExpand">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                        RowDefinitions="*"
+                                        ColumnDefinitions="*"
+                                        Margin="0"
+                                        Padding="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="Center">
+
+                                        <Button
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Padding="0"
+                                            Margin="0,5,0,5"
+                                            HeightRequest="60"
+                                            WidthRequest="60"
+                                            ClassId="{Binding Name}"
+                                            Clicked="OnHotbarPieceClicked">
+
+                                        </Button>
+
+                                        <local:PieceImage
+                                            ClassId="{Binding Name}"
+                                            HeightRequest="50"
+                                            WidthRequest="50">
+
+                                        </local:PieceImage>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </Frame>
+
+                <!-- Piece catalog button, allows user to change which pieces they see -->
                 <Button
                     x:Name="EditPieces"
                     Grid.Row="0"
@@ -212,7 +220,8 @@
                     Padding="0"
                     CornerRadius="0"
                     BackgroundColor="Gray"
-                    FontSize="8"
+                    FontSize="24"
+                    VerticalOptions="FillAndExpand"
                     Style="{x:StaticResource GoogleFont}"
                     Text="Edit"
                     Clicked="OnPieceEditButtonClicked">

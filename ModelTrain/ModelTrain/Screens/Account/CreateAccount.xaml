@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ModelTrain.Screens.CreateAccount"
-             xmlns:icon="clr-namespace:ModelTrain.Model"
-             Title="Create Account">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ModelTrain.Screens.CreateAccount"
+    xmlns:icon="clr-namespace:ModelTrain.Model"
+    Title="Create Account">
     <VerticalStackLayout
-    Padding="30,0"
-    Spacing="25"
-    VerticalOptions="Center">
+        Padding="30,0"
+        Spacing="25"
+        VerticalOptions="Center">
 
         <!-- Centered Title -->
-        <Label Text="Create Your Account"
-       FontSize="42"
-       FontAttributes="Bold"
-       HorizontalTextAlignment="Center"
-       VerticalTextAlignment="Center"
-       HorizontalOptions="Center"
-       TextColor="Black"
-       />
+        <Label
+            Text="Create Your Account"
+            FontSize="42"
+            FontAttributes="Bold"
+            HorizontalTextAlignment="Center"
+            VerticalTextAlignment="Center"
+            HorizontalOptions="Center"/>
 
-        <Label Text="Create an account to view and manage your projects."
+        <Label
+            Text="Create an account to view and manage your projects."
             FontSize="18"
             FontAttributes="Bold"
             HorizontalTextAlignment="Center"
             VerticalTextAlignment="Center"
-            HorizontalOptions="Center"
-            TextColor="Black"
-        />
+            HorizontalOptions="Center"/>
 
         <!-- First Name Entry -->
         <Frame
             BorderColor="Gray"
             CornerRadius="5"
             Padding="5"
-            Margin="10">    
-            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                <Label Text="{x:Static icon:IconFont.Person}" Style="{x:StaticResource GoogleFont}"></Label>
-                <Entry x:Name="FirstNameEntry" 
-                Placeholder="First Name" 
-                Keyboard="Text"
-                Margin="5,0,0,0"/>
+            Margin="10">
+            <StackLayout
+                Orientation="Horizontal"
+                VerticalOptions="Center">
+                <Label
+                    Text="{x:Static icon:IconFont.Person}"
+                    Style="{x:StaticResource GoogleFont}"></Label>
+                <Entry
+                    x:Name="FirstNameEntry"
+                    Placeholder="First Name"
+                    Keyboard="Text"
+                    Margin="5,0,0,0"/>
             </StackLayout>
         </Frame>
 
@@ -49,12 +53,17 @@
             CornerRadius="5"
             Padding="5"
             Margin="10">
-            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                <Label Text="{x:Static icon:IconFont.Person}" Style="{x:StaticResource GoogleFont}"></Label>
-                <Entry x:Name="LastNameEntry" 
-                Placeholder="Last Name" 
-                Keyboard="Text"
-                Margin="5,0,0,0"/>
+            <StackLayout
+                Orientation="Horizontal"
+                VerticalOptions="Center">
+                <Label
+                    Text="{x:Static icon:IconFont.Person}"
+                    Style="{x:StaticResource GoogleFont}"></Label>
+                <Entry
+                    x:Name="LastNameEntry"
+                    Placeholder="Last Name"
+                    Keyboard="Text"
+                    Margin="5,0,0,0"/>
             </StackLayout>
         </Frame>
 
@@ -64,10 +73,15 @@
             CornerRadius="5"
             Padding="5"
             Margin="10">
-            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                <Label Text="{x:Static icon:IconFont.Email}" Style="{x:StaticResource GoogleFont}"></Label>
-                <Entry x:Name="EmailEntry" 
-                    Placeholder="Email" 
+            <StackLayout
+                Orientation="Horizontal"
+                VerticalOptions="Center">
+                <Label
+                    Text="{x:Static icon:IconFont.Email}"
+                    Style="{x:StaticResource GoogleFont}"></Label>
+                <Entry
+                    x:Name="EmailEntry"
+                    Placeholder="Email"
                     Keyboard="Email"
                     Margin="5,0,0,0"/>
             </StackLayout>
@@ -79,10 +93,15 @@
             CornerRadius="5"
             Padding="5"
             Margin="10">
-            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                <Label Text="{x:Static icon:IconFont.Lock}" Style="{x:StaticResource GoogleFont}"></Label>
-                <Entry x:Name="PasswordEntry" 
-                    Placeholder="Password" 
+            <StackLayout
+                Orientation="Horizontal"
+                VerticalOptions="Center">
+                <Label
+                    Text="{x:Static icon:IconFont.Lock}"
+                    Style="{x:StaticResource GoogleFont}"></Label>
+                <Entry
+                    x:Name="PasswordEntry"
+                    Placeholder="Password"
                     IsPassword="True"
                     Margin="5,0,0,0"/>
             </StackLayout>
@@ -95,7 +114,6 @@
             xmlns:icon="clr-namespace:ModelTrain"
             WidthRequest="320"
             HeightRequest="50"
-            Clicked="CreateAccountBtnClicked"
-		/>
+            Clicked="CreateAccountBtnClicked"/>
     </VerticalStackLayout>
 </ContentPage>

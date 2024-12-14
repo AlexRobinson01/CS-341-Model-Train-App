@@ -10,11 +10,18 @@ namespace ModelTrain.Model
     {
         public User GetUser(string email);
         public Task<bool> IsNewEmail(string email);
-        public Task CreateAccount(string firstName, string lastName, string email, string password);
+        public Task CreateAccount(string firstName, string lastName,
+                                  string email, string password);
         public Task<bool> IsCorrectPassword(string email, string password);
         public Task<bool> DeletePersonalProject(string projectId);
         public Task<bool> RemoveProjectFromUsersAsync(string projectId);
         public Task<List<Guid>> GetUserProjectIdsAsync(string email);
         public Task<List<PersonalProject>> GetProjectsByIdsAsync(List<Guid> projectIds);
+        public Task<bool> IsGuidUnique(Guid id);
+        public Task<bool> AddProjectToUser(string email, string projectId);
+        public Task<bool> AddProjectToProjects(string email, PersonalProject newProject);
+        Task<bool> UpdateProject(PersonalProject project);
+        public Task<bool> ChangePassword(string email, string password);
+        public Task<bool> ChangeEmail(string currentEmail, string newEmail);
     }
 }

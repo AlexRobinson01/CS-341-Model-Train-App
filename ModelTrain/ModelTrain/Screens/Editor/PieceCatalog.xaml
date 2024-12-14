@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ModelTrain.Screens.PieceCatalog"
-             NavigationPage.HasNavigationBar="False"
-             xmlns:local="clr-namespace:ModelTrain.Screens.Components"
-             Title="">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ModelTrain.Screens.PieceCatalog"
+    NavigationPage.HasNavigationBar="False"
+    xmlns:local="clr-namespace:ModelTrain.Screens.Components"
+    Title="">
 
     <!-- Vertical alignment - misc, catalog, selected rows -->
     <Grid
         RowDefinitions="*,5*,100"
         ColumnDefinitions="*"
         Padding="0">
-        
+
         <!-- Misc buttons -->
         <Grid
             Grid.Row="0"
             Grid.Column="0"
             RowDefinitions="*"
             ColumnDefinitions="3*,2*,2*,*">
-            
+
             <!-- Edit piece button -->
             <Button
                 x:Name="Edit"
@@ -30,9 +31,8 @@
                 FontSize="16"
                 CornerRadius="0"
                 Clicked="OnEditButtonClicked">
-                
             </Button>
-            
+
             <!-- Back button -->
             <Button
                 x:Name="Back"
@@ -44,17 +44,16 @@
                 FontSize="16"
                 CornerRadius="0"
                 Clicked="OnBackButtonClicked">
-                
             </Button>
         </Grid>
-        
+
         <!-- Piece catalog -->
         <Grid
             Grid.Row="1"
             Grid.Column="0"
             RowDefinitions="*"
             ColumnDefinitions="*,4*,6*,10*,6*,4*,*">
-            
+
             <!-- Left navigation button -->
             <Button
                 Grid.Row="0"
@@ -92,7 +91,7 @@
                 Grid.Column="1"
                 WidthRequest="60"
                 HeightRequest="60">
-                
+
             </Button>
 
             <local:PieceImage
@@ -101,9 +100,9 @@
                 WidthRequest="50"
                 HeightRequest="50"
                 x:Name="LLImage">
-                
+
             </local:PieceImage>
-            
+
             <!-- First left piece -->
             <Button
                 Clicked="OnLButtonClicked"
@@ -111,7 +110,7 @@
                 Grid.Column="2"
                 WidthRequest="100"
                 HeightRequest="100">
-                
+
             </Button>
 
             <local:PieceImage
@@ -120,9 +119,9 @@
                 WidthRequest="85"
                 HeightRequest="85"
                 x:Name="LImage">
-                
+
             </local:PieceImage>
-            
+
             <!-- Center (current) piece -->
             <Button
                 Clicked="OnCButtonClicked"
@@ -130,7 +129,7 @@
                 Grid.Column="3"
                 WidthRequest="200"
                 HeightRequest="200">
-                
+
             </Button>
 
             <local:PieceImage
@@ -139,9 +138,9 @@
                 WidthRequest="170"
                 HeightRequest="170"
                 x:Name="CImage">
-                
+
             </local:PieceImage>
-            
+
             <!-- First right piece -->
             <Button
                 Clicked="OnRButtonClicked"
@@ -149,7 +148,7 @@
                 Grid.Column="4"
                 WidthRequest="100"
                 HeightRequest="100">
-                
+
             </Button>
 
             <local:PieceImage
@@ -158,9 +157,9 @@
                 WidthRequest="85"
                 HeightRequest="85"
                 x:Name="RImage">
-                
+
             </local:PieceImage>
-            
+
             <!-- Second right piece -->
             <Button
                 Clicked="OnRRButtonClicked"
@@ -168,7 +167,7 @@
                 Grid.Column="5"
                 WidthRequest="60"
                 HeightRequest="60">
-                
+
             </Button>
 
             <local:PieceImage
@@ -177,10 +176,10 @@
                 WidthRequest="50"
                 HeightRequest="50"
                 x:Name="RRImage">
-                
+
             </local:PieceImage>
         </Grid>
-        
+
         <!-- Horizontal scrollable list of selected pieces -->
         <!-- Will be the same pieces as shown on the list to the right of the track editor -->
         <Frame
@@ -208,8 +207,10 @@
                                 HorizontalOptions="Center">
 
                                 <Button
-                                    Grid.Row="0" Grid.Column="0"
-                                    Padding="0" Margin="5,0,5,0"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    Margin="5,0,5,0"
                                     HeightRequest="60"
                                     WidthRequest="60"
                                     ClassId="{Binding Name}"

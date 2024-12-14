@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ModelTrain.Screens.PersonalProjects"
-             xmlns:icon="clr-namespace:ModelTrain.Model"
-             Title="Personal Projects">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ModelTrain.Screens.PersonalProjects"
+    xmlns:icon="clr-namespace:ModelTrain.Model"
+    Title="Personal Projects">
 
     <Grid>
         <!-- Define rows for the Grid -->
@@ -16,26 +17,29 @@
 
         <!-- CollectionView -->
         <ScrollView Grid.Row="0">
-            <CollectionView x:Name="collectionView"
-                            ItemsSource="{Binding Items}"
-                            SelectionMode="None"
-                            HorizontalOptions="FillAndExpand">
+            <CollectionView
+                x:Name="collectionView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None"
+                HorizontalOptions="FillAndExpand">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="10,2,10,2"
-                               Padding="5"
-                               CornerRadius="20"
-                               BorderColor="Gray"
-                               HasShadow="True"
-                               HorizontalOptions="FillAndExpand"
-                               VerticalOptions="Center">
+                        <Frame
+                            Margin="10,2,10,2"
+                            Padding="5"
+                            CornerRadius="20"
+                            BorderColor="Gray"
+                            HasShadow="True"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="Center">
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnProjectTapped"/>
                             </Frame.GestureRecognizers>
-                            <Grid Padding="10"
-                                  ColumnSpacing="5"
-                                  RowSpacing="5"
-                                  HorizontalOptions="FillAndExpand">
+                            <Grid
+                                Padding="10"
+                                ColumnSpacing="5"
+                                RowSpacing="5"
+                                HorizontalOptions="FillAndExpand">
 
                                 <!-- Define 2 rows and 2 columns -->
                                 <Grid.RowDefinitions>
@@ -48,40 +52,47 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Top-left corner -->
-                                <Label Text="{Binding ProjectName}"
-                                       Grid.Row="0"
-                                       Grid.Column="0"
-                                       HorizontalOptions="Start"
-                                       VerticalOptions="Start"/>
+                                <Label
+                                    Text="{Binding ProjectName}"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Start"/>
 
                                 <!-- Top-right corner (Icon) -->
-                                <Label Text="{x:Static icon:IconFont.Delete_outline}"
-                                       Style="{x:StaticResource GoogleFont}"
-                                       Grid.Row="0"
-                                       Grid.Column="1"
-                                       HorizontalOptions="End"
-                                       VerticalOptions="Start"
-                                       FontSize="20"
-                                       TextColor="Red"
-                                       BindingContext="{Binding .}">
+                                <Label
+                                    Text="{x:Static icon:IconFont.Delete_outline}"
+                                    Style="{x:StaticResource GoogleFont}"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Start"
+                                    FontSize="20"
+                                    TextColor="Red"
+                                    BindingContext="{Binding .}">
                                     <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnDeleteIconTapped" />
+                                        <TapGestureRecognizer Tapped="OnDeleteIconTapped"/>
                                     </Label.GestureRecognizers>
                                 </Label>
 
                                 <!-- Bottom-left corner -->
-                                <Label Text="{Binding DateCreated}"
-                                       Grid.Row="1"
-                                       Grid.Column="0"
-                                       HorizontalOptions="Start"
-                                       VerticalOptions="End"/>
+                                <Label
+                                    Text="{Binding DateCreated}"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="End"/>
 
                                 <!-- Bottom-right corner -->
-                                <Label Text="{Binding ProjectID}"
-                                       Grid.Row="1"
-                                       Grid.Column="1"
-                                       HorizontalOptions="End"
-                                       VerticalOptions="End"/>
+                                <!--
+                                <Label
+                                    Text="{Binding ProjectID}"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="End"/>
+                                    -->
+
                             </Grid>
                         </Frame>
                     </DataTemplate>
@@ -90,42 +101,48 @@
         </ScrollView>
 
         <!-- Buttons at the bottom -->
-        <StackLayout Grid.Row="1"
-                     Orientation="Horizontal"
-                     HorizontalOptions="Center"
-                     VerticalOptions="End"
-                     Margin="0,0,0,30"
-                     Spacing="20">
+        <StackLayout
+            Grid.Row="1"
+            Orientation="Horizontal"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            Margin="0,5,0,30"
+            Spacing="20">
             <!-- Handle the click event -->
-            <Frame CornerRadius="10"
-                   BorderColor="Gray"
-                   Padding="10"
-                   BackgroundColor="{DynamicResource Primary}"
-                   HorizontalOptions="Center"
-                   WidthRequest="130"
-                   HeightRequest="60">
-                <StackLayout WidthRequest="100"
-                             Orientation="Horizontal"
-                             HorizontalOptions="Center">
+            <Frame
+                CornerRadius="10"
+                BorderColor="Gray"
+                Padding="10"
+                BackgroundColor="{DynamicResource Primary}"
+                HorizontalOptions="Center"
+                WidthRequest="160"
+                HeightRequest="60">
+                <StackLayout
+                    WidthRequest="100"
+                    Orientation="Horizontal"
+                    HorizontalOptions="Center">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnEditButtonClicked"/>
                     </StackLayout.GestureRecognizers>
 
-                    <Label Text="Edit"
-                           FontAttributes="Bold"
-                           TextColor="White"
-                           VerticalOptions="Center"
-                           FontSize="16"
-                           Margin="25,0,5,0"/>
+                    <Label
+                        Text="Edit"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        VerticalOptions="Center"
+                        FontSize="16"
+                        Margin="25,0,5,0"/>
 
-                    <Label Text="{x:Static icon:IconFont.Edit_document}"
-                           Style="{x:StaticResource GoogleFont}"
-                           FontSize="24"
-                           TextColor="White"
-                           VerticalOptions="Center"/>
+                    <Label
+                        Text="{x:Static icon:IconFont.Edit_document}"
+                        Style="{x:StaticResource GoogleFont}"
+                        FontSize="24"
+                        TextColor="White"
+                        VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
 
+            <!--
             <ImageButton
                 Source="home.png"
                 Clicked="OnHomeButtonClicked"
@@ -135,8 +152,10 @@
                 WidthRequest="50"
                 HeightRequest="50"
                 Margin="5"/>
+            -->
 
             <!-- Handle the click event -->
+            <!--
             <Frame CornerRadius="10"
                    BorderColor="Gray"
                    Padding="10"
@@ -165,6 +184,7 @@
                            VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
+            -->
 
         </StackLayout>
     </Grid>
