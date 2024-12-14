@@ -1,5 +1,9 @@
 using ModelTrain.Model;
-
+/*
+     * This class is the background functionality/methods for the Collaborative Storage page
+     * Author: Taylor Showalter and Alex Robinson and Andrew Martin
+     * Date: November 13th, 2024
+     */
 namespace ModelTrain.Screens
 {
     /// <summary>
@@ -33,7 +37,7 @@ namespace ModelTrain.Screens
             if (!string.IsNullOrWhiteSpace(projectName)) // Ensure the project name is not empty
             {
                 string projectId = await BusinessLogic.Instance.GetUniqueGuid(); // Generate a unique project ID
-                string date = DateTime.Now.ToString("MM/dd/yyyy"); // Get the current date
+                string date = DateTime.Now.ToString("MM/dd/yyyy"); 
 
                 ProjectNameEntry.Unfocus(); // Unfocus the entry field to close the keyboard
 
