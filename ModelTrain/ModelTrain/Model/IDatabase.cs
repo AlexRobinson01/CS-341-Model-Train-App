@@ -10,7 +10,8 @@ namespace ModelTrain.Model
     {
         public User GetUser(string email);
         public Task<bool> IsNewEmail(string email);
-        public Task CreateAccount(string firstName, string lastName, string email, string password);
+        public Task CreateAccount(string firstName, string lastName,
+         string email, string password);
         public Task<bool> IsCorrectPassword(string email, string password);
         public Task<bool> DeletePersonalProject(string projectId);
         public Task<bool> RemoveProjectFromUsersAsync(string projectId);
