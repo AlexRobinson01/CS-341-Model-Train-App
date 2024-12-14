@@ -14,7 +14,7 @@ namespace ModelTrain.Screens
         /// </summary>
         public Login()
         {
-            InitializeComponent(); // Initialize UI components
+            InitializeComponent(); 
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace ModelTrain.Screens
             {
                 // Alert the user to fill all fields
                 await DisplayAlert("Error", 
-                "Must input values to login. Please try again.", "OK");
+                      "Must input values to login. Please try again.", "OK");
             }
             else
             {
@@ -49,7 +49,7 @@ namespace ModelTrain.Screens
                 {
                     // Show an error if credentials are invalid
                     await DisplayAlert("Error", 
-                    "Invalid email or password. Please try again.", "OK");
+                          "Invalid email or password. Please try again.", "OK");
                 }
             }
         }

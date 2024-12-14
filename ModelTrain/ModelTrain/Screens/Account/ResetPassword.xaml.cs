@@ -14,7 +14,7 @@ namespace ModelTrain.Screens
         /// </summary>
         public ResetPassword()
         {
-            InitializeComponent(); // Initialize UI components
+            InitializeComponent(); 
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace ModelTrain.Screens
                 string.IsNullOrEmpty(confirmNewPass))
             {
                 await DisplayAlert("Error", "Failed to change password. " +
-                    "All inputs must contain values. Please try again.", "OK");
+                      "All inputs must contain values. Please try again.", "OK");
             }
             else
             {
@@ -60,7 +60,7 @@ namespace ModelTrain.Screens
                 {
                     // Notify the user of success and navigate back
                     await DisplayAlert("Success",
-                    "Password changed successfully!", "OK");
+                          "Password changed successfully!", "OK");
                     await Navigation.PopAsync(); // Go back to account screen
 
                 }
@@ -68,8 +68,8 @@ namespace ModelTrain.Screens
                 {
                     // Notify the user if the operation fails
                     await DisplayAlert("Error",
-                    "Failed to change password. Incorrect current password or new passwords do not match.",
-                    "OK");
+                          "Failed to change password. Incorrect current password or new passwords do not match.",
+                          "OK");
                 }
             }
         }

@@ -15,7 +15,7 @@ namespace ModelTrain.Screens
         /// </summary>
         public Account()
         {
-            InitializeComponent(); // Initialize UI components
+            InitializeComponent();
             LoadUserData(); // Load user data into UI elements
             // Set the dark mode switch state
             DarkModeSwitch.IsToggled = Application.Current.UserAppTheme == AppTheme.Dark; 
@@ -51,8 +51,8 @@ namespace ModelTrain.Screens
         /// </summary>
         private async void OnLogOutButtonClicked(object sender, EventArgs e)
         {
-            SecureStorage.Remove("UserEmail"); // Remove stored email
-            SecureStorage.Remove("UserPassword"); // Remove stored password
+            SecureStorage.Remove("UserEmail"); 
+            SecureStorage.Remove("UserPassword"); 
 
             Application.Current.UserAppTheme = AppTheme.Light; // Reset theme to default
             Application.Current.MainPage = new NavigationPage(new Login()); // Redirect to login
@@ -66,12 +66,12 @@ namespace ModelTrain.Screens
             if (e.Value) // If switch is toggled to dark mode
             {
                 Application.Current.UserAppTheme = AppTheme.Dark;
-                UserPreferences.Set("UserTheme", "Dark"); // Save dark mode preference
+                UserPreferences.Set("UserTheme", "Dark"); 
             }
             else
             {
                 Application.Current.UserAppTheme = AppTheme.Light;
-                UserPreferences.Set("UserTheme", "Light"); // Save light mode preference
+                UserPreferences.Set("UserTheme", "Light"); 
             }
         }
 

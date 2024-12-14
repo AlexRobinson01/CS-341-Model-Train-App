@@ -19,8 +19,8 @@ namespace ModelTrain.Screens
         /// </summary>
         public CreateAccount()
         {
-            InitializeComponent(); // Initialize UI components
-            BusinessLogic = new BusinessLogic(); // Initialize the business logic service
+            InitializeComponent();
+            BusinessLogic = new BusinessLogic(); 
         }
 
         /// <summary>
@@ -31,11 +31,11 @@ namespace ModelTrain.Screens
         {
             bool accountCreated = false; // Tracks account creation status
             bool emptyInputs = false; // Tracks if inputs are empty
-
-            string firstName = FirstNameEntry.Text; // Get first name
-            string lastName = LastNameEntry.Text; // Get last name
-            string email = EmailEntry.Text; // Get email
-            string password = PasswordEntry.Text; // Get password
+            //retrieve user input for account information for creation
+            string firstName = FirstNameEntry.Text; 
+            string lastName = LastNameEntry.Text; 
+            string email = EmailEntry.Text; 
+            string password = PasswordEntry.Text; 
 
             // Check if any inputs are empty
             if (string.IsNullOrEmpty(firstName) ||
@@ -60,7 +60,7 @@ namespace ModelTrain.Screens
                 else
                 {
                     await DisplayAlert("Error",
-                    "Failed to create account. Email already in use.", "OK");
+                        "Failed to create account. Email already in use.", "OK");
                 }
             }
         }
