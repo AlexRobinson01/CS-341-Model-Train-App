@@ -14,7 +14,7 @@ namespace ModelTrain.Screens
         /// </summary>
         public ResetPassword()
         {
-            InitializeComponent(); 
+            InitializeComponent();
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace ModelTrain.Screens
                 }
 
                 // Change the password if all conditions are met
-                if (passwordsMatch && correctPass && 
+                if (passwordsMatch && correctPass &&
                 await BusinessLogic.Instance.ChangePassword(newPass))
                 {
                     // Notify the user of success and navigate back
@@ -67,9 +67,8 @@ namespace ModelTrain.Screens
                 else
                 {
                     // Notify the user if the operation fails
-                    await DisplayAlert("Error",
-                          "Failed to change password. Incorrect current password or new passwords do not match.",
-                          "OK");
+                    await DisplayAlert("Error", "Failed to change password." +
+                          " Incorrect current password or new passwords do not match.", "OK");
                 }
             }
         }
