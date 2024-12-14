@@ -1,6 +1,7 @@
 using ModelTrain.Model;
 /*
-     * This class is the background functionality/methods for the Collaborative Storage page
+     * This class is the background functionality/methods for the 
+     * CreateNewProjectPopup page
      * Author: Taylor Showalter and Alex Robinson and Andrew Martin
      * Date: November 13th, 2024
      */
@@ -8,7 +9,8 @@ namespace ModelTrain.Screens
 {
     /// <summary>
     /// Represents a popup for creating a new project.
-    /// Allows users to input a project name and notifies the parent page when a new project is created.
+    /// Allows users to input a project name and notifies the parent page
+    /// when a new project is created.
     /// </summary>
     public partial class CreateNewProjectPopup : ContentPage
     {
@@ -17,7 +19,7 @@ namespace ModelTrain.Screens
         /// </summary>
         public CreateNewProjectPopup()
         {
-            InitializeComponent(); 
+            InitializeComponent();
         }
 
         /// <summary>
@@ -28,16 +30,19 @@ namespace ModelTrain.Screens
 
         /// <summary>
         /// Handles the "Submit" button click event.
-        /// Validates the project name, generates a unique project ID, and notifies the parent page.
+        /// Validates the project name, generates a unique project ID,
+        /// and notifies the parent page.
         /// </summary>
         private async void OnSubmitProjectClicked(object sender, EventArgs e)
         {
-            string projectName = ProjectNameEntry.Text; // Retrieve the project name from the entry field
+            // Retrieve the project name from the entry field
+            string projectName = ProjectNameEntry.Text;
 
             if (!string.IsNullOrWhiteSpace(projectName)) // Ensure the project name is not empty
             {
-                string projectId = await BusinessLogic.Instance.GetUniqueGuid(); // Generate a unique project ID
-                string date = DateTime.Now.ToString("MM/dd/yyyy"); 
+                // Generate a unique project ID
+                string projectId = await BusinessLogic.Instance.GetUniqueGuid();
+                string date = DateTime.Now.ToString("MM/dd/yyyy");
 
                 ProjectNameEntry.Unfocus(); // Unfocus the entry field to close the keyboard
 
