@@ -1,6 +1,13 @@
 namespace ModelTrain.Screens
 {
     /*
+     * This screen has effectively been disabled for the foreseeable future,
+     * due to time constraints and us not seeing it as a critical feature
+     * for getting the program working. We may come back to this screen in the future,
+     * hence why we're not deleting it, but it's not currently accessible in the app.
+     * 
+     * 
+     * 
      * This class is the background functionality/methods for the Collaborative Storage page
      * Author: Taylor Showalter and Alex Robinson
      * Date: November 13th, 2024
@@ -10,14 +17,6 @@ namespace ModelTrain.Screens
         public CollaborativeStorage()
         {
             InitializeComponent();
-
-            collectionView.ItemsSource = new List<PersonalProject>
-        {
-        new PersonalProject { ProjectName = "Project 1", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0001", Track = new Model.Track.TrackBase()},
-        new PersonalProject { ProjectName = "Project 2", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0002", Track = new Model.Track.TrackBase()},
-        new PersonalProject { ProjectName = "Project 3", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0003", Track = new Model.Track.TrackBase()},
-        new PersonalProject { ProjectName = "Project 4", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0004", Track = new Model.Track.TrackBase()}
-        };
         }
 
         private PersonalProject _selectedProject;
@@ -56,7 +55,8 @@ namespace ModelTrain.Screens
             }
             else
             {
-                await DisplayAlert("No Project Selected", "Please select a project to edit.", "OK");
+                await DisplayAlert("No Project Selected",
+                    "Please select a project to edit.", "OK");
             }
         }
 
@@ -67,7 +67,8 @@ namespace ModelTrain.Screens
         }
         private async void OnHomeButtonClicked(object sender, EventArgs e)
         {
-            // Clear the navigation stack by setting a new NavigationPage with HomeScreen as the root
+            // Clear the navigation stack by setting a new NavigationPage
+            // with HomeScreen as the root
             Application.Current.MainPage = new NavigationPage(new HomeScreen());
         }
 

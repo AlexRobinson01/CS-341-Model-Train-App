@@ -1,6 +1,4 @@
 ﻿using ModelTrain.Services;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace ModelTrain.Model
 {
@@ -20,7 +18,8 @@ namespace ModelTrain.Model
         }
 
         /// <summary>
-        /// Public method to get the single instance of BusinessLogic (allows for locally stored email upon login)
+        /// Public method to get the single instance of BusinessLogic
+        /// (allows for locally stored email upon login)
         /// </summary>
         public static BusinessLogic Instance
         {
@@ -51,6 +50,7 @@ namespace ModelTrain.Model
         {
             //Grab the user from their email
             User userToGet = Database.GetUser(this.email);
+
             // If user exists, return them
             if (userToGet != null)
             {
@@ -58,7 +58,7 @@ namespace ModelTrain.Model
             }
             else
             {
-                return null; // Throw exception
+                return null;
             }
         }
 
@@ -70,14 +70,17 @@ namespace ModelTrain.Model
         /// <returns>
         /// True if the project is successfully saved; false otherwise.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the project does not have a valid ProjectID.</exception>
+        /// <exception cref="ArgumentException">Thrown when the project
+        /// does not have a valid ProjectID.</exception>
         /// <summary>
-        /// Saves a project by updating the existing record in the database with the same ProjectID.
+        /// Saves a project by updating the existing record in the database
+        /// with the same ProjectID.
         /// </summary>
         /// <param name="project">The project to save.</param>
         /// <returns>True if the project is successfully saved; false otherwise.</returns>
         public async Task<bool> SaveProject(PersonalProject project)
         {
+            // Ensure the project has a valid ID before trying to save it
             if (string.IsNullOrEmpty(project.ProjectID))
                 throw new ArgumentException("ProjectID is required to save the project.");
 
@@ -120,7 +123,8 @@ namespace ModelTrain.Model
             // Check if password is correct
             bool correctPassword = await Database.IsCorrectPassword(email, password);
 
-            if (emailDoesNotExist || !correctPassword)  // If no email match or incorrect password return false
+            // Ensure email matches and password is correct
+            if (emailDoesNotExist || !correctPassword)
             {
                 return false;
             }
@@ -141,20 +145,26 @@ namespace ModelTrain.Model
         /// <returns>
         /// True if account is created, false otherwise
         /// </returns>
-        public async Task<bool> CreateAccount(String firstName, String lastName, String email, String password)
+        public async Task<bool> CreateAccount(String firstName, String lastName,
+                                              String email, String password)
         {
-            bool uniqueEmail = await Database.IsNewEmail(email);        // Check if database doesn't have this email
-            if (uniqueEmail)                                            // If so, create the account
+            // Check if database doesn't have this email
+            bool uniqueEmail = await Database.IsNewEmail(email);
+            
+            // If so, create the account
+            if (uniqueEmail)
             {
                 await Database.CreateAccount(firstName, lastName, email, password);
                 return true;
             }
+
             return false;
 
         }
 
         /// <summary>
-        /// Takes a project Id and deletes the project from the users profile and the projects db table
+        /// Takes a project Id and deletes the project from the users profile
+        /// and the projects db table
         /// </summary>
         /// <param name="projectId"></param>
         /// <returns>
@@ -163,7 +173,8 @@ namespace ModelTrain.Model
         public async Task<bool> DeleteProjectById(String projectId)
         {
             // If project is deleted from both tables, return true
-            if (await Database.DeletePersonalProject(projectId) && await Database.RemoveProjectFromUsersAsync(projectId))
+            if (await Database.DeletePersonalProject(projectId)
+                && await Database.RemoveProjectFromUsersAsync(projectId))
             {
                 return true;
             }
@@ -217,14 +228,15 @@ namespace ModelTrain.Model
             int retryCount = 0;
 
             // If projectid is unique in the database, return
-            while (!(await Database.IsGuidUnique(newGuid)))
+            while (!await Database.IsGuidUnique(newGuid))
             {
                 // If not unique, try again and increment count
                 retryCount++;
                 // If reaches max attempts, relay that it cannot generate unique GUID
                 if (retryCount > maxRetries)
                 {
-                    throw new InvalidOperationException("Failed to generate a unique GUID after multiple attempts.");
+                    throw new InvalidOperationException("Failed to generate a unique GUID" +
+                        " after multiple attempts.");
                 }
 
                 newGuid = Guid.NewGuid();
@@ -243,7 +255,8 @@ namespace ModelTrain.Model
         public async Task<bool> AddProjectToDB(PersonalProject newProject)
         {
             // Add new project to both db tables, if no errors, return true
-            if (await Database.AddProjectToProjects(this.email, newProject) && await Database.AddProjectToUser(this.email, newProject.ProjectID))
+            if (await Database.AddProjectToProjects(this.email, newProject)
+                && await Database.AddProjectToUser(this.email, newProject.ProjectID))
             {
                 return true;
             }
@@ -260,7 +273,8 @@ namespace ModelTrain.Model
             // Check if password is correct
             bool correctPassword = await Database.IsCorrectPassword(this.email, password);
 
-            if (!correctPassword)  // If incorrect password return false
+            // Return whether password is correct
+            if (!correctPassword)
             {
                 return false;
             }
@@ -296,10 +310,13 @@ namespace ModelTrain.Model
         /// <returns>True if email is changed, false otherwise</returns>
         public async Task<bool> ChangeEmail(String email)
         {
+            // Ensure email was successfully changed
             bool emailChanged = await Database.ChangeEmail(this.email, email);
+
+            // Update locally stored signed in email
             if (emailChanged)
             {
-                this.email = email;     // Update locally stored signed in email
+                this.email = email;
             }
 
             return emailChanged;
