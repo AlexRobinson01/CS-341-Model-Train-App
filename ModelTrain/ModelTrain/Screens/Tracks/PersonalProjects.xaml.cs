@@ -4,7 +4,7 @@ namespace ModelTrain.Screens
 {
     /*
      * This class is the background functionality/methods for the personal projects page
-     * Author: Andrew Martin
+     * Author: Andrew Martin and Taylor Showalter and Alex Robinson
      * Date: October 6, 2024
      */
     public partial class PersonalProjects : ContentPage
@@ -17,15 +17,6 @@ namespace ModelTrain.Screens
         {
             InitializeComponent(); 
             FetchPersonalProjects(); // Load the user's projects
-
-            // Example data for testing purposes (commented out for production use)
-            // collectionView.ItemsSource = new List<PersonalProject>
-            // {
-            //     new PersonalProject { ProjectName = "Project 1", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0001", Track = new Model.Track.TrackBase()},
-            //     new PersonalProject { ProjectName = "Project 2", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0002", Track = new Model.Track.TrackBase()},
-            //     new PersonalProject { ProjectName = "Project 3", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0003", Track = new Model.Track.TrackBase()},
-            //     new PersonalProject { ProjectName = "Project 4", DateCreated = DateTime.Now.ToString("MM/dd/yyyy"), ProjectID = "0004", Track = new Model.Track.TrackBase()}
-            // };
         }
 
         private PersonalProject _selectedProject; // Stores the currently selected project
@@ -96,7 +87,8 @@ namespace ModelTrain.Screens
             else
             {
                 // Alert the user if no project is selected
-                await DisplayAlert("No Project Selected", "Please select a project to edit.", "OK");
+                await DisplayAlert("No Project Selected", 
+                      "Please select a project to edit.", "OK");
             }
         }
 
@@ -126,7 +118,8 @@ namespace ModelTrain.Screens
         private async void OnDeleteIconTapped(object sender, EventArgs e)
         {
             // Confirm deletion
-            var confirmed = await DisplayAlert("Delete Project", "Are you sure you want to delete this project?", "Yes", "No");
+            var confirmed = await DisplayAlert("Delete Project", 
+                                  "Are you sure you want to delete this project?", "Yes", "No");
             if (!confirmed) return; // Exit if the user cancels
 
             // Identify the tapped icon's associated project
